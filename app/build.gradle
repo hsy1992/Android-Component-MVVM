@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.squareup.sqldelight'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.hsy.study.myproject"
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    implementation project(':baselibrary')
+
+    annotationProcessor rootProject.ext.dagger2['dagger2Processor']
+
+    annotationProcessor rootProject.ext.dependencies['autoValue']
+//    annotationProcessor'com.google.auto.value:auto-value:1.6.3'
+
+    annotationProcessor 'com.google.auto.value:auto-value:1.6.3'
+    api 'com.google.auto.value:auto-value-annotations:1.6.3'
+
+    implementation "com.squareup.sqldelight:android-driver:1.0.0"
+}

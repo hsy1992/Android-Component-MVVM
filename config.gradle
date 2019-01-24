@@ -1,0 +1,113 @@
+ext{
+    android = [
+            applicationId    : "com.hsy.study.myproject",
+            compileSdkVersion: 28,
+            buildToolsVersion: "28.0.3",
+            minSdkVersion    : 19,
+            targetSdkVersion : 28,
+            versionCode      : 1,
+            versionName      : "1.0"
+    ]
+
+    dependVersion = [
+            androidSupportSdkVersion: "28.0.+",
+            retrofitSdkVersion      : "2.5.0",
+            rxjavaSdkVersion        : "2.2.4",
+            daggerSdkVersion        : "2.19",
+            glideSdkVersion         : "4.8.0",
+            rxlifecycle2SdkVersion  : "2.2.2",
+            lifecycle               : "2.0.0",
+            room                    : "2.1.0-alpha03",
+    ]
+
+
+    retrofit =[
+            retrofit                : "com.squareup.retrofit2:retrofit:$dependVersion.retrofitSdkVersion",
+            retrofitConverterGson   : "com.squareup.retrofit2:converter-gson:$dependVersion.retrofitSdkVersion",
+            retrofitAdapterRxjava2  : "com.squareup.retrofit2:adapter-rxjava2:$dependVersion.retrofitSdkVersion",
+    ]
+
+    gson = [
+            gson : 'com.google.code.gson:gson:2.8.5'
+    ]
+
+    okhttp = [
+            okhttp : "com.squareup.okhttp3:okhttp:3.12.0"
+    ]
+
+    rxJava = [
+            rxJava                 : "io.reactivex.rxjava2:rxjava:$dependVersion.rxjavaSdkVersion",
+            rxAndroid              : "io.reactivex.rxjava2:rxandroid:$dependVersion.rxAndroidSdkVersion",
+            rxlifecycle2           : "com.trello.rxlifecycle2:rxlifecycle:$dependVersion.rxlifecycle2SdkVersion",
+            rxlifecycle2_android   : "com.trello.rxlifecycle2:rxlifecycle-android:$dependVersion.rxlifecycle2SdkVersion",
+            rxlifecycle2_components: "com.trello.rxlifecycle2:rxlifecycle-components:$dependVersion.rxlifecycle2SdkVersion",
+            rxbinding2             : "com.jakewharton.rxbinding2:rxbinding:2.0.0",
+    ]
+
+    dagger2 = [
+            dagger2          : "com.google.dagger:dagger:$dependVersion.daggerSdkVersion",
+            dagger2Processor : "com.google.dagger:dagger-compiler:$dependVersion.daggerSdkVersion"
+    ]
+
+    test = [
+            junit    : "junit:junit:4.12",
+            espresso : "com.android.support.test.espresso:espresso-core:3.0.2",
+            runner   : "com.android.support.test:runner:1.0.2",
+    ]
+
+    glide = [
+            glide        : "com.github.bumptech.glide:glide:$dependVersion.glideSdkVersion",
+            glideCompiler: "com.github.bumptech.glide:compiler:$dependVersion.glideSdkVersion",
+            glideOkhttp  : "com.github.bumptech.glide:okhttp3-integration:$dependVersion.glideSdkVersion",
+    ]
+
+    lifecycle = [
+            runtime      :"androidx.lifecycle:lifecycle-runtime:$dependVersion.lifecycle",
+            extensions   :"androidx.lifecycle:lifecycle-extensions:$dependVersion.lifecycle",
+            compiler     :"androidx.lifecycle:lifecycle-compiler:$dependVersion.lifecycle",
+            java8        :"androidx.lifecycle:lifecycle-common-java8:$dependVersion.lifecycle",
+
+    ]
+
+    room = [
+            runtime     : "androidx.room:room-runtime:$dependVersion.room",
+            compiler    : "androidx.room:room-compiler:$dependVersion.room",
+            rxjava2     : "androidx.room:room-rxjava2:$dependVersion.room",
+            testing     : "androidx.room:room-testing:$dependVersion.room",
+    ]
+    dependencies = [
+            //缓存
+            rxcache2                 : "com.github.VictorAlbertos.RxCache:runtime:1.8.3-2.x",
+            butterknife              : "com.jakewharton:butterknife:10.0.0",
+            butterknife_apt          : "com.jakewharton:butterknife-compiler:10.0.0",
+            //内存泄漏监测:https://github.com/square/leakcanary
+            leakcanary_debug         : "com.squareup.leakcanary:leakcanary-android:1.6.2",
+            leakcanary_release       : "com.squareup.leakcanary:leakcanary-android-no-op:1.6.2",
+            leakcanary_fragment      : "com.squareup.leakcanary:leakcanary-support-fragment:1.6.2",
+            //屏幕适配
+            autosize                 : "me.jessyan:autosize:1.1.1",
+            multidex                 : "com.android.support:multidex:1.1.1",
+            //腾讯bugly
+            bugly_sdk                : "com.tencent.bugly:crashreport:latest.release",
+            bugly_ndk                : "com.tencent.bugly:nativecrashreport:latest.release",
+
+            //数据库
+            sqlbrite                 :'com.squareup.sqlbrite3:sqlbrite:3.2.0',
+            //实体类生成工具
+            autoValue                :'com.google.auto.value:auto-value:1.6.3',
+            autoValueAnnotations     :'com.google.auto.value:auto-value-annotations:1.6.3',
+            //autoValue 的序列化
+            autoValueParcel          :'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.6',
+            autoValueGsonAnnotation  :'com.ryanharter.auto.value:auto-value-gson:0.8.0',
+            autoValueGson            :'com.ryanharter.auto.value:auto-value-gson-annotations:0.8.0',
+            //数据库
+            supportSqlite            :'android.arch.persistence:db:1.1.0',
+            supportSqliteFramework   :'androidx.sqlite:sqlite-framework:2.0.0-beta01',
+
+    ]
+
+    networkLibs = retrofit.values()
+    rxJavaLibs = rxJava.values()
+    glideLibs = glide.values()
+    testLibs = test.values()
+}
