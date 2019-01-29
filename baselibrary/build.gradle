@@ -45,6 +45,7 @@ dependencies {
         exclude module: 'dagger'
         exclude module: 'api'
     }
+    api rootProject.ext.dependencies['rxcache_jolyglot_gson']
 
     api rootProject.ext.dagger2['dagger2']
     annotationProcessor rootProject.ext.dagger2['dagger2Processor']

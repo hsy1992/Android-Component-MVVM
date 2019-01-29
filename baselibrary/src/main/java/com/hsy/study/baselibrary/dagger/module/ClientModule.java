@@ -5,14 +5,18 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.hsy.study.baselibrary.dagger.interfaces.OkHttpConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.RetrofitConfiguration;
+import com.hsy.study.baselibrary.dagger.interfaces.RxCacheConfiguration;
 import com.hsy.study.baselibrary.http.GlobalHttpHandler;
 import com.hsy.study.baselibrary.http.log.RequestInterceptor;
+import com.hsy.study.baselibrary.utils.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import androidx.annotation.Nullable;
@@ -20,6 +24,7 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import io.rx_cache2.internal.RxCache;
+import io.victoralbertos.jolyglot.GsonSpeaker;
 import okhttp3.Dispatcher;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -29,7 +34,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**网络连接
+/**
+ * 网络连接
  * @author haosiyuan
  * @date 2019/1/20 8:25 PM
  */
@@ -96,10 +102,8 @@ public abstract class ClientModule {
 
         //添加拦截器
         if (interceptors != null){
-
             for (Interceptor interceptor : interceptors){
                 builder.addInterceptor(interceptor);
-
             }
         }
 
@@ -153,9 +157,30 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    RxCache provideRxCache(){
+    RxCache provideRxCache(Application application, @Nullable RxCacheConfiguration configuration,
+                           @Named("RxCacheDirectory") File cacheDirectory, Gson gson){
+        RxCache.Builder builder = new RxCache.Builder();
+        RxCache rxCache = null;
+        if (configuration != null){
+            rxCache = configuration.configRxCache(application, builder);
+        }
+        if (rxCache != null){
+            return rxCache;
+        }
 
+        return builder.persistence(cacheDirectory, new GsonSpeaker(gson));
+    }
 
-        return new RxCache.Builder();
+    /**
+     * 提供缓存文件地址
+     * @param cacheDir
+     * @return
+     */
+    @Singleton
+    @Provides
+    @Named("RxCacheDirectory")
+    File provideRxCacheDirectory(File cacheDir){
+        File cacheDirectory = new File(cacheDir,"RxCache");
+        return FileUtils.makeDirs(cacheDirectory);
     }
 }

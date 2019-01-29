@@ -3,7 +3,7 @@ package com.hsy.study.baselibrary.http.log;
 import android.text.TextUtils;
 
 import com.hsy.study.baselibrary.utils.CharacterHandler;
-import com.hsy.study.baselibrary.utils.MediaTypeUtil;
+import com.hsy.study.baselibrary.utils.MediaTypeUtils;
 import com.hsy.study.baselibrary.utils.logger.Logger;
 
 import java.util.List;
@@ -112,10 +112,10 @@ public class DefaultFormatPrinter implements FormatPrinter{
                                   @Nullable MediaType contentType, @Nullable String bodyString,
                                   @NonNull List<String> segments, @NonNull String message, @NonNull String responseUrl) {
         //根据类型进行转换
-        bodyString = MediaTypeUtil.isJson(contentType) ? CharacterHandler.jsonFormat(bodyString) :
-                MediaTypeUtil.isXml(contentType) ? CharacterHandler.xmlFormat(bodyString) : bodyString;
+        bodyString = MediaTypeUtils.isJson(contentType) ? CharacterHandler.jsonFormat(bodyString) :
+                MediaTypeUtils.isXml(contentType) ? CharacterHandler.xmlFormat(bodyString) : bodyString;
 
-        final String urlLine[] = {URL_TAG + responseUrl, N};
+        final String[] urlLine = new String[]{URL_TAG + responseUrl, N};
         final String responseBody = LINE_SEPARATOR + BODY_TAG +LINE_SEPARATOR + bodyString;
         final String tag = getTag(false);
 

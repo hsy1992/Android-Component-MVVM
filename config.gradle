@@ -78,6 +78,7 @@ ext{
     dependencies = [
             //缓存
             rxcache2                 : "com.github.VictorAlbertos.RxCache:runtime:1.8.3-2.x",
+            rxcache_jolyglot_gson    : "com.github.VictorAlbertos.Jolyglot:gson:0.0.4",
             butterknife              : "com.jakewharton:butterknife:10.0.0",
             butterknife_apt          : "com.jakewharton:butterknife-compiler:10.0.0",
             //内存泄漏监测:https://github.com/square/leakcanary
