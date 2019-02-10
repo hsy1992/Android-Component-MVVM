@@ -20,6 +20,10 @@ public class GlobalLifecycleObserver implements GenericLifecycleObserver {
     @Inject
     Lazy<GlobalLifecycleHandler> globalLifecycleHandler;
 
+    @Inject
+    public GlobalLifecycleObserver(){
+
+    }
     @Override
     public void onStateChanged(LifecycleOwner source, Lifecycle.Event event) {
 

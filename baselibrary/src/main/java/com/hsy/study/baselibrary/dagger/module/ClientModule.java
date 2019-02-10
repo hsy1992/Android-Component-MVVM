@@ -59,7 +59,7 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    Retrofit.Builder provideRetrofit(Application application, Retrofit.Builder builder, @Nullable RetrofitConfiguration configuration,
+    static Retrofit.Builder provideRetrofit(Application application, Retrofit.Builder builder, @Nullable RetrofitConfiguration configuration,
                                  HttpUrl httpUrl, OkHttpClient client, Gson gson){
 
         builder
@@ -92,7 +92,7 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    OkHttpClient provideOkHttp(Application application, OkHttpClient.Builder builder, @Nullable OkHttpConfiguration configuration, final GlobalHttpHandler handler,
+    static OkHttpClient provideOkHttp(Application application, OkHttpClient.Builder builder, @Nullable OkHttpConfiguration configuration, final GlobalHttpHandler handler,
                                Interceptor netWorkInterceptor, @Nullable List<Interceptor> interceptors, ExecutorService executorService){
 
         builder.
@@ -134,7 +134,7 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    OkHttpClient.Builder provideOkHttpBuilder(){
+    static OkHttpClient.Builder provideOkHttpBuilder(){
         return new OkHttpClient.Builder();
     }
 
@@ -144,7 +144,7 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    Retrofit.Builder provideRetrofitBuilder(){
+    static Retrofit.Builder provideRetrofitBuilder(){
         return new Retrofit.Builder();
     }
 
@@ -157,7 +157,7 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    RxCache provideRxCache(Application application, @Nullable RxCacheConfiguration configuration,
+    static RxCache provideRxCache(Application application, @Nullable RxCacheConfiguration configuration,
                            @Named("RxCacheDirectory") File cacheDirectory, Gson gson){
         RxCache.Builder builder = new RxCache.Builder();
         RxCache rxCache = null;
@@ -179,7 +179,7 @@ public abstract class ClientModule {
     @Singleton
     @Provides
     @Named("RxCacheDirectory")
-    File provideRxCacheDirectory(File cacheDir){
+    static File provideRxCacheDirectory(File cacheDir){
         File cacheDirectory = new File(cacheDir,"RxCache");
         return FileUtils.makeDirs(cacheDirectory);
     }
