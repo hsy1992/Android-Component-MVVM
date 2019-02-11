@@ -2,6 +2,7 @@ package com.hsy.study.baselibrary.lifecycle;
 
 import java.util.concurrent.CancellationException;
 
+import androidx.lifecycle.Lifecycle;
 import io.reactivex.Completable;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
@@ -43,6 +44,30 @@ class Functions {
             return Completable.error(new CancellationException());
         }
     };
+
+    static final Function<Lifecycle.Event, Lifecycle.Event> LIFECYCLE_EVENT =
+            new Function<Lifecycle.Event, Lifecycle.Event>() {
+                @Override
+                public Lifecycle.Event apply(Lifecycle.Event lastEvent) throws Exception {
+                    switch (lastEvent) {
+                        case ON_CREATE:
+                            return Lifecycle.Event.ON_DESTROY;
+                        case ON_START:
+                            return Lifecycle.Event.ON_STOP;
+                        case ON_RESUME:
+                            return Lifecycle.Event.ON_PAUSE;
+                        case ON_PAUSE:
+                            return Lifecycle.Event.ON_STOP;
+                        case ON_STOP:
+                            return Lifecycle.Event.ON_DESTROY;
+                        case ON_DESTROY:
+                            throw new OutsideLifecycleException("Cannot bind to Activity lifecycle when outside of it.");
+                        default:
+                            throw new UnsupportedOperationException("Binding to " + lastEvent + " not yet implemented");
+                    }
+                }
+            };
+
 
 
 }

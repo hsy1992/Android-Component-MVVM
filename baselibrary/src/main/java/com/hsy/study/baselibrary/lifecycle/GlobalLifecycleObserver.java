@@ -3,11 +3,12 @@ package com.hsy.study.baselibrary.lifecycle;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.GenericLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import dagger.Lazy;
+import io.reactivex.Observable;
 
 /**
  * 声明周期感知
@@ -21,9 +22,8 @@ public class GlobalLifecycleObserver implements GenericLifecycleObserver {
     Lazy<GlobalLifecycleHandler> globalLifecycleHandler;
 
     @Inject
-    public GlobalLifecycleObserver(){
+    public GlobalLifecycleObserver(){}
 
-    }
     @Override
     public void onStateChanged(LifecycleOwner source, Lifecycle.Event event) {
 
@@ -51,5 +51,22 @@ public class GlobalLifecycleObserver implements GenericLifecycleObserver {
             default:
                 break;
         }
+    }
+
+    /**
+     * 绑定生命周期
+     * @param <T>
+     * @return
+     */
+    public <T> LifecycleTransformer<T> bindLifecycle(){
+        return globalLifecycleHandler.get().bindLifecycle();
+    }
+
+    public Observable lifecycle() {
+        return globalLifecycleHandler.get().lifecycle();
+    }
+
+    public LifecycleTransformer bindUntilEvent(@NonNull Lifecycle.Event event) {
+        return globalLifecycleHandler.get().bindUntilEvent(event);
     }
 }

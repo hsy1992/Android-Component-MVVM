@@ -1,58 +1,76 @@
 package com.hsy.study.baselibrary.lifecycle;
 
-
-import android.util.Log;
-
 import com.hsy.study.baselibrary.utils.logger.Logger;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
+import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
+ * 全局生命周期 处理
  * @author haosiyuan
  * @date 2019/1/28 3:46 PM
  */
 @Singleton
-public class GlobalLifecycleHandler implements LifecycleObserver {
+public class GlobalLifecycleHandler implements LifecycleObserver, LifecycleProvide<Lifecycle.Event> {
 
-    private final BehaviorSubject<ActivityEvent> mLifecycleSubject = BehaviorSubject.create();
+    private final BehaviorSubject<Lifecycle.Event> mLifecycleSubject = BehaviorSubject.create();
 
     @Inject
-    public GlobalLifecycleHandler(){
-
-    }
+    public GlobalLifecycleHandler(){}
 
     public void onCreate(){
         Logger.debugInfo("onCreate");
-        mLifecycleSubject.onNext(ActivityEvent.CREATE);
+        mLifecycleSubject.onNext(Lifecycle.Event.ON_CREATE);
     }
 
     public void onStart(){
         Logger.debugInfo("onStart");
-        mLifecycleSubject.onNext(ActivityEvent.START);
+        mLifecycleSubject.onNext(Lifecycle.Event.ON_START);
     }
 
     public void onResume(){
         Logger.debugInfo("onResume");
-        mLifecycleSubject.onNext(ActivityEvent.RESUME);
+        mLifecycleSubject.onNext(Lifecycle.Event.ON_RESUME);
     }
 
     public void onPause(){
         Logger.debugInfo("onPause");
-        mLifecycleSubject.onNext(ActivityEvent.PAUSE);
+        mLifecycleSubject.onNext(Lifecycle.Event.ON_PAUSE);
     }
 
     public void onStop(){
         Logger.debugInfo("onStop");
-        mLifecycleSubject.onNext(ActivityEvent.STOP);
+        mLifecycleSubject.onNext(Lifecycle.Event.ON_STOP);
     }
 
     public void onDestroy(){
         Logger.debugInfo("onDestroy");
-        mLifecycleSubject.onNext(ActivityEvent.DESTROY);
+        mLifecycleSubject.onNext(Lifecycle.Event.ON_DESTROY);
     }
+
+    @NonNull
+    @Override
+    public Observable lifecycle() {
+        return mLifecycleSubject.hide();
+    }
+
+    @NonNull
+    @Override
+    public LifecycleTransformer bindLifecycle() {
+        return RxLifecycle.bind(mLifecycleSubject, Functions.LIFECYCLE_EVENT);
+    }
+
+    @NonNull
+    @Override
+    public LifecycleTransformer bindUntilEvent(@NonNull Lifecycle.Event event) {
+        return RxLifecycle.bindUntilEvent(mLifecycleSubject, event);
+    }
+
 }

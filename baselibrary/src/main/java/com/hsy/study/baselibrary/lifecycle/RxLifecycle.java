@@ -6,6 +6,7 @@ import io.reactivex.Observable;
 import io.reactivex.annotations.CheckReturnValue;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 /**
  * rxJava 生命周期
@@ -23,7 +24,6 @@ public class RxLifecycle {
     private static <T, R>LifecycleTransformer<T> bind(@NonNull final Observable<R> lifecycle){
         return new LifecycleTransformer<>(lifecycle);
     }
-
 
     @NonNull
     @CheckReturnValue
@@ -55,5 +55,23 @@ public class RxLifecycle {
                 })
                 .onErrorReturn(Functions.RESUME_FUNCTION)
                 .filter(Functions.SHOULD_COMPLETE);
+    }
+
+    @NonNull
+    @CheckReturnValue
+    public static <T, R> LifecycleTransformer<T> bindUntilEvent(@NonNull final Observable<R> lifecycle,
+                                                                @NonNull final R event) {
+        Preconditions.checkNotNull(lifecycle, "lifecycle == null");
+        Preconditions.checkNotNull(event, "event == null");
+        return bind(takeUntilEvent(lifecycle, event));
+    }
+
+    private static <R> Observable<R> takeUntilEvent(final Observable<R> lifecycle, final R event) {
+        return lifecycle.filter(new Predicate<R>() {
+            @Override
+            public boolean test(R lifecycleEvent) throws Exception {
+                return lifecycleEvent.equals(event);
+            }
+        });
     }
 }
