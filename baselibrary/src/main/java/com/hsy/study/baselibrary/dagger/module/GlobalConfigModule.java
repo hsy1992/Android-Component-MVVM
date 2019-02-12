@@ -2,6 +2,7 @@ package com.hsy.study.baselibrary.dagger.module;
 
 import android.app.Application;
 
+import com.hsy.study.baselibrary.dagger.interfaces.GsonConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.OkHttpConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.RetrofitConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.RxCacheConfiguration;
@@ -34,6 +35,7 @@ public class GlobalConfigModule {
     private RetrofitConfiguration retrofitConfiguration;
     private OkHttpConfiguration okhttpConfiguration;
     private RxCacheConfiguration rxCacheConfiguration;
+    private GsonConfiguration gsonConfiguration;
     private File cacheFile;
     @RequestInterceptor.LogLevel
     private int logLevel;
@@ -48,6 +50,7 @@ public class GlobalConfigModule {
         this.logLevel = builder.logLevel;
         this.executorService = builder.executorService;
         this.formatPrinter = builder.formatPrinter;
+        this.gsonConfiguration = builder.gsonConfiguration;
     }
 
     @Singleton
@@ -69,6 +72,13 @@ public class GlobalConfigModule {
     @Nullable
     RetrofitConfiguration provideRetrofitConfiguration() {
         return retrofitConfiguration;
+    }
+
+    @Singleton
+    @Provides
+    @Nullable
+    GsonConfiguration gsonConfiguration() {
+        return gsonConfiguration;
     }
 
     @Singleton
@@ -107,6 +117,7 @@ public class GlobalConfigModule {
         private RetrofitConfiguration retrofitConfiguration;
         private OkHttpConfiguration okhttpConfiguration;
         private RxCacheConfiguration rxCacheConfiguration;
+        private GsonConfiguration gsonConfiguration;
         @RequestInterceptor.LogLevel
         private int logLevel;
         /**
@@ -131,6 +142,11 @@ public class GlobalConfigModule {
 
         public Builder rxCacheConfiguration(RxCacheConfiguration rxCacheConfiguration){
             this.rxCacheConfiguration = rxCacheConfiguration;
+            return this;
+        }
+
+        public Builder gsonConfiguration(GsonConfiguration gsonConfiguration){
+            this.gsonConfiguration = gsonConfiguration;
             return this;
         }
 

@@ -1,6 +1,9 @@
 package com.hsy.study.baselibrary.dagger.module;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.hsy.study.baselibrary.base.AppApplication;
+import com.hsy.study.baselibrary.dagger.interfaces.GsonConfiguration;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleHandler;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
 
@@ -29,7 +32,12 @@ public abstract class AppModule {
 
     @Singleton
     @Provides
-    static Gson provideGson() {
-        return new Gson();
+    static Gson provideGson(AppApplication appApplication, GsonConfiguration configuration) {
+        GsonBuilder builder = new GsonBuilder();
+        if (configuration != null){
+            configuration.configGson(appApplication, builder);
+        }
+        return builder.create();
     }
+
 }
