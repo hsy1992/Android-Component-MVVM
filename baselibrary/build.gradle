@@ -4,7 +4,10 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
 
-
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         minSdkVersion 15
@@ -56,5 +59,7 @@ dependencies {
     implementation rootProject.ext.lifecycle['runtime']
     implementation rootProject.ext.lifecycle['extensions']
     annotationProcessor rootProject.ext.lifecycle['compiler']
+
+    api rootProject.ext.dependencies['butterknife']
 
 }

@@ -2,6 +2,10 @@ package com.hsy.study.baselibrary.dagger.module;
 
 import android.app.Application;
 
+import com.hsy.study.baselibrary.cache.Cache;
+import com.hsy.study.baselibrary.cache.CacheType;
+import com.hsy.study.baselibrary.cache.DefaultCacheType;
+import com.hsy.study.baselibrary.cache.IntelligentCache;
 import com.hsy.study.baselibrary.dagger.interfaces.GsonConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.OkHttpConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.RetrofitConfiguration;
@@ -19,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dagger.Module;
 import dagger.Provides;
@@ -41,6 +46,7 @@ public class GlobalConfigModule {
     private int logLevel;
     private ExecutorService executorService;
     private FormatPrinter formatPrinter;
+    private Cache.Factory cacheFactory;
 
     public GlobalConfigModule(Builder builder) {
         this.retrofitConfiguration = builder.retrofitConfiguration;
@@ -51,6 +57,7 @@ public class GlobalConfigModule {
         this.executorService = builder.executorService;
         this.formatPrinter = builder.formatPrinter;
         this.gsonConfiguration = builder.gsonConfiguration;
+        this.cacheFactory = builder.cacheFactory;
     }
 
     @Singleton
@@ -77,7 +84,7 @@ public class GlobalConfigModule {
     @Singleton
     @Provides
     @Nullable
-    GsonConfiguration gsonConfiguration() {
+    GsonConfiguration provideGsonConfiguration() {
         return gsonConfiguration;
     }
 
@@ -100,6 +107,13 @@ public class GlobalConfigModule {
         return formatPrinter == null ? new DefaultFormatPrinter() : formatPrinter;
     }
 
+    @Singleton
+    @Provides
+    Cache.Factory provideCacheFactory(Application application) {
+        return cacheFactory == null ? type ->
+                new IntelligentCache(new DefaultCacheType().calculateCacheSize(application)) : null;
+    }
+
     /**
      * 返回一个全局公用的线程池
      * @return {@link ExecutorService}
@@ -108,7 +122,7 @@ public class GlobalConfigModule {
     @Provides
     ExecutorService provideExecutorService() {
         return executorService == null ? new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>(), Util.threadFactory("Executor", false)) : executorService;
+                new SynchronousQueue<>(), Util.threadFactory("Executor", false)) : executorService;
     }
 
     public static final class Builder{
@@ -120,6 +134,10 @@ public class GlobalConfigModule {
         private GsonConfiguration gsonConfiguration;
         @RequestInterceptor.LogLevel
         private int logLevel;
+        /**
+         * 缓存
+         */
+        private Cache.Factory cacheFactory;
         /**
          * 请求打印
          */
@@ -167,6 +185,11 @@ public class GlobalConfigModule {
 
         public Builder cacheFile(File cacheFile){
             this.cacheFile = cacheFile;
+            return this;
+        }
+
+        public Builder cacheFactory(Cache.Factory cacheFile){
+            this.cacheFactory = cacheFactory;
             return this;
         }
 
