@@ -47,12 +47,7 @@ public class RxLifecycle {
         return Observable.combineLatest(
                 lifecycle.take(1).map(correspondingEvents),
                 lifecycle.skip(1),
-                new BiFunction<R, R, Boolean>() {
-                    @Override
-                    public Boolean apply(R bindUntilEvent, R lifecycleEvent) throws Exception {
-                        return lifecycleEvent.equals(bindUntilEvent);
-                    }
-                })
+                (bindUntilEvent, lifecycleEvent) -> lifecycleEvent.equals(bindUntilEvent))
                 .onErrorReturn(Functions.RESUME_FUNCTION)
                 .filter(Functions.SHOULD_COMPLETE);
     }
@@ -67,11 +62,6 @@ public class RxLifecycle {
     }
 
     private static <R> Observable<R> takeUntilEvent(final Observable<R> lifecycle, final R event) {
-        return lifecycle.filter(new Predicate<R>() {
-            @Override
-            public boolean test(R lifecycleEvent) throws Exception {
-                return lifecycleEvent.equals(event);
-            }
-        });
+        return lifecycle.filter(lifecycleEvent -> lifecycleEvent.equals(event));
     }
 }
