@@ -23,7 +23,7 @@ public class GlobalLifecycleHandler implements LifecycleObserver, LifecycleProvi
     private final BehaviorSubject<Lifecycle.Event> mLifecycleSubject = BehaviorSubject.create();
 
     @Inject
-    public GlobalLifecycleHandler(){}
+    public GlobalLifecycleHandler() {}
 
     public void onCreate(){
         Logger.debugInfo("onCreate");

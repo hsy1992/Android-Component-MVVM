@@ -3,6 +3,7 @@ package com.hsy.study.baselibrary.dagger.component;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.hsy.study.baselibrary.cache.Cache;
 import com.hsy.study.baselibrary.dagger.module.AppModule;
 import com.hsy.study.baselibrary.dagger.module.ClientModule;
 import com.hsy.study.baselibrary.dagger.module.GlobalConfigModule;
@@ -38,7 +39,23 @@ public interface AppComponent {
      */
     ExecutorService executorService();
 
+    /**
+     * 生命周期感知
+     * @return
+     */
     GlobalLifecycleObserver observer();
+
+    /**
+     * 用来存取一些整个 App 公用的数据, 切勿大量存放大容量数据, 这里的存放的数据和 {@link Application} 的生命周期一致
+     * @return {@link Cache}
+     */
+    Cache<String, Object> extras();
+
+    /**
+     * 用于创建框架所需要缓存的对象工厂
+     * @return
+     */
+    Cache.Factory cacheFactory();
 
     /**
      * 注入

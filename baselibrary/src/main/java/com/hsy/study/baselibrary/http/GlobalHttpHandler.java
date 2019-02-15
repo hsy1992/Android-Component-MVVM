@@ -8,6 +8,7 @@ import okhttp3.Response;
 
 /**
  * 处理 Http 请求和响应结果的处理类
+ * 在拦截器中使用
  * @author haosiyuan
  * @date 2019/1/20 8:56 PM
  */

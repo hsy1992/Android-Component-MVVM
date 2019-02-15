@@ -16,7 +16,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+                abiFilters "armeabi-v7a"
+            }
+        }
     }
 
     dataBinding {
@@ -27,6 +32,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
         }
     }
 
@@ -61,5 +71,7 @@ dependencies {
     annotationProcessor rootProject.ext.lifecycle['compiler']
 
     api rootProject.ext.dependencies['butterknife']
+
+    androidTestImplementation rootProject.ext.test['junit']
 
 }

@@ -5,15 +5,22 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hsy.study.baselibrary.base.AppApplication;
+import com.hsy.study.baselibrary.cache.Cache;
+import com.hsy.study.baselibrary.cache.CacheType;
+import com.hsy.study.baselibrary.cache.DefaultCacheType;
 import com.hsy.study.baselibrary.dagger.interfaces.GsonConfiguration;
 import com.hsy.study.baselibrary.lifecycle.ActivityLifecycle;
 import com.hsy.study.baselibrary.lifecycle.FragmentLifecycle;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleHandler;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import dagger.Binds;
 import dagger.Module;
@@ -37,16 +44,16 @@ public abstract class AppModule {
 
     /**
      * 提供gson
-     * @param appApplication
+     * @param application
      * @param configuration
      * @return
      */
     @Singleton
     @Provides
-    static Gson provideGson(AppApplication appApplication, GsonConfiguration configuration) {
+    static Gson provideGson(Application application, @Nullable GsonConfiguration configuration) {
         GsonBuilder builder = new GsonBuilder();
-        if (configuration != null){
-            configuration.configGson(appApplication, builder);
+        if (configuration != null) {
+            configuration.configGson(application, builder);
         }
         return builder.create();
     }
@@ -68,5 +75,34 @@ public abstract class AppModule {
     @Binds
     @Named("ActivityLifecycle")
     abstract Application.ActivityLifecycleCallbacks bindActivityLifecycle(ActivityLifecycle activityLifecycle);
+
+    /**
+     * {@link FragmentLifecycle } 集合
+     * @return
+     */
+    @Singleton
+    @Provides
+    static List<FragmentManager.FragmentLifecycleCallbacks> provideFragmentLifecycles() {
+        return new ArrayList<>();
+    }
+
+    /**
+     * 提供缓存 供使用
+     * @param cacheFactory
+     * @param cacheType
+     * @return
+     */
+    @Singleton
+    @Provides
+    static Cache<String, Object> provideExtras(Cache.Factory cacheFactory, CacheType cacheType) {
+        return cacheFactory.build(cacheType);
+    }
+
+    @Singleton
+    @Provides
+    static CacheType provideDefaultCacheType() {
+        return new DefaultCacheType();
+    }
+
 
 }

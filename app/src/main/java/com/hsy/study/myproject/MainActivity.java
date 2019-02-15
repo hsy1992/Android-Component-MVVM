@@ -4,22 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
-import com.hsy.study.baselibrary.base.AppApplication;
-import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleHandler;
-import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
 import com.hsy.study.baselibrary.utils.logger.Logger;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
+    static {
+        System.loadLibrary("native-lib");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.e("test", stringFromJni());
     }
 
     public void jump(View view) {
@@ -33,4 +35,6 @@ public class MainActivity extends AppCompatActivity {
             Logger.errorInfo("rxjava>>>>>>>>" + Test1.list.get(0).isDisposed());
         }
     }
+
+    public native String stringFromJni();
 }
