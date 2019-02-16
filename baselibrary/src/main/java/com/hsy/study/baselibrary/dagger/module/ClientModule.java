@@ -65,8 +65,8 @@ public abstract class ClientModule {
                                  HttpUrl httpUrl, OkHttpClient client, Gson gson){
 
         builder
-                .baseUrl(httpUrl)
-                .client(client);
+            .baseUrl(httpUrl)
+            .client(client);
 
         //执行自定义配置
         if (configuration != null){

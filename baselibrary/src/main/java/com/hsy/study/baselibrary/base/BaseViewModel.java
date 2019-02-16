@@ -2,7 +2,7 @@ package com.hsy.study.baselibrary.base;
 
 /**
  * @author haosiyuan
- * @date 2019/1/28 3:12 PM
+ * @date 2019/2/16 8:06 PM
  */
-public class AppDelegate {
+public class BaseViewModel {
 }
