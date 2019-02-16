@@ -7,6 +7,7 @@ import com.hsy.study.baselibrary.dagger.interfaces.OkHttpConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.RetrofitConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.RxCacheConfiguration;
 import com.hsy.study.baselibrary.http.GlobalHttpHandler;
+import com.hsy.study.baselibrary.http.log.MultipleBaseUrlInterceptor;
 import com.hsy.study.baselibrary.http.log.RequestInterceptor;
 import com.hsy.study.baselibrary.utils.FileUtils;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dagger.Binds;
 import dagger.Module;
@@ -93,12 +95,14 @@ public abstract class ClientModule {
     @Singleton
     @Provides
     static OkHttpClient provideOkHttp(Application application, OkHttpClient.Builder builder, @Nullable OkHttpConfiguration configuration, final GlobalHttpHandler handler,
-                               Interceptor netWorkInterceptor, @Nullable List<Interceptor> interceptors, ExecutorService executorService){
+                                      Interceptor netWorkInterceptor, @Nullable List<Interceptor> interceptors,
+                                      ExecutorService executorService, @NonNull MultipleBaseUrlInterceptor multipleBaseUrlInterceptor){
 
         builder.
-                connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .addNetworkInterceptor(netWorkInterceptor);
+            connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .addNetworkInterceptor(netWorkInterceptor)
+            .addInterceptor(multipleBaseUrlInterceptor);
 
         //添加拦截器
         if (interceptors != null){
@@ -109,12 +113,7 @@ public abstract class ClientModule {
 
         //添加请求前
         if (handler != null){
-            builder.addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    return chain.proceed(handler.onHttpRequestBefore(chain, chain.request()));
-                }
-            });
+            builder.addInterceptor(chain -> chain.proceed(handler.onHttpRequestBefore(chain, chain.request())));
         }
 
         //设置默认线程池
@@ -150,6 +149,12 @@ public abstract class ClientModule {
 
     @Binds
     abstract Interceptor bindInterceptor(RequestInterceptor interceptor);
+
+    @Singleton
+    @Provides
+    static MultipleBaseUrlInterceptor bindMultipleBaseUrlInterceptor() {
+        return new MultipleBaseUrlInterceptor();
+    }
 
     /**
      * 提供{@link RxCache}

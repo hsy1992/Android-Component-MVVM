@@ -1,6 +1,8 @@
 package com.hsy.study.baselibrary.base.delegate;
 
 
+import com.hsy.study.baselibrary.cache.Cache;
+
 /**
  * 每个{@link android.app.Activity} 实现此接口 提供一些activity需要实现的方法 不是用基类继承的方法降低耦合
  * @author haosiyuan
@@ -25,7 +27,9 @@ public interface IActivity {
     void initData();
 
     /**
-     * 绑定生命周期，防止rxJava内存泄漏
+     * 提供自定义 Cache<String, Object>
+     * @return
      */
-    void bindLifecycle();
+    Cache<String, Object> getCacheData();
+
 }

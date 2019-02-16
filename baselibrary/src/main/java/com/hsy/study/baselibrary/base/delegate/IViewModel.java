@@ -25,4 +25,8 @@ public interface IViewModel {
      */
     void setUpAppComponent(@NonNull AppComponent appComponent);
 
+    /**
+     * 绑定生命周期，防止rxJava内存泄漏
+     */
+    void bindLifecycle();
 }

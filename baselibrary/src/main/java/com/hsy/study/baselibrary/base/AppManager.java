@@ -10,6 +10,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * 管理所有{@link Activity}
  * @author haosiyuan
@@ -48,6 +51,34 @@ public class AppManager {
         return mAppManager;
     }
 
+    /**
+     * 将当前{@link Activity} 赋值给mCurrentActivity 在{@link Activity#onResume()}中调用
+     * @param activity 当前{@link Activity}
+     */
+    public void setCurrentActivity(@NonNull Activity activity) {
+        this.mCurrentActivity = activity;
+    }
+
+    /**
+     * 返回当前前台的 {@code mCurrentActivity} 或者最后一个{@link Activity#onResume()}的{@link Activity}
+     * @return
+     */
+    @Nullable
+    public Activity getCurrentActivity() {
+        return mCurrentActivity;
+    }
+
+    /**
+     * 获取最后一个{@link #addActivity(Activity)} 的{@link Activity}
+     * @return
+     */
+    @Nullable
+    public Activity getTopActivity() {
+        if (mActivityList == null || mActivityList.size() <= 0) {
+            return null;
+        }
+        return mActivityList.get(mActivityList.size() - 1);
+    }
     /**
      * 返回一个存储所有未销毁的 {@link Activity} 的集合
      * @return

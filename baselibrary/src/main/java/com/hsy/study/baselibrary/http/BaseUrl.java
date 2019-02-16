@@ -8,6 +8,12 @@ import okhttp3.HttpUrl;
  * @date 2019/1/20 7:57 PM
  */
 public interface BaseUrl {
+
+    /**
+     * 在head中 baseUrl 用于多BaseUrl
+     */
+    String HTTP_BASE_URL_HEAD = "HTTP_BASE_URL_HEAD";
+
     /**
      * 在调用 Retrofit API 接口之前,使用 Okhttp 或其他方式,请求到正确的 BaseUrl 并通过此方法返回
      *
@@ -15,4 +21,5 @@ public interface BaseUrl {
      */
     @NonNull
     HttpUrl url();
+
 }

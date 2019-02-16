@@ -7,9 +7,11 @@ import android.os.Bundle;
 import com.hsy.study.baselibrary.base.AppManager;
 import com.hsy.study.baselibrary.base.delegate.ActivityDelegate;
 import com.hsy.study.baselibrary.base.delegate.ActivityDelegateImpl;
+import com.hsy.study.baselibrary.base.delegate.IActivity;
 import com.hsy.study.baselibrary.cache.Cache;
 import com.hsy.study.baselibrary.cache.IntelligentCache;
 import com.hsy.study.baselibrary.config.ConfigModule;
+import com.hsy.study.baselibrary.utils.Preconditions;
 
 import java.util.List;
 
@@ -36,19 +38,18 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     @Inject
     Lazy<FragmentManager.FragmentLifecycleCallbacks> mFragmentLifecycle;
     @Inject
-    Lazy<List<FragmentManager.FragmentLifecycleCallbacks>> mFragmentLifecycles;
+    Lazy<List<FragmentManager.FragmentLifecycleCallbacks>> mFragmentLifecycleList;
 
     @Inject
-    public ActivityLifecycle() {
-    }
+    public ActivityLifecycle() {}
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         //加入AppManager统一管理
         AppManager.getInstance().addActivity(activity);
 
-        //从缓存中读取 ActivityDelegate
-        ActivityDelegate activityDelegate = getActivityDelegate();
+        //从缓存中读取 ActivityDelegate 先从Activity中查找缓存ActivityDelegate 如果未缓存则使用默认ActivityDelegateImpl
+        ActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate == null) {
             activityDelegate = new ActivityDelegateImpl(activity);
             mCache.put(IntelligentCache.getKeyOfKeep(ActivityDelegate.ACTIVITY_DELEGATE), activityDelegate);
@@ -61,7 +62,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityStarted(Activity activity) {
-        ActivityDelegate activityDelegate = getActivityDelegate();
+        ActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onStart();
         }
@@ -69,7 +70,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityResumed(Activity activity) {
-        ActivityDelegate activityDelegate = getActivityDelegate();
+        ActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onResume();
         }
@@ -77,7 +78,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityPaused(Activity activity) {
-        ActivityDelegate activityDelegate = getActivityDelegate();
+        ActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onPause();
         }
@@ -85,7 +86,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityStopped(Activity activity) {
-        ActivityDelegate activityDelegate = getActivityDelegate();
+        ActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onStop();
         }
@@ -93,7 +94,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        ActivityDelegate activityDelegate = getActivityDelegate();
+        ActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onSaveInstanceState(outState);
         }
@@ -101,7 +102,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        ActivityDelegate activityDelegate = getActivityDelegate();
+        ActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onDestroy();
         }
@@ -111,8 +112,25 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
      * 获取 缓存中{@link ActivityDelegate}
      * @return
      */
-    private ActivityDelegate getActivityDelegate() {
-        return (ActivityDelegate) mCache.get(IntelligentCache.getKeyOfKeep(ActivityDelegate.ACTIVITY_DELEGATE));
+    private ActivityDelegate getActivityDelegate(Activity activity) {
+        ActivityDelegate activityDelegate = null;
+
+        if (activity instanceof IActivity){
+            Cache<String, Object> cache = getActivityCache((IActivity) activity);
+            activityDelegate = (ActivityDelegate) cache.get(IntelligentCache.getKeyOfKeep(ActivityDelegate.ACTIVITY_DELEGATE));
+        }
+        return activityDelegate;
+    }
+
+    /**
+     * 获取{@link Activity} 中的缓存
+     * @param activity
+     * @return
+     */
+    private Cache<String, Object> getActivityCache(IActivity activity){
+        Cache<String, Object> cache = activity.getCacheData();
+        Preconditions.checkNotNull(cache, "%s cannot be null on Activity", Cache.class.getName());
+        return cache;
     }
 
     /**
@@ -122,7 +140,6 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     private void registerFragmentCallbacks(Activity activity){
 
         if (activity instanceof FragmentActivity) {
-
             //添加注册Fragment 生命周期管理
             ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(mFragmentLifecycle.get(), true);
 
@@ -133,17 +150,16 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
                 List<ConfigModule> modules = (List<ConfigModule>) mCache.get(configKey);
 
                 for (ConfigModule module : modules) {
-                    module.injectFragmentLifecycle(mApplication, mFragmentLifecycles.get());
+                    module.injectFragmentLifecycle(mApplication, mFragmentLifecycleList.get());
                 }
-
                 mCache.remove(configKey);
             }
 
             //注册自定义的Fragment生命周期
-            for (FragmentManager.FragmentLifecycleCallbacks fragmentLifecycle : mFragmentLifecycles.get()) {
+            for (FragmentManager.FragmentLifecycleCallbacks fragmentLifecycle : mFragmentLifecycleList.get()) {
                 ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentLifecycle, true);
             }
         }
-
     }
+
 }

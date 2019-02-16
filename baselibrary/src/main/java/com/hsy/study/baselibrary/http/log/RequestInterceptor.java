@@ -48,9 +48,7 @@ public class RequestInterceptor implements Interceptor {
     int printLevel;
 
     @Inject
-    public RequestInterceptor(){
-
-    }
+    public RequestInterceptor() {}
 
     /**
      * 拦截器

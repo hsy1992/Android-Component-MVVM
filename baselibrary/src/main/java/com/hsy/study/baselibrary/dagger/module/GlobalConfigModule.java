@@ -10,12 +10,16 @@ import com.hsy.study.baselibrary.dagger.interfaces.GsonConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.OkHttpConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.RetrofitConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.RxCacheConfiguration;
+import com.hsy.study.baselibrary.http.BaseUrl;
+import com.hsy.study.baselibrary.http.GlobalHttpHandler;
 import com.hsy.study.baselibrary.http.log.DefaultFormatPrinter;
 import com.hsy.study.baselibrary.http.log.FormatPrinter;
 import com.hsy.study.baselibrary.http.log.RequestInterceptor;
 import com.hsy.study.baselibrary.utils.FileUtils;
+import com.hsy.study.baselibrary.utils.Preconditions;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -27,6 +31,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.internal.Util;
 
 /**
@@ -47,6 +53,10 @@ public class GlobalConfigModule {
     private ExecutorService executorService;
     private FormatPrinter formatPrinter;
     private Cache.Factory cacheFactory;
+    private HttpUrl apiUrl;
+    private BaseUrl baseUrl;
+    private GlobalHttpHandler handler;
+    private List<Interceptor> mInterceptors;
 
     public GlobalConfigModule(Builder builder) {
         this.retrofitConfiguration = builder.retrofitConfiguration;
@@ -58,13 +68,52 @@ public class GlobalConfigModule {
         this.formatPrinter = builder.formatPrinter;
         this.gsonConfiguration = builder.gsonConfiguration;
         this.cacheFactory = builder.cacheFactory;
+        this.apiUrl = builder.apiUrl;
+        this.baseUrl = builder.baseUrl;
+        this.handler = builder.handler;
+        this.mInterceptors = builder.mInterceptors;
+    }
+
+    /**
+     * 提供http 请求url 优先{@link BaseUrl}
+     * @return
+     */
+    @Singleton
+    @Provides
+    HttpUrl provideHttpUrl() {
+        if (baseUrl != null) {
+            HttpUrl httpUrl = baseUrl.url();
+            if (httpUrl != null){
+                return httpUrl;
+            }
+        }
+        Preconditions.checkNotNull(apiUrl,"HttpUrl can not be null");
+        return apiUrl;
+    }
+
+    /**
+     * 提供 {@link GlobalHttpHandler} Http管理类
+     * @return
+     */
+    @Singleton
+    @Provides
+    @Nullable
+    GlobalHttpHandler provideGlobalHttpHandler() {
+        return handler;
     }
 
     @Singleton
     @Provides
     @Nullable
-    OkHttpConfiguration provideOkhttpConfiguration() {
+    OkHttpConfiguration provideOkHttpConfiguration() {
         return okhttpConfiguration;
+    }
+
+    @Singleton
+    @Provides
+    @Nullable
+    List<Interceptor> provideHttpInterceptors() {
+        return mInterceptors;
     }
 
     @Singleton
@@ -127,6 +176,9 @@ public class GlobalConfigModule {
 
     public static final class Builder{
 
+        private HttpUrl apiUrl;
+        private BaseUrl baseUrl;
+        private GlobalHttpHandler handler;
         private File cacheFile;
         private RetrofitConfiguration retrofitConfiguration;
         private OkHttpConfiguration okhttpConfiguration;
@@ -134,6 +186,10 @@ public class GlobalConfigModule {
         private GsonConfiguration gsonConfiguration;
         @RequestInterceptor.LogLevel
         private int logLevel;
+        /**
+         * 拦截器
+         */
+        private List<Interceptor> mInterceptors;
         /**
          * 缓存
          */
@@ -190,6 +246,33 @@ public class GlobalConfigModule {
 
         public Builder cacheFactory(Cache.Factory cacheFile){
             this.cacheFactory = cacheFactory;
+            return this;
+        }
+
+        /**
+         * APP 基础url
+         * @param baseUrl
+         * @return
+         */
+        public Builder baseUrl(String baseUrl){
+            Preconditions.checkNotNull(baseUrl,"baseUrl can not be null");
+            this.apiUrl = HttpUrl.parse(baseUrl);
+            return this;
+        }
+
+        public Builder baseUrl(BaseUrl baseUrl){
+            Preconditions.checkNotNull(baseUrl,"baseUrl can not be null");
+            this.baseUrl = baseUrl;
+            return this;
+        }
+
+        /**
+         * Http 拦截器
+         * @param mInterceptors
+         * @return
+         */
+        public Builder httpInterceptors(List<Interceptor> mInterceptors){
+            this.mInterceptors = mInterceptors;
             return this;
         }
 
