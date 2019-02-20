@@ -27,7 +27,6 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class Test1 extends AppCompatActivity {
 
-
     public static List<Disposable> list = new ArrayList<>();
     private Disposable observable;
 
@@ -37,7 +36,6 @@ public class Test1 extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
     }
-
 
     @Override
     protected void onDestroy() {

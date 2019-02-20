@@ -19,11 +19,6 @@ public interface IViewModel {
      */
     ICache<String, Object> provideCache();
 
-    /**
-     * 提供AppComponent给实现类使用
-     * @param appComponent
-     */
-    void setUpAppComponent(@NonNull AppComponent appComponent);
 
     /**
      * 绑定生命周期，防止rxJava内存泄漏

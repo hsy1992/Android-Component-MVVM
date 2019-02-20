@@ -3,6 +3,8 @@ package com.hsy.study.baselibrary.base.delegate;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.hsy.study.baselibrary.utils.CommonUtil;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import butterknife.ButterKnife;
@@ -27,7 +29,10 @@ public class ActivityDelegateImpl implements IActivityDelegate {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
+        iActivity.setUpAppComponent(CommonUtil.getAppComponent(mActivity));
+
         int layoutResId = iActivity.getLayoutId();
+
         if (layoutResId != 0){
             mActivity.setContentView(layoutResId);
             unbinder = ButterKnife.bind(mActivity);

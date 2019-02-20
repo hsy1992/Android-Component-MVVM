@@ -1,7 +1,10 @@
 package com.hsy.study.baselibrary.base.delegate;
 
 
+import android.content.Context;
+
 import com.hsy.study.baselibrary.cache.ICache;
+import com.hsy.study.baselibrary.dagger.component.AppComponent;
 
 import androidx.annotation.NonNull;
 
@@ -35,6 +38,14 @@ public interface IActivity {
     @NonNull
     ICache<String, Object> getCacheData();
 
+    /**
+     * 提供AppComponent给实现类使用
+     * @param appComponent
+     */
+    void setUpAppComponent(@NonNull AppComponent appComponent);
+
     void showToast(String message);
+
+    Context getContext();
 
 }

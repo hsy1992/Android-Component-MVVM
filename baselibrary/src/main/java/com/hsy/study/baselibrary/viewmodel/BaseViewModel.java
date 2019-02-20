@@ -38,6 +38,14 @@ public abstract class BaseViewModel extends AndroidViewModel implements IViewMod
     }
 
     /**
+     * rxJava 生命周期绑定
+     */
+    @Override
+    public void bindLifecycle() {
+        CommonUtil.getAppComponent(mApplication).observer().bindLifecycle();
+    }
+
+    /**
      * 清除
      */
     @Override

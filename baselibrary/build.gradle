@@ -66,8 +66,8 @@ dependencies {
     annotationProcessor rootProject.ext.room['compiler']
     implementation rootProject.ext.room['runtime']
 
-    implementation rootProject.ext.lifecycle['runtime']
-    implementation rootProject.ext.lifecycle['extensions']
+    api rootProject.ext.lifecycle['runtime']
+    api rootProject.ext.lifecycle['extensions']
     annotationProcessor rootProject.ext.lifecycle['compiler']
 
     api rootProject.ext.dependencies['butterknife']
