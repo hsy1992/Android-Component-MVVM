@@ -1,6 +1,6 @@
 package com.hsy.study.baselibrary.http.log;
 
-import com.hsy.study.baselibrary.http.BaseUrl;
+import com.hsy.study.baselibrary.http.IBaseUrl;
 import com.hsy.study.baselibrary.utils.Preconditions;
 
 import java.io.IOException;
@@ -25,8 +25,8 @@ public class MultipleBaseUrlInterceptor implements Interceptor {
         Headers headers = request.headers();
 
         //找出header 中的baseUrl
-        if (headers.names().contains(BaseUrl.HTTP_BASE_URL_HEAD)) {
-            String baseUrl = headers.get(BaseUrl.HTTP_BASE_URL_HEAD);
+        if (headers.names().contains(IBaseUrl.HTTP_BASE_URL_HEAD)) {
+            String baseUrl = headers.get(IBaseUrl.HTTP_BASE_URL_HEAD);
             Preconditions.checkNotNull(baseUrl,"Header BaseUrl can not be null");
             request.newBuilder().url(baseUrl);
         }

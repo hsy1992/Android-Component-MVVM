@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
  * @author haosiyuan
  * @date 2019/2/15 4:18 PM
  */
-public interface AppLifecycle {
+public interface IAppLifecycle {
 
     /**
      * 执行第一个声明周期

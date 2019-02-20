@@ -4,11 +4,10 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.hsy.study.baselibrary.base.AppApplication;
-import com.hsy.study.baselibrary.cache.Cache;
-import com.hsy.study.baselibrary.cache.CacheType;
+import com.hsy.study.baselibrary.cache.ICache;
+import com.hsy.study.baselibrary.cache.ICacheType;
 import com.hsy.study.baselibrary.cache.DefaultCacheType;
-import com.hsy.study.baselibrary.dagger.interfaces.GsonConfiguration;
+import com.hsy.study.baselibrary.dagger.interfaces.IGsonConfiguration;
 import com.hsy.study.baselibrary.lifecycle.ActivityLifecycle;
 import com.hsy.study.baselibrary.lifecycle.FragmentLifecycle;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleHandler;
@@ -50,7 +49,7 @@ public abstract class AppModule {
      */
     @Singleton
     @Provides
-    static Gson provideGson(Application application, @Nullable GsonConfiguration configuration) {
+    static Gson provideGson(Application application, @Nullable IGsonConfiguration configuration) {
         GsonBuilder builder = new GsonBuilder();
         if (configuration != null) {
             configuration.configGson(application, builder);
@@ -64,7 +63,6 @@ public abstract class AppModule {
      * @return
      */
     @Binds
-    @Named("FragmentLifecycle")
     abstract FragmentManager.FragmentLifecycleCallbacks bindFragmentLifecycle(FragmentLifecycle fragmentLifecycle);
 
     /**
@@ -82,7 +80,7 @@ public abstract class AppModule {
      */
     @Singleton
     @Provides
-    static List<FragmentManager.FragmentLifecycleCallbacks> provideFragmentLifecycles() {
+    static List<FragmentManager.FragmentLifecycleCallbacks> provideFragmentLifecycleList() {
         return new ArrayList<>();
     }
 
@@ -94,13 +92,13 @@ public abstract class AppModule {
      */
     @Singleton
     @Provides
-    static Cache<String, Object> provideExtras(Cache.Factory cacheFactory, CacheType cacheType) {
+    static ICache<String, Object> provideExtras(ICache.Factory cacheFactory, ICacheType cacheType) {
         return cacheFactory.build(cacheType);
     }
 
     @Singleton
     @Provides
-    static CacheType provideDefaultCacheType() {
+    static ICacheType provideDefaultCacheType() {
         return new DefaultCacheType();
     }
 

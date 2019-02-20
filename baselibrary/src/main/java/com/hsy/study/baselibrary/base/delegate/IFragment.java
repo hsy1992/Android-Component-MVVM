@@ -1,7 +1,7 @@
 package com.hsy.study.baselibrary.base.delegate;
 
 
-import com.hsy.study.baselibrary.cache.Cache;
+import com.hsy.study.baselibrary.cache.ICache;
 
 import androidx.annotation.Nullable;
 
@@ -38,5 +38,5 @@ public interface IFragment {
      * 获取自定义 Cache<String, Object>
      * @return
      */
-    Cache<String, Object> getCacheData();
+    ICache<String, Object> getCacheData();
 }

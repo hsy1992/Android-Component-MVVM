@@ -2,21 +2,22 @@ package com.hsy.study.baselibrary.dagger.module;
 
 import android.app.Application;
 
-import com.hsy.study.baselibrary.cache.Cache;
-import com.hsy.study.baselibrary.cache.CacheType;
+import com.hsy.study.baselibrary.cache.ICache;
 import com.hsy.study.baselibrary.cache.DefaultCacheType;
 import com.hsy.study.baselibrary.cache.IntelligentCache;
-import com.hsy.study.baselibrary.dagger.interfaces.GsonConfiguration;
-import com.hsy.study.baselibrary.dagger.interfaces.OkHttpConfiguration;
-import com.hsy.study.baselibrary.dagger.interfaces.RetrofitConfiguration;
-import com.hsy.study.baselibrary.dagger.interfaces.RxCacheConfiguration;
-import com.hsy.study.baselibrary.http.BaseUrl;
-import com.hsy.study.baselibrary.http.GlobalHttpHandler;
+import com.hsy.study.baselibrary.dagger.interfaces.IGsonConfiguration;
+import com.hsy.study.baselibrary.dagger.interfaces.IOkHttpConfiguration;
+import com.hsy.study.baselibrary.dagger.interfaces.IRetrofitConfiguration;
+import com.hsy.study.baselibrary.dagger.interfaces.IRxCacheConfiguration;
+import com.hsy.study.baselibrary.http.IBaseUrl;
+import com.hsy.study.baselibrary.http.IGlobalHttpHandler;
 import com.hsy.study.baselibrary.http.log.DefaultFormatPrinter;
-import com.hsy.study.baselibrary.http.log.FormatPrinter;
+import com.hsy.study.baselibrary.http.log.IFormatPrinter;
 import com.hsy.study.baselibrary.http.log.RequestInterceptor;
 import com.hsy.study.baselibrary.utils.FileUtils;
 import com.hsy.study.baselibrary.utils.Preconditions;
+import com.hsy.study.baselibrary.utils.toast.IToastConfiguration;
+import com.hsy.study.baselibrary.utils.toast.SystemToast;
 
 import java.io.File;
 import java.util.List;
@@ -27,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dagger.Module;
 import dagger.Provides;
@@ -43,20 +43,21 @@ import okhttp3.internal.Util;
 @Module
 public class GlobalConfigModule {
 
-    private RetrofitConfiguration retrofitConfiguration;
-    private OkHttpConfiguration okhttpConfiguration;
-    private RxCacheConfiguration rxCacheConfiguration;
-    private GsonConfiguration gsonConfiguration;
+    private IRetrofitConfiguration retrofitConfiguration;
+    private IOkHttpConfiguration okhttpConfiguration;
+    private IRxCacheConfiguration rxCacheConfiguration;
+    private IGsonConfiguration gsonConfiguration;
     private File cacheFile;
     @RequestInterceptor.LogLevel
     private int logLevel;
     private ExecutorService executorService;
-    private FormatPrinter formatPrinter;
-    private Cache.Factory cacheFactory;
+    private IFormatPrinter formatPrinter;
+    private ICache.Factory cacheFactory;
     private HttpUrl apiUrl;
-    private BaseUrl baseUrl;
-    private GlobalHttpHandler handler;
+    private IBaseUrl baseUrl;
+    private IGlobalHttpHandler handler;
     private List<Interceptor> mInterceptors;
+    private IToastConfiguration iToastConfiguration;
 
     public GlobalConfigModule(Builder builder) {
         this.retrofitConfiguration = builder.retrofitConfiguration;
@@ -72,10 +73,11 @@ public class GlobalConfigModule {
         this.baseUrl = builder.baseUrl;
         this.handler = builder.handler;
         this.mInterceptors = builder.mInterceptors;
+        this.iToastConfiguration = builder.iToastConfiguration;
     }
 
     /**
-     * 提供http 请求url 优先{@link BaseUrl}
+     * 提供http 请求url 优先{@link IBaseUrl}
      * @return
      */
     @Singleton
@@ -92,20 +94,20 @@ public class GlobalConfigModule {
     }
 
     /**
-     * 提供 {@link GlobalHttpHandler} Http管理类
+     * 提供 {@link IGlobalHttpHandler} Http管理类
      * @return
      */
     @Singleton
     @Provides
     @Nullable
-    GlobalHttpHandler provideGlobalHttpHandler() {
+    IGlobalHttpHandler provideGlobalHttpHandler() {
         return handler;
     }
 
     @Singleton
     @Provides
     @Nullable
-    OkHttpConfiguration provideOkHttpConfiguration() {
+    IOkHttpConfiguration provideOkHttpConfiguration() {
         return okhttpConfiguration;
     }
 
@@ -119,21 +121,21 @@ public class GlobalConfigModule {
     @Singleton
     @Provides
     @Nullable
-    RxCacheConfiguration provideRxCacheConfiguration() {
+    IRxCacheConfiguration provideRxCacheConfiguration() {
         return rxCacheConfiguration;
     }
 
     @Singleton
     @Provides
     @Nullable
-    RetrofitConfiguration provideRetrofitConfiguration() {
+    IRetrofitConfiguration provideRetrofitConfiguration() {
         return retrofitConfiguration;
     }
 
     @Singleton
     @Provides
     @Nullable
-    GsonConfiguration provideGsonConfiguration() {
+    IGsonConfiguration provideGsonConfiguration() {
         return gsonConfiguration;
     }
 
@@ -152,15 +154,25 @@ public class GlobalConfigModule {
 
     @Singleton
     @Provides
-    FormatPrinter provideFormatPrinter() {
+    IFormatPrinter provideFormatPrinter() {
         return formatPrinter == null ? new DefaultFormatPrinter() : formatPrinter;
     }
 
     @Singleton
     @Provides
-    Cache.Factory provideCacheFactory(Application application) {
+    ICache.Factory provideCacheFactory(Application application) {
         return cacheFactory == null ? type ->
                 new IntelligentCache(new DefaultCacheType().calculateCacheSize(application)) : null;
+    }
+
+    /**
+     * 提示
+     * @return
+     */
+    @Singleton
+    @Provides
+    IToastConfiguration provideToastConfiguration() {
+        return iToastConfiguration == null ? new SystemToast() : iToastConfiguration;
     }
 
     /**
@@ -177,15 +189,16 @@ public class GlobalConfigModule {
     public static final class Builder{
 
         private HttpUrl apiUrl;
-        private BaseUrl baseUrl;
-        private GlobalHttpHandler handler;
+        private IBaseUrl baseUrl;
+        private IGlobalHttpHandler handler;
         private File cacheFile;
-        private RetrofitConfiguration retrofitConfiguration;
-        private OkHttpConfiguration okhttpConfiguration;
-        private RxCacheConfiguration rxCacheConfiguration;
-        private GsonConfiguration gsonConfiguration;
+        private IRetrofitConfiguration retrofitConfiguration;
+        private IOkHttpConfiguration okhttpConfiguration;
+        private IRxCacheConfiguration rxCacheConfiguration;
+        private IGsonConfiguration gsonConfiguration;
         @RequestInterceptor.LogLevel
         private int logLevel;
+        private IToastConfiguration iToastConfiguration;
         /**
          * 拦截器
          */
@@ -193,33 +206,33 @@ public class GlobalConfigModule {
         /**
          * 缓存
          */
-        private Cache.Factory cacheFactory;
+        private ICache.Factory cacheFactory;
         /**
          * 请求打印
          */
-        private FormatPrinter formatPrinter;
+        private IFormatPrinter formatPrinter;
         /**
          * 线程池
          */
         private ExecutorService executorService;
 
 
-        public Builder retrofitConfiguration(RetrofitConfiguration retrofitConfiguration){
+        public Builder retrofitConfiguration(IRetrofitConfiguration retrofitConfiguration){
             this.retrofitConfiguration = retrofitConfiguration;
             return this;
         }
 
-        public Builder okhttpConfiguration(OkHttpConfiguration okhttpConfiguration){
+        public Builder okhttpConfiguration(IOkHttpConfiguration okhttpConfiguration){
             this.okhttpConfiguration = okhttpConfiguration;
             return this;
         }
 
-        public Builder rxCacheConfiguration(RxCacheConfiguration rxCacheConfiguration){
+        public Builder rxCacheConfiguration(IRxCacheConfiguration rxCacheConfiguration){
             this.rxCacheConfiguration = rxCacheConfiguration;
             return this;
         }
 
-        public Builder gsonConfiguration(GsonConfiguration gsonConfiguration){
+        public Builder gsonConfiguration(IGsonConfiguration gsonConfiguration){
             this.gsonConfiguration = gsonConfiguration;
             return this;
         }
@@ -234,7 +247,7 @@ public class GlobalConfigModule {
             return this;
         }
 
-        public Builder formatPrinter(FormatPrinter formatPrinter){
+        public Builder formatPrinter(IFormatPrinter formatPrinter){
             this.formatPrinter = formatPrinter;
             return this;
         }
@@ -244,7 +257,7 @@ public class GlobalConfigModule {
             return this;
         }
 
-        public Builder cacheFactory(Cache.Factory cacheFile){
+        public Builder cacheFactory(ICache.Factory cacheFile){
             this.cacheFactory = cacheFactory;
             return this;
         }
@@ -260,7 +273,7 @@ public class GlobalConfigModule {
             return this;
         }
 
-        public Builder baseUrl(BaseUrl baseUrl){
+        public Builder baseUrl(IBaseUrl baseUrl){
             Preconditions.checkNotNull(baseUrl,"baseUrl can not be null");
             this.baseUrl = baseUrl;
             return this;
@@ -273,6 +286,15 @@ public class GlobalConfigModule {
          */
         public Builder httpInterceptors(List<Interceptor> mInterceptors){
             this.mInterceptors = mInterceptors;
+            return this;
+        }
+
+        /**
+         * 提示
+         * @return
+         */
+        public Builder toastConfiguration(IToastConfiguration toastConfiguration){
+            this.iToastConfiguration = toastConfiguration;
             return this;
         }
 

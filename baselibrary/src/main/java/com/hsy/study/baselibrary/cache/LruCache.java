@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
  * @author haosiyuan
  * @date 2019/2/11 5:15 PM
  */
-public class LruCache<K, V> implements Cache<K, V>{
+public class LruCache<K, V> implements ICache<K, V> {
 
     private final LinkedHashMap<K, V> cache = new LinkedHashMap<>(100, 0.75f,true);
     private final int initialMaxSize;

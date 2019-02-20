@@ -24,7 +24,6 @@ public class AppManager {
 
     private static volatile AppManager mAppManager;
 
-    private Application mApplication;
     /**
      * 管理所有{@link Activity} 集合
      */
@@ -253,4 +252,12 @@ public class AppManager {
         System.exit(0);
     }
 
+    /**
+     * 释放资源
+     */
+    public void release() {
+        mActivityList.clear();
+        mActivityList = null;
+        mCurrentActivity = null;
+    }
 }

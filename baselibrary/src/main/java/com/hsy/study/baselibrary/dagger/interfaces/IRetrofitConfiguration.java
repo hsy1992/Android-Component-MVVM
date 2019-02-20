@@ -10,7 +10,7 @@ import retrofit2.Retrofit;
  * @author haosiyuan
  * @date 2019/1/20 8:32 PM
  */
-public interface RetrofitConfiguration {
+public interface IRetrofitConfiguration {
 
     /**
      * 传入自定义retrofit配置

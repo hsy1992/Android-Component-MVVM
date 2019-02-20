@@ -51,8 +51,14 @@ ext{
 
     test = [
             junit    : "junit:junit:4.12",
+            Mockito  : "org.mockito:mockito-core:2.8.9",
             espresso : "com.android.support.test.espresso:espresso-core:3.0.2",
             runner   : "com.android.support.test:runner:1.0.2",
+            powermock_module_junit : "org.powermock:powermock-module-junit4:1.7.3",
+            powermock_module_junit4_rule : "org.powermock:powermock-module-junit4-rule:1.7.3",
+            powermock_api_mockito2 : "org.powermock:powermock-api-mockito2:1.7.3",
+            powermock_classloading_xstream : "org.powermock:powermock-classloading-xstream:1.7.3",
+            robolectric : "org.robolectric:robolectric:4.2",
     ]
 
     glide = [

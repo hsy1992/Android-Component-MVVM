@@ -10,7 +10,7 @@ import io.reactivex.Observable;
  * @author haosiyuan
  * @date 2019/2/10 7:17 PM
  */
-public interface LifecycleProvide<E> {
+public interface ILifecycleProvide<E> {
 
     /**
      * 绑定的生命周期

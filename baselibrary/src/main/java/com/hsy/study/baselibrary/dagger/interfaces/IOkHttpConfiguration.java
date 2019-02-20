@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient;
  * @author haosiyuan
  * @date 2019/1/20 8:32 PM
  */
-public interface OkHttpConfiguration {
+public interface IOkHttpConfiguration {
 
     /**
      * 实现自定义 OkHttp配置

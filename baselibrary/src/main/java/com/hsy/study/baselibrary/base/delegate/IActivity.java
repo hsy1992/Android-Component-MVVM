@@ -1,7 +1,9 @@
 package com.hsy.study.baselibrary.base.delegate;
 
 
-import com.hsy.study.baselibrary.cache.Cache;
+import com.hsy.study.baselibrary.cache.ICache;
+
+import androidx.annotation.NonNull;
 
 /**
  * 每个{@link android.app.Activity} 实现此接口 提供一些activity需要实现的方法 不是用基类继承的方法降低耦合
@@ -30,6 +32,9 @@ public interface IActivity {
      * 提供自定义 Cache<String, Object>
      * @return
      */
-    Cache<String, Object> getCacheData();
+    @NonNull
+    ICache<String, Object> getCacheData();
+
+    void showToast(String message);
 
 }

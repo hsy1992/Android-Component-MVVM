@@ -8,7 +8,7 @@ import android.content.Context;
  * @author haosiyuan
  * @date 2019/2/11 4:22 PM
  */
-public class DefaultCacheType implements CacheType{
+public class DefaultCacheType implements ICacheType {
 
     private static final int MAX_SIZE = 100;
     private static final float MAX_SIZE_MULTIPLIER = 0.002f;

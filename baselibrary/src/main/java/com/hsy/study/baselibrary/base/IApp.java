@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
  * @author haosiyuan
  * @date 2019/2/16 8:34 PM
  */
-public interface App {
+public interface IApp {
     @NonNull
     AppComponent getAppComponent();
 }

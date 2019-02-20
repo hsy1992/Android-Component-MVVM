@@ -11,7 +11,7 @@ import okhttp3.Request;
  * @author haosiyuan
  * @date 2019/1/27 9:50 AM
  */
-public interface FormatPrinter {
+public interface IFormatPrinter {
 
     /**
      * 打印网络请求信息, 当网络请求时 {{@link okhttp3.RequestBody}} 可以解析的情况

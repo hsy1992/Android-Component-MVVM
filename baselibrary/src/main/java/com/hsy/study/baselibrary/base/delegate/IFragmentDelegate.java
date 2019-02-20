@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
  * @author haosiyuan
  * @date 2019/2/14 1:45 PM
  */
-public interface FragmentDelegate {
+public interface IFragmentDelegate {
 
     String FRAGMENT_DELEGATE = "FRAGMENT_DELEGATE";
 

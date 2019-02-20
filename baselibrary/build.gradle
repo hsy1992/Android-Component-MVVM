@@ -73,5 +73,12 @@ dependencies {
     api rootProject.ext.dependencies['butterknife']
 
     androidTestImplementation rootProject.ext.test['junit']
+    testImplementation rootProject.ext.test['junit']
+    testImplementation rootProject.ext.test['Mockito']
+    testImplementation rootProject.ext.test['powermock_module_junit']
+    testImplementation rootProject.ext.test['powermock_module_junit4_rule']
+    testImplementation rootProject.ext.test['powermock_api_mockito2']
+    testImplementation rootProject.ext.test['powermock_classloading_xstream']
+    testImplementation rootProject.ext.test['robolectric']
 
 }

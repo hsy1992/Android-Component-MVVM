@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
  * @author haosiyuan
  * @date 2019/2/14 1:38 PM
  */
-public interface ActivityDelegate {
+public interface IActivityDelegate {
 
     String ACTIVITY_DELEGATE = "ACTIVITY_DELEGATE";
 

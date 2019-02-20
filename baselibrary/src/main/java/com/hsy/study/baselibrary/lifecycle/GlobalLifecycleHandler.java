@@ -5,7 +5,6 @@ import com.hsy.study.baselibrary.utils.logger.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
@@ -18,7 +17,7 @@ import io.reactivex.subjects.BehaviorSubject;
  * @date 2019/1/28 3:46 PM
  */
 @Singleton
-public class GlobalLifecycleHandler implements LifecycleObserver, LifecycleProvide<Lifecycle.Event> {
+public class GlobalLifecycleHandler implements LifecycleObserver, ILifecycleProvide<Lifecycle.Event> {
 
     private final BehaviorSubject<Lifecycle.Event> mLifecycleSubject = BehaviorSubject.create();
 

@@ -1,6 +1,6 @@
 package com.hsy.study.baselibrary.http.log;
 
-import com.hsy.study.baselibrary.http.GlobalHttpHandler;
+import com.hsy.study.baselibrary.http.IGlobalHttpHandler;
 import com.hsy.study.baselibrary.utils.CharacterHandler;
 import com.hsy.study.baselibrary.utils.MediaTypeUtils;
 import com.hsy.study.baselibrary.utils.UrlEncoderUtils;
@@ -37,12 +37,12 @@ import okio.BufferedSource;
 public class RequestInterceptor implements Interceptor {
 
     @Inject
-    GlobalHttpHandler mHandler;
+    IGlobalHttpHandler mHandler;
     /**
      * 打印处理
      */
     @Inject
-    FormatPrinter formatPrinter;
+    IFormatPrinter formatPrinter;
     @Inject
     @LogLevel
     int printLevel;

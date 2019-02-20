@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
-import com.hsy.study.baselibrary.config.ConfigModule;
+import com.hsy.study.baselibrary.config.IConfigModule;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AndroidManifest 解析解析其中{@link com.hsy.study.baselibrary.config.ConfigModule}
+ * AndroidManifest 解析解析其中{@link IConfigModule}
  * @author haosiyuan
  * @date 2019/2/16 8:08 PM
  */
@@ -23,8 +23,8 @@ public class ManifestParser {
         this.mContext = context;
     }
 
-    public List<ConfigModule> parse() {
-        List<ConfigModule> configModuleList = new ArrayList<>();
+    public List<IConfigModule> parse() {
+        List<IConfigModule> configModuleList = new ArrayList<>();
 
         try {
             ApplicationInfo applicationInfo = mContext.getPackageManager().
@@ -44,7 +44,7 @@ public class ManifestParser {
         return configModuleList;
     }
 
-    public static ConfigModule parserModule(String className){
+    public static IConfigModule parserModule(String className){
         Class clazz;
 
         try {
@@ -62,10 +62,10 @@ public class ManifestParser {
             throw new RuntimeException("AndroidManifest parser Exception" + e.getMessage());
         }
 
-        if (!(module instanceof ConfigModule)) {
+        if (!(module instanceof IConfigModule)) {
             throw new RuntimeException("Module is not instanceof ConfigModule");
         }
 
-        return (ConfigModule) module;
+        return (IConfigModule) module;
     }
 }

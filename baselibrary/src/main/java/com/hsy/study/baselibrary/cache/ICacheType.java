@@ -7,7 +7,7 @@ import android.content.Context;
  * @author haosiyuan
  * @date 2019/2/11 4:19 PM
  */
-public interface CacheType {
+public interface ICacheType {
 
     /**
      * 返回框架内需要缓存的模块对应的Id

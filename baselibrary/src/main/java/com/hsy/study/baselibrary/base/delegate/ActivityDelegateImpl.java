@@ -9,11 +9,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * {@link ActivityDelegate} 默认实现类
+ * {@link IActivityDelegate} 默认实现类
  * @author haosiyuan
  * @date 2019/2/14 1:48 PM
  */
-public class ActivityDelegateImpl implements ActivityDelegate {
+public class ActivityDelegateImpl implements IActivityDelegate {
 
     private Activity mActivity;
     private IActivity iActivity;

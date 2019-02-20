@@ -12,7 +12,7 @@ import okhttp3.Response;
  * @author haosiyuan
  * @date 2019/1/20 8:56 PM
  */
-public interface GlobalHttpHandler {
+public interface IGlobalHttpHandler {
 
     /**
      * 先一步拿到 Http请求的结果
@@ -35,7 +35,7 @@ public interface GlobalHttpHandler {
     Request onHttpRequestBefore(@Nullable Interceptor.Chain chain, @NonNull Request request);
 
 
-    GlobalHttpHandler EMPTY = new GlobalHttpHandler() {
+    IGlobalHttpHandler EMPTY = new IGlobalHttpHandler() {
         @NonNull
         @Override
         public Response onHttpResponseResult(@Nullable String result, @Nullable Interceptor.Chain chain, @NonNull Response response) {

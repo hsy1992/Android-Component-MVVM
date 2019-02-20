@@ -5,7 +5,7 @@ import android.content.Context;
 import android.app.Activity;
 import androidx.fragment.app.Fragment;
 
-import com.hsy.study.baselibrary.base.delegate.AppLifecycle;
+import com.hsy.study.baselibrary.base.delegate.IAppLifecycle;
 import com.hsy.study.baselibrary.dagger.module.GlobalConfigModule;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentManager;
  * @author haosiyuan
  * @date 2019/2/15 4:14 PM
  */
-public interface ConfigModule {
+public interface IConfigModule {
     /**
      * 使用 {@link GlobalConfigModule.Builder} 给框架配置一些配置参数
      *
@@ -28,12 +28,12 @@ public interface ConfigModule {
     void applyOptions(@NonNull Context context, @NonNull GlobalConfigModule.Builder builder);
 
     /**
-     * 使用 {@link AppLifecycle} 在 {@link Application} 的生命周期中注入一些操作
+     * 使用 {@link IAppLifecycle} 在 {@link Application} 的生命周期中注入一些操作
      *
      * @param context    {@link Context}
      * @param lifecycle {@link Application} 的生命周期容器, 可向框架中添加多个 {@link Application} 的生命周期类
      */
-    void injectAppLifecycle(@NonNull Context context, @NonNull List<AppLifecycle> lifecycle);
+    void injectAppLifecycle(@NonNull Context context, @NonNull List<IAppLifecycle> lifecycle);
 
     /**
      * 使用 {@link Application.ActivityLifecycleCallbacks} 在 {@link Activity} 的生命周期中注入一些操作

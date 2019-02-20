@@ -3,16 +3,15 @@ package com.hsy.study.baselibrary.dagger.module;
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.hsy.study.baselibrary.dagger.interfaces.OkHttpConfiguration;
-import com.hsy.study.baselibrary.dagger.interfaces.RetrofitConfiguration;
-import com.hsy.study.baselibrary.dagger.interfaces.RxCacheConfiguration;
-import com.hsy.study.baselibrary.http.GlobalHttpHandler;
+import com.hsy.study.baselibrary.dagger.interfaces.IOkHttpConfiguration;
+import com.hsy.study.baselibrary.dagger.interfaces.IRetrofitConfiguration;
+import com.hsy.study.baselibrary.dagger.interfaces.IRxCacheConfiguration;
+import com.hsy.study.baselibrary.http.IGlobalHttpHandler;
 import com.hsy.study.baselibrary.http.log.MultipleBaseUrlInterceptor;
 import com.hsy.study.baselibrary.http.log.RequestInterceptor;
 import com.hsy.study.baselibrary.utils.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +30,6 @@ import okhttp3.Dispatcher;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -53,7 +51,7 @@ public abstract class ClientModule {
      * 提供Retrofit
      * @param application       {@link Application}
      * @param builder           {@link Retrofit.Builder}
-     * @param configuration     {@link RetrofitConfiguration}
+     * @param configuration     {@link IRetrofitConfiguration}
      * @param httpUrl           {@link HttpUrl}
      * @param client            {@link OkHttpClient}
      * @param gson              {@link Gson}
@@ -61,7 +59,7 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    static Retrofit.Builder provideRetrofit(Application application, Retrofit.Builder builder, @Nullable RetrofitConfiguration configuration,
+    static Retrofit.Builder provideRetrofit(Application application, Retrofit.Builder builder, @Nullable IRetrofitConfiguration configuration,
                                  HttpUrl httpUrl, OkHttpClient client, Gson gson){
 
         builder
@@ -94,7 +92,7 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    static OkHttpClient provideOkHttp(Application application, OkHttpClient.Builder builder, @Nullable OkHttpConfiguration configuration, final GlobalHttpHandler handler,
+    static OkHttpClient provideOkHttp(Application application, OkHttpClient.Builder builder, @Nullable IOkHttpConfiguration configuration, final IGlobalHttpHandler handler,
                                       Interceptor netWorkInterceptor, @Nullable List<Interceptor> interceptors,
                                       ExecutorService executorService, @NonNull MultipleBaseUrlInterceptor multipleBaseUrlInterceptor){
 
@@ -162,7 +160,7 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    static RxCache provideRxCache(Application application, @Nullable RxCacheConfiguration configuration,
+    static RxCache provideRxCache(Application application, @Nullable IRxCacheConfiguration configuration,
                            @Named("RxCacheDirectory") File cacheDirectory, Gson gson){
         RxCache.Builder builder = new RxCache.Builder();
         RxCache rxCache = null;

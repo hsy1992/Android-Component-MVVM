@@ -1,28 +1,14 @@
 package com.hsy.study.myproject;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
+import com.hsy.study.baselibrary.base.BaseActivity;
 import com.hsy.study.baselibrary.utils.logger.Logger;
 
 
-public class MainActivity extends AppCompatActivity {
-
-
-    static {
-        System.loadLibrary("native-lib");
-    }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Log.e("test", stringFromJni());
-    }
+public class MainActivity extends BaseActivity {
 
     public void jump(View view) {
         startActivity(new Intent(this, Test1.class));
@@ -36,5 +22,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public native String stringFromJni();
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void initView() {
+        showToast("initView");
+    }
+
+    @Override
+    public void initData() {
+
+    }
 }

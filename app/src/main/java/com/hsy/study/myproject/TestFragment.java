@@ -20,7 +20,6 @@ public class TestFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getLifecycle().addObserver(AppApplication.getmAppComponent().observer());
         return inflater.inflate(R.layout.fragment, null);
     }
 

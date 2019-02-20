@@ -1,6 +1,7 @@
 package com.hsy.study.baselibrary.cache;
 
 import com.hsy.study.baselibrary.utils.Preconditions;
+import com.hsy.study.baselibrary.utils.logger.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ import androidx.annotation.Nullable;
  * @author haosiyuan
  * @date 2019/2/12 10:13 AM
  */
-public class IntelligentCache<V> implements Cache<String, V>{
+public class IntelligentCache<V> implements ICache<String, V> {
 
     /**
      * 可以永久存储的存储容器
@@ -26,7 +27,7 @@ public class IntelligentCache<V> implements Cache<String, V>{
     /**
      * 达到最大容量时根据LRU算法抛弃不合规的存储容器
      */
-    private final Cache<String, V> mCache;
+    private final ICache<String, V> mCache;
     /**
      * 永久存储数据头
      */
@@ -52,7 +53,7 @@ public class IntelligentCache<V> implements Cache<String, V>{
     @Override
     public synchronized V get(String key) {
         if (key.startsWith(KEY_KEEP)){
-            mMap.get(key);
+            return mMap.get(key);
         }
         return mCache.get(key);
     }

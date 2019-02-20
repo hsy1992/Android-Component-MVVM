@@ -4,10 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
-import com.hsy.study.baselibrary.base.delegate.FragmentDelegate;
+import com.hsy.study.baselibrary.base.delegate.IFragmentDelegate;
 import com.hsy.study.baselibrary.base.delegate.FragmentDelegateImpl;
 import com.hsy.study.baselibrary.base.delegate.IFragment;
-import com.hsy.study.baselibrary.cache.Cache;
+import com.hsy.study.baselibrary.cache.ICache;
 import com.hsy.study.baselibrary.cache.IntelligentCache;
 import com.hsy.study.baselibrary.utils.Preconditions;
 
@@ -15,13 +15,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 /**
  * {@link FragmentManager.FragmentLifecycleCallbacks} 默认实现类
- * 默认生命周期执行，通过{@link com.hsy.study.baselibrary.base.delegate.FragmentDelegate }进行管理
+ * 默认生命周期执行，通过{@link IFragmentDelegate }进行管理
  * @author haosiyuan
  * @date 2019/2/14 3:25 PM
  */
@@ -29,27 +28,26 @@ import androidx.fragment.app.FragmentManager;
 public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallbacks {
 
     @Inject
-    Cache<String, Object> mCache;
-
-    @Inject
     public FragmentLifecycle() {}
 
     @Override
     public void onFragmentAttached(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull Context context) {
+        if (f instanceof IFragment) {
+            IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+            if (fragmentDelegate == null || !fragmentDelegate.isAdded()) {
 
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
-        if (fragmentDelegate == null || !fragmentDelegate.isAdded()) {
-
-            fragmentDelegate = new FragmentDelegateImpl(f, fm);
-            //加入缓存
-            mCache.put(IntelligentCache.getKeyOfKeep(FragmentDelegate.FRAGMENT_DELEGATE), fragmentDelegate);
+                fragmentDelegate = new FragmentDelegateImpl(f, fm);
+                ICache<String, Object> cache = getCacheFromFragment((IFragment) f);
+                //加入缓存
+                cache.put(IntelligentCache.getKeyOfKeep(IFragmentDelegate.FRAGMENT_DELEGATE), fragmentDelegate);
+            }
+            fragmentDelegate.onAttach(context);
         }
-        fragmentDelegate.onAttach(context);
     }
 
     @Override
     public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onCreate(savedInstanceState);
         }
@@ -57,7 +55,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onCreateView(v, savedInstanceState);
         }
@@ -65,7 +63,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentActivityCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onActivityCreate(savedInstanceState);
         }
@@ -73,7 +71,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentStarted(FragmentManager fm, Fragment f) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onStart();
         }
@@ -81,7 +79,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentResumed(FragmentManager fm, Fragment f) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onResume();
         }
@@ -89,7 +87,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentPaused(FragmentManager fm, Fragment f) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onPause();
         }
@@ -97,7 +95,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentStopped(FragmentManager fm, Fragment f) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onStop();
         }
@@ -105,7 +103,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onSaveInstanceState(outState);
         }
@@ -113,7 +111,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onDestroyView();
         }
@@ -121,7 +119,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onDestroy();
         }
@@ -129,26 +127,26 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentDetached(FragmentManager fm, Fragment f) {
-        FragmentDelegate fragmentDelegate = getFragmentDelegate(f);
+        IFragmentDelegate fragmentDelegate = getFragmentDelegate(f);
         if (fragmentDelegate != null) {
             fragmentDelegate.onDetach();
         }
     }
 
-    private FragmentDelegate getFragmentDelegate(Fragment fragment) {
-        FragmentDelegate fragmentDelegate = null;
+    private IFragmentDelegate getFragmentDelegate(Fragment fragment) {
+        IFragmentDelegate fragmentDelegate = null;
 
         if (fragment instanceof IFragment){
-            Cache<String, Object> cache = getCacheFromFragment((IFragment) fragment);
-            fragmentDelegate = (FragmentDelegate) cache.get(IntelligentCache.getKeyOfKeep(FragmentDelegate.FRAGMENT_DELEGATE));
+            ICache<String, Object> cache = getCacheFromFragment((IFragment) fragment);
+            fragmentDelegate = (IFragmentDelegate) cache.get(IntelligentCache.getKeyOfKeep(IFragmentDelegate.FRAGMENT_DELEGATE));
         }
         return fragmentDelegate;
     }
 
     @NonNull
-    private Cache<String, Object> getCacheFromFragment(IFragment fragment) {
-        Cache<String, Object> cache = fragment.getCacheData();
-        Preconditions.checkNotNull(cache, "%s cannot be null on Fragment", Cache.class.getName());
+    private ICache<String, Object> getCacheFromFragment(IFragment fragment) {
+        ICache<String, Object> cache = fragment.getCacheData();
+        Preconditions.checkNotNull(cache, "%s cannot be null on Fragment", ICache.class.getName());
         return cache;
     }
 }

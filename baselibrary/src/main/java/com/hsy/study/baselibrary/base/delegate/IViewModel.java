@@ -1,6 +1,6 @@
 package com.hsy.study.baselibrary.base.delegate;
 
-import com.hsy.study.baselibrary.cache.Cache;
+import com.hsy.study.baselibrary.cache.ICache;
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
 
 import androidx.annotation.NonNull;
@@ -17,7 +17,7 @@ public interface IViewModel {
      * 提供给viewModel 缓存容器
      * @return
      */
-    Cache<String, Object> provideCache();
+    ICache<String, Object> provideCache();
 
     /**
      * 提供AppComponent给实现类使用

@@ -7,7 +7,7 @@ import okhttp3.HttpUrl;
  * @author haosiyuan
  * @date 2019/1/20 7:57 PM
  */
-public interface BaseUrl {
+public interface IBaseUrl {
 
     /**
      * 在head中 baseUrl 用于多BaseUrl

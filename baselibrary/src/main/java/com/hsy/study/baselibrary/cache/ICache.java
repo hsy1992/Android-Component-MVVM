@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
  * @author haosiyuan
  * @date 2019/2/11 4:11 PM
  */
-public interface Cache<K, V> {
+public interface ICache<K, V> {
 
     interface Factory{
 
@@ -18,10 +18,10 @@ public interface Cache<K, V> {
          * Returns a new cache
          *
          * @param type 框架中需要缓存的模块类型
-         * @return {@link Cache}
+         * @return {@link ICache}
          */
         @NonNull
-        Cache build(CacheType type);
+        ICache build(ICacheType type);
     }
 
     /**

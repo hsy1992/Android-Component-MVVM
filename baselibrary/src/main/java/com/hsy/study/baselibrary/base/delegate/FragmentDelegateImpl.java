@@ -12,11 +12,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * {@link FragmentDelegate} 默认实现类
+ * {@link IFragmentDelegate} 默认实现类
  * @author haosiyuan
  * @date 2019/2/14 2:11 PM
  */
-public class FragmentDelegateImpl implements FragmentDelegate {
+public class FragmentDelegateImpl implements IFragmentDelegate {
 
     private IFragment iFragment;
     private Fragment fragment;

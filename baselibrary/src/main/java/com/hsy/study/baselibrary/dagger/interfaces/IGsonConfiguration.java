@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
  * @author haosiyuan
  * @date 2019/2/11 3:46 PM
  */
-public interface GsonConfiguration {
+public interface IGsonConfiguration {
 
     void configGson(@NonNull Context context, @NonNull GsonBuilder builder);
 }

@@ -1,35 +1,62 @@
 package com.hsy.study.baselibrary.base;
 
 import android.app.Application;
+import android.content.Context;
 
+import com.hsy.study.baselibrary.base.delegate.AppDelegate;
+import com.hsy.study.baselibrary.base.delegate.IAppLifecycle;
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
-import com.hsy.study.baselibrary.dagger.component.DaggerAppComponent;
-import com.hsy.study.baselibrary.dagger.module.GlobalConfigModule;
-import com.hsy.study.baselibrary.http.log.RequestInterceptor;
+import com.hsy.study.baselibrary.utils.Preconditions;
+
+import androidx.annotation.NonNull;
 
 /**
  * @author haosiyuan
  * @date 2019/1/28 3:20 PM
  */
-public class AppApplication extends Application {
+public class AppApplication extends Application implements IApp {
 
-    public static AppComponent mAppComponent;
+    private IAppLifecycle mAppDelegate;
+
+    /**
+     * 这里会在 {@link AppApplication#onCreate} 之前被调用,可以做一些较早的初始化
+     * 常用于 MultiDex 以及插件化框架的初始化
+     *
+     * @param base
+     */
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        if (mAppDelegate == null) {
+            mAppDelegate = new AppDelegate(base);
+        }
+        mAppDelegate.attachBaseContext(base);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mAppComponent = DaggerAppComponent
-                .builder()
-                .application(this)
-                .globalConfigModule(new GlobalConfigModule.Builder()
-                .logLevel(RequestInterceptor.LogLevel.ALL)
-                .build()).build();
-        mAppComponent.inject(this);
+        if (mAppDelegate != null) {
+            mAppDelegate.onCreate(this);
+        }
     }
 
-    public static AppComponent getmAppComponent() {
-        return mAppComponent;
+    /**
+     * 生命周期终止
+     */
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        if (mAppDelegate != null) {
+            mAppDelegate.onTerminate(this);
+        }
     }
 
-
+    @NonNull
+    @Override
+    public AppComponent getAppComponent() {
+        Preconditions.checkNotNull(mAppDelegate, "%s can not be null", AppDelegate.class.getName());
+        Preconditions.checkState(mAppDelegate instanceof IApp, "%s must be implements %s", mAppDelegate.getClass().getName(), IApp.class.getName());
+        return ((IApp)mAppDelegate).getAppComponent();
+    }
 }

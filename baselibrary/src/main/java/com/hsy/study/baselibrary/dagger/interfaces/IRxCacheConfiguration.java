@@ -9,7 +9,7 @@ import io.rx_cache2.internal.RxCache;
  * @author haosiyuan
  * @date 2019/1/27 9:17 AM
  */
-public interface RxCacheConfiguration {
+public interface IRxCacheConfiguration {
 
     /**
      * 自定义配置RxCache

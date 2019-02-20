@@ -36,20 +36,6 @@ public class Test1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        getLifecycle().addObserver(AppApplication.getmAppComponent().observer());
-
-        observable = Observable.interval(1, TimeUnit.SECONDS)
-                .compose(AppApplication.getmAppComponent().observer().bindUntilEvent(Lifecycle.Event.ON_PAUSE))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        Logger.errorInfo("rxjava发射>>>>>>>" + ((Long)o));
-                    }
-                });
-
-        list.add(observable);
     }
 
 

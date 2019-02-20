@@ -17,7 +17,7 @@ import okhttp3.Request;
  * @author haosiyuan
  * @date 2019/1/27 10:06 AM
  */
-public class DefaultFormatPrinter implements FormatPrinter{
+public class DefaultFormatPrinter implements IFormatPrinter {
 
     /**
      * 请求tag
