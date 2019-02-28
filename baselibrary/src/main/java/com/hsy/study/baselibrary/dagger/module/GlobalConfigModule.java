@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dagger.Module;
 import dagger.Provides;
@@ -44,7 +45,7 @@ import okhttp3.internal.Util;
 public class GlobalConfigModule {
 
     private IRetrofitConfiguration retrofitConfiguration;
-    private IOkHttpConfiguration okhttpConfiguration;
+    private IOkHttpConfiguration okHttpConfiguration;
     private IRxCacheConfiguration rxCacheConfiguration;
     private IGsonConfiguration gsonConfiguration;
     private File cacheFile;
@@ -61,7 +62,7 @@ public class GlobalConfigModule {
 
     public GlobalConfigModule(Builder builder) {
         this.retrofitConfiguration = builder.retrofitConfiguration;
-        this.okhttpConfiguration = builder.okhttpConfiguration;
+        this.okHttpConfiguration = builder.okHttpConfiguration;
         this.rxCacheConfiguration = builder.rxCacheConfiguration;
         this.cacheFile = builder.cacheFile;
         this.logLevel = builder.logLevel;
@@ -99,16 +100,16 @@ public class GlobalConfigModule {
      */
     @Singleton
     @Provides
-    @Nullable
+    @NonNull
     IGlobalHttpHandler provideGlobalHttpHandler() {
-        return handler;
+        return handler == null ? IGlobalHttpHandler.EMPTY : handler;
     }
 
     @Singleton
     @Provides
     @Nullable
     IOkHttpConfiguration provideOkHttpConfiguration() {
-        return okhttpConfiguration;
+        return okHttpConfiguration;
     }
 
     @Singleton
@@ -141,7 +142,6 @@ public class GlobalConfigModule {
 
     @Singleton
     @Provides
-    @Nullable
     File provideCacheFile(Application application) {
         return cacheFile == null ? FileUtils.getCacheFile(application) : cacheFile;
     }
@@ -193,7 +193,7 @@ public class GlobalConfigModule {
         private IGlobalHttpHandler handler;
         private File cacheFile;
         private IRetrofitConfiguration retrofitConfiguration;
-        private IOkHttpConfiguration okhttpConfiguration;
+        private IOkHttpConfiguration okHttpConfiguration;
         private IRxCacheConfiguration rxCacheConfiguration;
         private IGsonConfiguration gsonConfiguration;
         @RequestInterceptor.LogLevel
@@ -222,8 +222,8 @@ public class GlobalConfigModule {
             return this;
         }
 
-        public Builder okhttpConfiguration(IOkHttpConfiguration okhttpConfiguration){
-            this.okhttpConfiguration = okhttpConfiguration;
+        public Builder okhttpConfiguration(IOkHttpConfiguration okHttpConfiguration){
+            this.okHttpConfiguration = okHttpConfiguration;
             return this;
         }
 
@@ -297,6 +297,17 @@ public class GlobalConfigModule {
             this.iToastConfiguration = toastConfiguration;
             return this;
         }
+
+        /**
+         * http 全局处理
+         * @param handler
+         * @return
+         */
+        public Builder iGlobalHttpHandler(IGlobalHttpHandler handler){
+            this.handler = handler;
+            return this;
+        }
+
 
         public GlobalConfigModule build() {
             return new GlobalConfigModule(this);

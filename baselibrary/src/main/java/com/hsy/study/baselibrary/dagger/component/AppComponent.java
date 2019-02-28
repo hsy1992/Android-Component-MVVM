@@ -10,6 +10,7 @@ import com.hsy.study.baselibrary.dagger.module.ClientModule;
 import com.hsy.study.baselibrary.dagger.module.GlobalConfigModule;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
 import com.hsy.study.baselibrary.utils.toast.IToastConfiguration;
+import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
 
 import java.util.concurrent.ExecutorService;
 
@@ -26,6 +27,10 @@ import dagger.Component;
 @Component(modules = {ClientModule.class, GlobalConfigModule.class, AppModule.class})
 public interface AppComponent {
 
+    /**
+     * {@link Application}
+     * @return
+     */
     Application application();
 
     /**
@@ -63,6 +68,13 @@ public interface AppComponent {
      * @return
      */
     IToastConfiguration toast();
+
+    /**
+     * 用于管理网络请求层, 以及数据缓存层
+     *
+     * @return {@link IRepositoryManager}
+     */
+    IRepositoryManager repositoryManager();
 
     /**
      * 注入

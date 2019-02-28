@@ -43,14 +43,12 @@ android {
 }
 
 dependencies {
-
     implementation rootProject.ext.networkLibs
     api rootProject.ext.rxJavaLibs
     //glide图片加载库
     annotationProcessor rootProject.ext.glide['glideCompiler']
     api rootProject.ext.glide['glide']
     api rootProject.ext.glide['glideOkhttp']
-
     api rootProject.ext.okhttp['okhttp']
     implementation rootProject.ext.dependencies['autosize']
     api(rootProject.ext.dependencies["rxcache2"]) {
@@ -59,19 +57,14 @@ dependencies {
         exclude module: 'api'
     }
     api rootProject.ext.dependencies['rxcache_jolyglot_gson']
-
     api rootProject.ext.dagger2['dagger2']
     annotationProcessor rootProject.ext.dagger2['dagger2Processor']
-
     annotationProcessor rootProject.ext.room['compiler']
     implementation rootProject.ext.room['runtime']
-
     api rootProject.ext.lifecycle['runtime']
     api rootProject.ext.lifecycle['extensions']
     annotationProcessor rootProject.ext.lifecycle['compiler']
-
     api rootProject.ext.dependencies['butterknife']
-
     androidTestImplementation rootProject.ext.test['junit']
     testImplementation rootProject.ext.test['junit']
     testImplementation rootProject.ext.test['Mockito']
@@ -80,5 +73,4 @@ dependencies {
     testImplementation rootProject.ext.test['powermock_api_mockito2']
     testImplementation rootProject.ext.test['powermock_classloading_xstream']
     testImplementation rootProject.ext.test['robolectric']
-
 }

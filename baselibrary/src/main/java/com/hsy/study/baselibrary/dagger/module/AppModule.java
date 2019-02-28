@@ -12,6 +12,8 @@ import com.hsy.study.baselibrary.lifecycle.ActivityLifecycle;
 import com.hsy.study.baselibrary.lifecycle.FragmentLifecycle;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleHandler;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
+import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
+import com.hsy.study.baselibrary.viewmodel.RepositoryManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,5 +104,7 @@ public abstract class AppModule {
         return new DefaultCacheType();
     }
 
+    @Binds
+    abstract IRepositoryManager bindRepositoryManager(RepositoryManager repositoryManager);
 
 }

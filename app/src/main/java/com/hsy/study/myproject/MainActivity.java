@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity extends BaseActivity<UserViewModel> {
+public class MainActivity extends BaseActivity<UserViewModel> implements UserView{
 
     public void jump(View view) {
         startActivity(new Intent(this, Test1.class));
@@ -54,5 +54,10 @@ public class MainActivity extends BaseActivity<UserViewModel> {
                 .appComponent(appComponent)
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    public void showUser() {
+        showToast("user");
     }
 }

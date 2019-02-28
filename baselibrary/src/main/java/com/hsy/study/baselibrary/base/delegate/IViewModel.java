@@ -1,9 +1,7 @@
 package com.hsy.study.baselibrary.base.delegate;
 
 import com.hsy.study.baselibrary.cache.ICache;
-import com.hsy.study.baselibrary.dagger.component.AppComponent;
-
-import androidx.annotation.NonNull;
+import com.hsy.study.baselibrary.ui.IView;
 
 
 /**
@@ -12,6 +10,12 @@ import androidx.annotation.NonNull;
  * @date 2019/1/28 5:10 PM
  */
 public interface IViewModel {
+
+    /**
+     * 为ViewModel提供 {@link IView}
+     * @param rootView
+     */
+    void setRootView(IView rootView);
 
     /**
      * 提供给viewModel 缓存容器

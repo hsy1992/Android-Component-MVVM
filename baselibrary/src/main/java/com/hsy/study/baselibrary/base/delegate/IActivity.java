@@ -1,8 +1,6 @@
 package com.hsy.study.baselibrary.base.delegate;
 
 
-import android.content.Context;
-
 import com.hsy.study.baselibrary.cache.ICache;
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
 
@@ -44,8 +42,9 @@ public interface IActivity {
      */
     void setUpAppComponent(@NonNull AppComponent appComponent);
 
-    void showToast(String message);
-
-    Context getContext();
+    /**
+     * 为ViewModel 设置 {@link com.hsy.study.baselibrary.ui.IView}
+     */
+    void setIView();
 
 }

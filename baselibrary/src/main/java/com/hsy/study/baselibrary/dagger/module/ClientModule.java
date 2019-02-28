@@ -59,7 +59,7 @@ public abstract class ClientModule {
      */
     @Singleton
     @Provides
-    static Retrofit.Builder provideRetrofit(Application application, Retrofit.Builder builder, @Nullable IRetrofitConfiguration configuration,
+    static Retrofit provideRetrofit(Application application, Retrofit.Builder builder, @Nullable IRetrofitConfiguration configuration,
                                  HttpUrl httpUrl, OkHttpClient client, Gson gson){
 
         builder
@@ -76,7 +76,7 @@ public abstract class ClientModule {
         //使用 Gson
         builder.addConverterFactory(GsonConverterFactory.create(gson));
 
-        return builder;
+        return builder.build();
     }
 
     /**

@@ -13,21 +13,21 @@ public interface IRepositoryManager {
 
     /**
      * 传入对应的 Retrofit service
-     * @param service retrofit class
+     * @param serviceClass retrofit class
      * @param <T> Retrofit service 类型
      * @return
      */
     @NonNull
-    <T> T obtainRetrofitService(@NonNull Class<T> service);
+    <T> T obtainRetrofitService(@NonNull Class<T> serviceClass);
 
     /**
      * 传入对应的 RxCache service
-     * @param cache
+     * @param cacheClass
      * @param <T>
      * @return
      */
     @NonNull
-    <T> T obtainRxCacheService(@NonNull Class<T> cache);
+    <T> T obtainRxCacheService(@NonNull Class<T> cacheClass);
 
     /**
      * 传入对应的 Database Dao

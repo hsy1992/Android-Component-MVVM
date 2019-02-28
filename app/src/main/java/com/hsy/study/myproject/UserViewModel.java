@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
  * @date 2019/2/20 2:32 PM
  */
 @ActivityScope
-public class UserViewModel extends BaseViewModel {
+public class UserViewModel extends BaseViewModel<UserView> {
 
     @Inject
     public UserViewModel(@NonNull Application application) {
@@ -23,5 +23,6 @@ public class UserViewModel extends BaseViewModel {
     }
 
     public void test() {
+        rootView.showUser();
     }
 }
