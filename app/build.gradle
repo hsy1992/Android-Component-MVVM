@@ -39,18 +39,13 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':baselibrary')
-
     annotationProcessor rootProject.ext.dagger2['dagger2Processor']
-
     annotationProcessor rootProject.ext.dependencies['autoValue']
     annotationProcessor rootProject.ext.lifecycle['compiler']
-//    annotationProcessor'com.google.auto.value:auto-value:1.6.3'
-
+    //    annotationProcessor'com.google.auto.value:auto-value:1.6.3'
     annotationProcessor 'com.google.auto.value:auto-value:1.6.3'
     api 'com.google.auto.value:auto-value-annotations:1.6.3'
-
-    implementation "com.squareup.sqldelight:android-driver:1.0.0"
-
+    implementation 'com.squareup.sqldelight:android-driver:1.0.0'
     implementation rootProject.ext.androidXLibs
     testImplementation rootProject.ext.test['junit']
     testImplementation rootProject.ext.test['Mockito']
@@ -59,4 +54,5 @@ dependencies {
     testImplementation rootProject.ext.test['powermock_api_mockito2']
     testImplementation rootProject.ext.test['powermock_classloading_xstream']
     testImplementation rootProject.ext.test['robolectric']
+    implementation project(':networkclientstate')
 }

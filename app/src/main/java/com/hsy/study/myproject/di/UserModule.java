@@ -3,7 +3,9 @@ package com.hsy.study.myproject.di;
 import android.content.Context;
 
 import com.hsy.study.baselibrary.dagger.scope.ActivityScope;
+import com.hsy.study.myproject.MainActivity;
 import com.hsy.study.myproject.User;
+import com.hsy.study.myproject.UserView;
 import com.hsy.study.myproject.UserViewModel;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 
@@ -31,15 +34,14 @@ public abstract class UserModule {
 
     @ActivityScope
     @Provides
-    static RecyclerView.LayoutManager provideLayoutManager(Context context) {
-        return new LinearLayoutManager(context);
+    static RecyclerView.LayoutManager provideLayoutManager(UserView userView) {
+        return new LinearLayoutManager(userView.getContext());
     }
 
     @ActivityScope
     @Provides
-    static UserViewModel provideUserViewModel(Context context) {
-        return ViewModelProviders.of((FragmentActivity) context).get(UserViewModel.class);
+    static UserViewModel provideUserViewModel(UserView userView) {
+        return ViewModelProviders.of((FragmentActivity) userView.getContext()).get(UserViewModel.class);
     }
-
 
 }

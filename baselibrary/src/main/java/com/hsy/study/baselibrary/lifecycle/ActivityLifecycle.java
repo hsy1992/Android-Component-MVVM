@@ -74,6 +74,8 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityResumed(Activity activity) {
+        AppManager.getInstance().setCurrentActivity(activity);
+
         IActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onResume();
@@ -90,6 +92,11 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityStopped(Activity activity) {
+        //将当前前台Activity设为Null
+        if (AppManager.getInstance().getCurrentActivity() == activity) {
+            AppManager.getInstance().setCurrentActivity(null);
+        }
+
         IActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onStop();
@@ -106,6 +113,8 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityDestroyed(Activity activity) {
+        AppManager.getInstance().removeActivity(activity);
+
         IActivityDelegate activityDelegate = getActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onDestroy();

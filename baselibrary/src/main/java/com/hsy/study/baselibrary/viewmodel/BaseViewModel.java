@@ -65,7 +65,6 @@ public abstract class BaseViewModel<V extends IView> extends AndroidViewModel im
             cache = null;
         }
         mApplication = null;
-
     }
 
 }
