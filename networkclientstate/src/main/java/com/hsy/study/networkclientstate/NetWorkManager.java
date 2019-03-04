@@ -83,6 +83,7 @@ public class NetWorkManager {
         @Override
         public void onNetBad() {}
 
+        //TODO 解决网络重载问题
         @Override
         public void onNetChange(NetworkState state) {
             currentSate = state;

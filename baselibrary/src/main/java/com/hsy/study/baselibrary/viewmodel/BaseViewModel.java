@@ -14,12 +14,17 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
 
 /**
  * @author haosiyuan
  * @date 2019/1/28 5:09 PM
  */
-public abstract class BaseViewModel<V extends IView> extends AndroidViewModel implements IViewModel {
+public abstract class BaseViewModel<V extends IView> extends AndroidViewModel implements IViewModel,
+        LifecycleObserver {
 
     protected final String TAG = this.getClass().getSimpleName();
     private ICache<String, Object> cache;
@@ -35,8 +40,13 @@ public abstract class BaseViewModel<V extends IView> extends AndroidViewModel im
     }
 
     @Override
-    public void setRootView(IView rootView) {
-        this.rootView = (V) rootView;
+    public void setRootView(IView iView) {
+        this.rootView = (V) iView;
+        //绑定view的生命周期
+
+        if (rootView != null && rootView instanceof LifecycleOwner) {
+            ((LifecycleOwner)rootView).getLifecycle().addObserver(this);
+        }
     }
 
     @Override
@@ -65,6 +75,11 @@ public abstract class BaseViewModel<V extends IView> extends AndroidViewModel im
             cache = null;
         }
         mApplication = null;
+        rootView = null;
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    void onDestroy() {
+        ((LifecycleOwner)rootView).getLifecycle().removeObserver(this);
+    }
 }
