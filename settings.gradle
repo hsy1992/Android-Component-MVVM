@@ -1,1 +1,1 @@
-include ':app', ':baselibrary', ':loginlibrary', ':networkclientstate'
+include ':app', ':baselibrary', ':loginlibrary', ':networkclientstate', ':permissionlib'

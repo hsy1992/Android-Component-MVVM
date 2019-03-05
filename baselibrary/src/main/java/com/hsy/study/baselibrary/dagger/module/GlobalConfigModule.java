@@ -20,6 +20,7 @@ import com.hsy.study.baselibrary.utils.toast.IToastConfiguration;
 import com.hsy.study.baselibrary.utils.toast.SystemToast;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
@@ -30,6 +31,7 @@ import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.migration.Migration;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.HttpUrl;
@@ -59,6 +61,7 @@ public class GlobalConfigModule {
     private IGlobalHttpHandler handler;
     private List<Interceptor> mInterceptors;
     private IToastConfiguration iToastConfiguration;
+    private List<Migration> migrations;
 
     public GlobalConfigModule(Builder builder) {
         this.retrofitConfiguration = builder.retrofitConfiguration;
@@ -75,6 +78,7 @@ public class GlobalConfigModule {
         this.handler = builder.handler;
         this.mInterceptors = builder.mInterceptors;
         this.iToastConfiguration = builder.iToastConfiguration;
+        this.migrations = builder.migrations;
     }
 
     /**
@@ -186,6 +190,12 @@ public class GlobalConfigModule {
                 new SynchronousQueue<>(), Util.threadFactory("Executor", false)) : executorService;
     }
 
+    @Singleton
+    @Provides
+    List<Migration> provideMMigrations() {
+        return migrations == null ? new ArrayList<>() : migrations;
+    }
+
     public static final class Builder{
 
         private HttpUrl apiUrl;
@@ -215,49 +225,53 @@ public class GlobalConfigModule {
          * 线程池
          */
         private ExecutorService executorService;
+        /**
+         * 数据库版本升级
+         */
+        private List<Migration> migrations;
 
 
-        public Builder retrofitConfiguration(IRetrofitConfiguration retrofitConfiguration){
+        public Builder retrofitConfiguration(IRetrofitConfiguration retrofitConfiguration) {
             this.retrofitConfiguration = retrofitConfiguration;
             return this;
         }
 
-        public Builder okhttpConfiguration(IOkHttpConfiguration okHttpConfiguration){
+        public Builder okhttpConfiguration(IOkHttpConfiguration okHttpConfiguration) {
             this.okHttpConfiguration = okHttpConfiguration;
             return this;
         }
 
-        public Builder rxCacheConfiguration(IRxCacheConfiguration rxCacheConfiguration){
+        public Builder rxCacheConfiguration(IRxCacheConfiguration rxCacheConfiguration) {
             this.rxCacheConfiguration = rxCacheConfiguration;
             return this;
         }
 
-        public Builder gsonConfiguration(IGsonConfiguration gsonConfiguration){
+        public Builder gsonConfiguration(IGsonConfiguration gsonConfiguration) {
             this.gsonConfiguration = gsonConfiguration;
             return this;
         }
 
-        public Builder logLevel(@RequestInterceptor.LogLevel int logLevel){
+        public Builder logLevel(@RequestInterceptor.LogLevel int logLevel) {
             this.logLevel = logLevel;
             return this;
         }
 
-        public Builder executorService(ExecutorService executorService){
+        public Builder executorService(ExecutorService executorService) {
             this.executorService = executorService;
             return this;
         }
 
-        public Builder formatPrinter(IFormatPrinter formatPrinter){
+        public Builder formatPrinter(IFormatPrinter formatPrinter) {
             this.formatPrinter = formatPrinter;
             return this;
         }
 
-        public Builder cacheFile(File cacheFile){
+        public Builder cacheFile(File cacheFile) {
             this.cacheFile = cacheFile;
             return this;
         }
 
-        public Builder cacheFactory(ICache.Factory cacheFile){
+        public Builder cacheFactory(ICache.Factory cacheFile) {
             this.cacheFactory = cacheFactory;
             return this;
         }
@@ -267,13 +281,13 @@ public class GlobalConfigModule {
          * @param baseUrl
          * @return
          */
-        public Builder baseUrl(String baseUrl){
+        public Builder baseUrl(String baseUrl) {
             Preconditions.checkNotNull(baseUrl,"baseUrl can not be null");
             this.apiUrl = HttpUrl.parse(baseUrl);
             return this;
         }
 
-        public Builder baseUrl(IBaseUrl baseUrl){
+        public Builder baseUrl(IBaseUrl baseUrl) {
             Preconditions.checkNotNull(baseUrl,"baseUrl can not be null");
             this.baseUrl = baseUrl;
             return this;
@@ -284,7 +298,7 @@ public class GlobalConfigModule {
          * @param mInterceptors
          * @return
          */
-        public Builder httpInterceptors(List<Interceptor> mInterceptors){
+        public Builder httpInterceptors(List<Interceptor> mInterceptors) {
             this.mInterceptors = mInterceptors;
             return this;
         }
@@ -293,7 +307,7 @@ public class GlobalConfigModule {
          * 提示
          * @return
          */
-        public Builder toastConfiguration(IToastConfiguration toastConfiguration){
+        public Builder toastConfiguration(IToastConfiguration toastConfiguration) {
             this.iToastConfiguration = toastConfiguration;
             return this;
         }
@@ -303,8 +317,17 @@ public class GlobalConfigModule {
          * @param handler
          * @return
          */
-        public Builder iGlobalHttpHandler(IGlobalHttpHandler handler){
+        public Builder iGlobalHttpHandler(IGlobalHttpHandler handler) {
             this.handler = handler;
+            return this;
+        }
+
+        /**
+         * 数据库版本升级
+         * @return
+         */
+        public Builder migrations(List<Migration> migrations) {
+            this.migrations = migrations;
             return this;
         }
 

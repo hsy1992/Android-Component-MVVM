@@ -8,6 +8,7 @@ import com.hsy.study.baselibrary.cache.ICache;
 import com.hsy.study.baselibrary.dagger.module.AppModule;
 import com.hsy.study.baselibrary.dagger.module.ClientModule;
 import com.hsy.study.baselibrary.dagger.module.GlobalConfigModule;
+import com.hsy.study.baselibrary.database.AppDatabase;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
 import com.hsy.study.baselibrary.utils.toast.IToastConfiguration;
 import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
@@ -75,6 +76,12 @@ public interface AppComponent {
      * @return {@link IRepositoryManager}
      */
     IRepositoryManager repositoryManager();
+
+    /**
+     * 获取 数据库{@link AppDatabase}
+     * @return
+     */
+    AppDatabase getAppDatabase();
 
     /**
      * 注入

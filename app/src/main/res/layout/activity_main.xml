@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:orientation="vertical"
+    android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,12 +9,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:onClick="jump"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello World!"/>
+    <Button
+        android:onClick="login"
+        android:text="登录"
+        android:layout_width="200dp"
+        android:layout_height="50dp"/>
+
+    <Button
+        android:onClick="query"
+        android:text="查用户"
+        android:layout_width="200dp"
+        android:layout_height="50dp"/>
+
+    <Button
+        android:onClick="queryrx"
+        android:text="查用户rx"
+        android:layout_width="200dp"
+        android:layout_height="50dp"/>
 
 
 </LinearLayout>

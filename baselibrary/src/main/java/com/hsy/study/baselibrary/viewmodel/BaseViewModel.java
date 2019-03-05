@@ -28,7 +28,8 @@ public abstract class BaseViewModel<V extends IView> extends AndroidViewModel im
 
     protected final String TAG = this.getClass().getSimpleName();
     private ICache<String, Object> cache;
-    private Application mApplication;
+    protected Application mApplication;
+
     /**
      * 视图控制接口
      */
@@ -43,7 +44,6 @@ public abstract class BaseViewModel<V extends IView> extends AndroidViewModel im
     public void setRootView(IView iView) {
         this.rootView = (V) iView;
         //绑定view的生命周期
-
         if (rootView != null && rootView instanceof LifecycleOwner) {
             ((LifecycleOwner)rootView).getLifecycle().addObserver(this);
         }

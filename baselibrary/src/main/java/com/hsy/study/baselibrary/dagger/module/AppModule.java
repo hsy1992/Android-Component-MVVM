@@ -7,11 +7,14 @@ import com.google.gson.GsonBuilder;
 import com.hsy.study.baselibrary.cache.ICache;
 import com.hsy.study.baselibrary.cache.ICacheType;
 import com.hsy.study.baselibrary.cache.DefaultCacheType;
+import com.hsy.study.baselibrary.config.AppConfig;
 import com.hsy.study.baselibrary.dagger.interfaces.IGsonConfiguration;
+import com.hsy.study.baselibrary.database.AppDatabase;
 import com.hsy.study.baselibrary.lifecycle.ActivityLifecycle;
 import com.hsy.study.baselibrary.lifecycle.FragmentLifecycle;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleHandler;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
+import com.hsy.study.baselibrary.utils.TransformationUtil;
 import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
 import com.hsy.study.baselibrary.viewmodel.RepositoryManager;
 
@@ -23,6 +26,8 @@ import javax.inject.Singleton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+import androidx.room.Room;
+import androidx.room.migration.Migration;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
@@ -106,5 +111,15 @@ public abstract class AppModule {
 
     @Binds
     abstract IRepositoryManager bindRepositoryManager(RepositoryManager repositoryManager);
+
+    @Singleton
+    @Provides
+    static AppDatabase provideAppDatabase(Application mApplication, List<Migration> migrationList) {
+        Migration[] migrations = new Migration[migrationList.size()];
+        return Room.databaseBuilder(mApplication, AppDatabase.class, AppConfig.DATABASE_NAME)
+                   .allowMainThreadQueries()
+                   .addMigrations(migrationList.toArray(migrations))
+                   .build();
+    }
 
 }

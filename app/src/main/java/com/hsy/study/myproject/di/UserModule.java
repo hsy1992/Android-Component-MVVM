@@ -1,9 +1,7 @@
 package com.hsy.study.myproject.di;
 
-import android.content.Context;
 
 import com.hsy.study.baselibrary.dagger.scope.ActivityScope;
-import com.hsy.study.myproject.MainActivity;
 import com.hsy.study.myproject.User;
 import com.hsy.study.myproject.UserView;
 import com.hsy.study.myproject.UserViewModel;
@@ -15,7 +13,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 
