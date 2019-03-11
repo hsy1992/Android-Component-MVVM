@@ -57,8 +57,13 @@ dependencies {
         exclude module: 'api'
     }
     api rootProject.ext.dependencies['rxcache_jolyglot_gson']
+    //dagger2
+    api rootProject.ext.dependencies['dagger2Android']
+    api rootProject.ext.dependencies['dagger2AndroidSupport']
     api rootProject.ext.dagger2['dagger2']
+    annotationProcessor rootProject.ext.dependencies['dagger2AndroidProcessor']
     annotationProcessor rootProject.ext.dagger2['dagger2Processor']
+
     annotationProcessor rootProject.ext.room['compiler']
     implementation rootProject.ext.room['runtime']
     api rootProject.ext.lifecycle['runtime']

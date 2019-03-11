@@ -190,6 +190,10 @@ public class GlobalConfigModule {
                 new SynchronousQueue<>(), Util.threadFactory("Executor", false)) : executorService;
     }
 
+    /**
+     * 数据库生气情况
+     * @return
+     */
     @Singleton
     @Provides
     List<Migration> provideMMigrations() {

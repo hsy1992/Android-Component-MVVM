@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutorService;
 
 import javax.inject.Singleton;
 
+import androidx.lifecycle.ViewModelProvider;
 import dagger.BindsInstance;
 import dagger.Component;
 
@@ -82,6 +83,13 @@ public interface AppComponent {
      * @return
      */
     AppDatabase getAppDatabase();
+
+
+//    /**
+//     * 获取 数据库{@link AppDatabase}
+//     * @return
+//     */
+//    ViewModelProvider.Factory viewModelFactory();
 
     /**
      * 注入

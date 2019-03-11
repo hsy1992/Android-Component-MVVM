@@ -42,10 +42,4 @@ public interface IActivity {
      */
     void setUpAppComponent(@NonNull AppComponent appComponent);
 
-    /**
-     * 为ViewModel 设置 {@link com.hsy.study.baselibrary.ui.IView}
-     */
-    void setIView();
-
-
 }

@@ -12,12 +12,6 @@ import com.hsy.study.baselibrary.ui.IView;
 public interface IViewModel {
 
     /**
-     * 为ViewModel提供 {@link IView}
-     * @param rootView
-     */
-    void setRootView(IView rootView);
-
-    /**
      * 提供给viewModel 缓存容器
      * @return
      */

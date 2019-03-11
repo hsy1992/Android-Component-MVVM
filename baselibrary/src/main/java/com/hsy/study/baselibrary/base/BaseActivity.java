@@ -1,6 +1,7 @@
 package com.hsy.study.baselibrary.base;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.hsy.study.baselibrary.base.delegate.IActivity;
 import com.hsy.study.baselibrary.cache.ICache;
@@ -14,6 +15,8 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 /**
  * {@link AppCompatActivity } 基类
@@ -26,16 +29,11 @@ public abstract class BaseActivity<M extends BaseViewModel> extends AppCompatAct
 
     private ICache<String, Object> mCache;
 
-    @Inject
     @Nullable
     protected M viewModel;
 
-    @Override
-    public void setIView() {
-        if (viewModel != null) {
-            viewModel.setRootView(this);
-        }
-    }
+    @Inject
+    protected ViewModelProvider.Factory viewModelFactory;
 
     @NonNull
     @Override

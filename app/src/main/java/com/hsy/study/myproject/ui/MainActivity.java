@@ -1,4 +1,4 @@
-package com.hsy.study.myproject;
+package com.hsy.study.myproject.ui;
 
 
 import android.view.View;
@@ -7,24 +7,14 @@ import com.hsy.study.baselibrary.base.BaseActivity;
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
 import com.hsy.study.baselibrary.database.entity.User;
 import com.hsy.study.baselibrary.utils.logger.Logger;
+import com.hsy.study.myproject.R;
+import com.hsy.study.myproject.UserContract;
+import com.hsy.study.myproject.viewmodel.UserViewModel;
 import com.hsy.study.myproject.di.DaggerUserComponent;
-import com.hsy.study.networkclientstate.NetWorkManager;
-import com.hsy.study.networkclientstate.NetworkChangeListener;
-import com.hsy.study.networkclientstate.NetworkState;
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.ViewModelProviders;
 
-public class MainActivity extends BaseActivity<UserViewModel> implements UserView {
-
-
-    @Inject
-    RecyclerView.LayoutManager layoutManager;
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+public class MainActivity extends BaseActivity<UserViewModel> implements UserContract.View {
 
     @Override
     public int getLayoutId() {
@@ -33,6 +23,7 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserVie
 
     @Override
     public void initView() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel.class);
     }
 
     @Override

@@ -2,28 +2,27 @@ package com.hsy.study.baselibrary.viewmodel;
 
 import android.app.Application;
 
-import com.hsy.study.baselibrary.base.delegate.IActivity;
 import com.hsy.study.baselibrary.base.delegate.IViewModel;
 import com.hsy.study.baselibrary.cache.ICache;
 import com.hsy.study.baselibrary.cache.DefaultCacheType;
+import com.hsy.study.baselibrary.model.IModel;
 import com.hsy.study.baselibrary.ui.IView;
 import com.hsy.study.baselibrary.utils.CommonUtil;
+import com.hsy.study.baselibrary.utils.Preconditions;
 
-import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ViewModel;
 
 /**
  * @author haosiyuan
  * @date 2019/1/28 5:09 PM
  */
-public abstract class BaseViewModel<V extends IView> extends AndroidViewModel implements IViewModel,
+public abstract class BaseViewModel<V extends IView, M extends IModel> extends ViewModel implements IViewModel,
         LifecycleObserver {
 
     protected final String TAG = this.getClass().getSimpleName();
@@ -34,18 +33,38 @@ public abstract class BaseViewModel<V extends IView> extends AndroidViewModel im
      * 视图控制接口
      */
     protected V rootView;
+    /**
+     * 数据接口
+     */
+    protected M model;
 
-    public BaseViewModel(@NonNull Application application) {
-        super(application);
+    /**
+     * 不需要数据的页面
+     * @param application
+     * @param rootView
+     */
+    public BaseViewModel(Application application, V rootView) {
         this.mApplication = application;
+        this.rootView = rootView;
+        bindLifecycleObserver();
     }
 
-    @Override
-    public void setRootView(IView iView) {
-        this.rootView = (V) iView;
+    public BaseViewModel(Application application, V rootView, M model) {
+        Preconditions.checkNotNull(model, "%s cannot be null", IModel.class.getName());
+        Preconditions.checkNotNull(rootView, "%s cannot be null", IView.class.getName());
+        this.mApplication = application;
+        this.rootView = rootView;
+        this.model = model;
+    }
+
+    public void bindLifecycleObserver() {
         //绑定view的生命周期
         if (rootView != null && rootView instanceof LifecycleOwner) {
             ((LifecycleOwner)rootView).getLifecycle().addObserver(this);
+            //为model绑定声明周期
+            if (model != null && model instanceof LifecycleOwner) {
+                ((LifecycleOwner)rootView).getLifecycle().addObserver((LifecycleObserver) model);
+            }
         }
     }
 

@@ -1,20 +1,25 @@
 package com.hsy.study.myproject.di;
 
 
-import com.hsy.study.baselibrary.dagger.scope.ActivityScope;
+import com.hsy.study.baselibrary.dagger.scope.AppScope;
 import com.hsy.study.myproject.User;
-import com.hsy.study.myproject.UserView;
-import com.hsy.study.myproject.UserViewModel;
+import com.hsy.study.myproject.UserContract;
+import com.hsy.study.myproject.viewmodel.UserViewModel;
+import com.hsy.study.myproject.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
+import dagger.multibindings.IntoMap;
 
 /**
  * @author haosiyuan
@@ -23,22 +28,22 @@ import dagger.Provides;
 @Module
 public abstract class UserModule {
 
-    @ActivityScope
+    @AppScope
     @Provides
     static List<User> provideUserList() {
         return new ArrayList<>();
     }
 
-    @ActivityScope
+    @AppScope
     @Provides
-    static RecyclerView.LayoutManager provideLayoutManager(UserView userView) {
-        return new LinearLayoutManager(userView.getContext());
+    static RecyclerView.LayoutManager provideLayoutManager(UserContract.View rootView) {
+        return new LinearLayoutManager(rootView.getContext());
     }
 
-    @ActivityScope
-    @Provides
-    static UserViewModel provideUserViewModel(UserView userView) {
-        return ViewModelProviders.of((FragmentActivity) userView.getContext()).get(UserViewModel.class);
-    }
-
+//
+//    @AppScope
+//    abstract ViewModel provideUserViewModel(UserViewModel viewModel);
+//
+//    @Binds
+//    abstract UserContract.Model provideUserModel(UserModel model);
 }

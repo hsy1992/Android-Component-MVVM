@@ -37,7 +37,6 @@ public class ActivityDelegateImpl implements IActivityDelegate {
             mActivity.setContentView(layoutResId);
             unbinder = ButterKnife.bind(mActivity);
         }
-        iActivity.setIView();
         iActivity.initView();
         iActivity.initData();
     }

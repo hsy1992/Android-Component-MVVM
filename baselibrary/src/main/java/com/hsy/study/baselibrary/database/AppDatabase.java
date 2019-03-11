@@ -11,8 +11,12 @@ import androidx.room.RoomDatabase;
  * @author haosiyuan
  * @date 2019/3/5 10:46 AM
  */
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
+    /**
+     * 用户表
+     * @return
+     */
     public abstract UserDao userDao();
 }

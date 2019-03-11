@@ -13,7 +13,7 @@ ext{
             androidSupportSdkVersion: "28.0.+",
             retrofitSdkVersion      : "2.5.0",
             rxjavaSdkVersion        : "2.2.4",
-            daggerSdkVersion        : "2.19",
+            daggerSdkVersion        : "2.21",
             glideSdkVersion         : "4.8.0",
             rxlifecycle2SdkVersion  : "2.2.2",
             lifecycle               : "2.0.0",
@@ -121,7 +121,13 @@ ext{
             //数据库
             supportSqlite            :'android.arch.persistence:db:1.1.0',
             supportSqliteFramework   :'androidx.sqlite:sqlite-framework:2.0.0-beta01',
-
+            //epoxy RecyclerView 中不同的并刷新
+            epoxy                    :'com.airbnb.android:epoxy:3.3.0',
+            epoxyProcessor           :'com.airbnb.android:epoxy-processor:3.3.0',
+            //dagger2 android
+            dagger2Android           : "com.google.dagger:dagger-android:$dependVersion.daggerSdkVersion",
+            dagger2AndroidSupport    : "com.google.dagger:dagger-android-support:$dependVersion.daggerSdkVersion",
+            dagger2AndroidProcessor  : "com.google.dagger:dagger-android-processor:$dependVersion.daggerSdkVersion",
     ]
 
     networkLibs = retrofit.values()

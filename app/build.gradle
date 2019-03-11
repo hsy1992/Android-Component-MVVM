@@ -39,7 +39,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':baselibrary')
-    annotationProcessor rootProject.ext.dagger2['dagger2Processor']
     annotationProcessor rootProject.ext.dependencies['autoValue']
     annotationProcessor rootProject.ext.lifecycle['compiler']
     //    annotationProcessor'com.google.auto.value:auto-value:1.6.3'
@@ -55,4 +54,8 @@ dependencies {
     testImplementation rootProject.ext.test['powermock_classloading_xstream']
     testImplementation rootProject.ext.test['robolectric']
     implementation project(':networkclientstate')
+
+    annotationProcessor rootProject.ext.dependencies['dagger2AndroidProcessor']
+    annotationProcessor rootProject.ext.dagger2['dagger2Processor']
+
 }

@@ -1,8 +1,7 @@
 package com.hsy.study.myproject;
 
-import android.app.Activity;
+import com.hsy.study.myproject.ui.MainActivity;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
