@@ -1,8 +1,5 @@
 package com.hsy.study.myproject.viewmodel;
 
-
-import android.app.Application;
-
 import com.hsy.study.baselibrary.dagger.scope.AppScope;
 import com.hsy.study.baselibrary.database.entity.User;
 import com.hsy.study.baselibrary.utils.CommonUtil;
@@ -22,16 +19,19 @@ import javax.inject.Inject;
 public class UserViewModel extends BaseViewModel<UserContract.View, UserContract.Model> {
 
     @Inject
-    public UserViewModel(Application applicatio, UserContract.View rootView) {
-        super(applicatio, rootView);
+    List<com.hsy.study.myproject.User> users;
+
+    @Inject
+    public UserViewModel(UserContract.View rootView) {
+        super(rootView);
     }
 
     public void test() {
+        users.size();
         rootView.showUser();
     }
 
     public void insertUser() {
-
         CommonUtil.getAppComponent(mApplication)
                 .getAppDatabase()
                 .userDao()

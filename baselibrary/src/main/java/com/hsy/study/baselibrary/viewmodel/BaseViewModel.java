@@ -11,6 +11,8 @@ import com.hsy.study.baselibrary.utils.CommonUtil;
 import com.hsy.study.baselibrary.utils.Preconditions;
 
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
@@ -27,8 +29,6 @@ public abstract class BaseViewModel<V extends IView, M extends IModel> extends V
 
     protected final String TAG = this.getClass().getSimpleName();
     private ICache<String, Object> cache;
-    protected Application mApplication;
-
     /**
      * 视图控制接口
      */
@@ -38,21 +38,21 @@ public abstract class BaseViewModel<V extends IView, M extends IModel> extends V
      */
     protected M model;
 
+    @Inject
+    protected Application mApplication;
+
     /**
      * 不需要数据的页面
-     * @param application
      * @param rootView
      */
-    public BaseViewModel(Application application, V rootView) {
-        this.mApplication = application;
+    public BaseViewModel(V rootView) {
         this.rootView = rootView;
         bindLifecycleObserver();
     }
 
-    public BaseViewModel(Application application, V rootView, M model) {
+    public BaseViewModel(V rootView, M model) {
         Preconditions.checkNotNull(model, "%s cannot be null", IModel.class.getName());
         Preconditions.checkNotNull(rootView, "%s cannot be null", IView.class.getName());
-        this.mApplication = application;
         this.rootView = rootView;
         this.model = model;
     }

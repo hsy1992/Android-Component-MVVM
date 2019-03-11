@@ -84,13 +84,6 @@ public interface AppComponent {
      */
     AppDatabase getAppDatabase();
 
-
-//    /**
-//     * 获取 数据库{@link AppDatabase}
-//     * @return
-//     */
-//    ViewModelProvider.Factory viewModelFactory();
-
     /**
      * 注入
      * @param delegate

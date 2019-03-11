@@ -23,7 +23,6 @@ public abstract class ViewModelModule {
     @ViewModelKey(value = UserViewModel.class)
     abstract ViewModel bindUserViewModel(UserViewModel userViewModel);
 
-
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(AppViewModelFactory factory);
 }
