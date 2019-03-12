@@ -1,7 +1,7 @@
 package com.hsy.study.myproject.di;
 
 import com.hsy.study.baselibrary.dagger.annotation.ViewModelKey;
-import com.hsy.study.baselibrary.viewmodel.AppViewModelFactory;
+import com.hsy.study.myproject.viewmodel.AppViewModelFactory;
 import com.hsy.study.myproject.viewmodel.UserViewModel;
 
 import androidx.lifecycle.ViewModel;

@@ -14,8 +14,6 @@ import com.hsy.study.baselibrary.lifecycle.ActivityLifecycle;
 import com.hsy.study.baselibrary.lifecycle.FragmentLifecycle;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleHandler;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
-import com.hsy.study.baselibrary.utils.TransformationUtil;
-import com.hsy.study.baselibrary.viewmodel.AppViewModelFactory;
 import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
 import com.hsy.study.baselibrary.viewmodel.RepositoryManager;
 
@@ -27,8 +25,6 @@ import javax.inject.Singleton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 import androidx.room.migration.Migration;
 import dagger.Binds;
@@ -125,12 +121,4 @@ public abstract class AppModule {
                    .build();
     }
 
-
-    /**
-     * {@link ViewModel} 工厂
-     * @param factory
-     * @return
-     */
-//    @Binds
-//    abstract ViewModelProvider.Factory bindViewModelFactory(AppViewModelFactory factory);
 }

@@ -1,4 +1,4 @@
-package com.hsy.study.baselibrary.viewmodel;
+package com.hsy.study.myproject.viewmodel;
 
 import com.hsy.study.baselibrary.common.exception.AppException;
 import com.hsy.study.baselibrary.dagger.scope.AppScope;

@@ -128,6 +128,12 @@ ext{
             dagger2Android           : "com.google.dagger:dagger-android:$dependVersion.daggerSdkVersion",
             dagger2AndroidSupport    : "com.google.dagger:dagger-android-support:$dependVersion.daggerSdkVersion",
             dagger2AndroidProcessor  : "com.google.dagger:dagger-android-processor:$dependVersion.daggerSdkVersion",
+            //友盟登录、分享
+            umeng                    : "com.umeng.sdk:common:1.5.0",
+            umeng_analytics          : "com.umeng.sdk:analytics:7.5.0",
+            umeng_share_core         : "com.umeng.sdk:share-core:latest.integration",
+            umeng_share_qq           : "com.umeng.sdk:share-qq:latest.integration",
+            umeng_share_wechat       : "com.umeng.sdk:share-wechat:latest.integration",
     ]
 
     networkLibs = retrofit.values()

@@ -234,7 +234,6 @@ public class GlobalConfigModule {
          */
         private List<Migration> migrations;
 
-
         public Builder retrofitConfiguration(IRetrofitConfiguration retrofitConfiguration) {
             this.retrofitConfiguration = retrofitConfiguration;
             return this;

@@ -1,6 +1,5 @@
 package com.hsy.study.baselibrary.utils.toast;
 
-import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
 
