@@ -1,7 +1,6 @@
 package com.hsy.study.myproject.ui;
 
 
-import android.content.Intent;
 import android.view.View;
 
 import com.hsy.study.baselibrary.base.BaseActivity;
@@ -12,6 +11,7 @@ import com.hsy.study.myproject.R;
 import com.hsy.study.myproject.Test1;
 import com.hsy.study.myproject.UserContract;
 import com.hsy.study.myproject.hook.HookStartActivity;
+import com.hsy.study.myproject.hook.HookToast;
 import com.hsy.study.myproject.viewmodel.UserViewModel;
 import com.hsy.study.myproject.di.DaggerUserComponent;
 
@@ -29,6 +29,7 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
     public void initView() {
         HookStartActivity.replaceActivityInstrumentation(this);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel.class);
+
     }
 
     @Override
@@ -53,8 +54,8 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
 
     public void login(View view) {
 //        viewModel.insertUser();
-
-        startActivity(new Intent(this, Test1.class));
+        HookToast.toast(this, "1234");
+//        startActivity(new Intent(this, Test1.class));
     }
 
     public void query(View view) {

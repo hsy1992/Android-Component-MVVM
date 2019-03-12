@@ -17,6 +17,25 @@ public class LoginConfig {
      */
     private int errorTimes;
 
+    /**
+     * 手机为空默认提示
+     */
+    private String phoneEmptyTips;
+
+    /**
+     * 手机号错误默认提示
+     */
+    private String phoneErrorTips;
+
+    /**
+     * 密码为空提示
+     */
+    private String passwordEmptyTips;
+
+    /**
+     * 密码位数提示
+     */
+    private String passwordNumTips;
 
 
 }

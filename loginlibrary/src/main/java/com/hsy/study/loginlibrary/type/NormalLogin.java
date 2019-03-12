@@ -1,5 +1,9 @@
 package com.hsy.study.loginlibrary.type;
 
+import android.text.TextUtils;
+import android.widget.Toast;
+
+import com.hsy.study.loginlibrary.LoginConfig;
 import com.hsy.study.loginlibrary.type.interfaces.ILogin;
 
 /**
@@ -9,7 +13,12 @@ import com.hsy.study.loginlibrary.type.interfaces.ILogin;
 public class NormalLogin implements ILogin {
 
     @Override
-    public void login(String phone, String password) {
+    public void login(LoginConfig config, String phone, String password) {
+
+        if (TextUtils.isEmpty(phone)) {
+
+
+        }
 
     }
 }
