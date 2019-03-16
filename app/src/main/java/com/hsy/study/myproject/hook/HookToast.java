@@ -40,7 +40,6 @@ public class HookToast {
             return;
         }
 
-        //后setText 兼容小米默认会显示app名称的问题
         if (toast == null) {
             toast = Toast.makeText(context, null, Toast.LENGTH_SHORT);
         }

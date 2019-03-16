@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">loginlibrary</string>
+    <string name="app_name">loginLibrary</string>
+
+    <string name="canNotGetVerificationCodeTips">还不能发送验证码</string>
+    <string name="phoneEmptyTips">请输入手机号</string>
+    <string name="phoneErrorTips">请输入正确的手机号</string>
+    <string name="passwordEmptyTips">请输入密码</string>
+    <string name="passwordNumTips">请输入正确6-16位的密码</string>
+    <string name="verificationCodeEmptyTips">请输入验证码</string>
+    <string name="verificationCodeNumTips">请输入4位验证码</string>
 </resources>

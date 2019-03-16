@@ -54,8 +54,7 @@ dependencies {
     testImplementation rootProject.ext.test['powermock_classloading_xstream']
     testImplementation rootProject.ext.test['robolectric']
     implementation project(':networkclientstate')
-
     annotationProcessor rootProject.ext.dependencies['dagger2AndroidProcessor']
     annotationProcessor rootProject.ext.dagger2['dagger2Processor']
-
+    implementation project(':loginlibrary')
 }

@@ -8,6 +8,4 @@ import com.hsy.study.loginlibrary.LoginConfig;
  */
 public interface ILogin {
 
-    void login(LoginConfig config, String phone, String password);
-
 }

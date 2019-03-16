@@ -26,7 +26,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    api rootProject.ext.dependencies['umeng']
-    api rootProject.ext.dependencies['umeng_analytics']
-    api rootProject.ext.dependencies['umeng']
+    implementation rootProject.ext.dependencies['umeng']
+    implementation rootProject.ext.dependencies['umeng_analytics']
+    implementation rootProject.ext.dependencies['umeng']
+    implementation rootProject.ext.androidXLibs
 }

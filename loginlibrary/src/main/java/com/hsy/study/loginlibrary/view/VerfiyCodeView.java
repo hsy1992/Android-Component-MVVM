@@ -1,4 +1,4 @@
-package com.hsy.study.loginlibrary;
+package com.hsy.study.loginlibrary.view;
 
 /**
  * 验证码view
