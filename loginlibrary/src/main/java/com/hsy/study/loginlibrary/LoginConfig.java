@@ -2,7 +2,7 @@ package com.hsy.study.loginlibrary;
 
 import android.app.Application;
 
-import com.hsy.study.loginlibrary.type.DefaultExceptionCallBack;
+import com.hsy.study.loginlibrary.type.callback.DefaultExceptionCallBack;
 import com.hsy.study.loginlibrary.type.interfaces.IExceptionCallBack;
 
 import androidx.annotation.NonNull;

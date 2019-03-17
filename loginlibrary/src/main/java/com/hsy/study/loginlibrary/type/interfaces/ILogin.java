@@ -1,6 +1,5 @@
 package com.hsy.study.loginlibrary.type.interfaces;
 
-import com.hsy.study.loginlibrary.LoginConfig;
 
 /**
  * @author haosiyuan

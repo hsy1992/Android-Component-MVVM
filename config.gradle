@@ -134,6 +134,7 @@ ext{
             umeng_share_core         : "com.umeng.sdk:share-core:latest.integration",
             umeng_share_qq           : "com.umeng.sdk:share-qq:latest.integration",
             umeng_share_wechat       : "com.umeng.sdk:share-wechat:latest.integration",
+
     ]
 
     networkLibs = retrofit.values()

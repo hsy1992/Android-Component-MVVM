@@ -1,4 +1,4 @@
-package com.hsy.study.loginlibrary.type;
+package com.hsy.study.loginlibrary.type.callback;
 
 import android.app.Application;
 import android.widget.Toast;

@@ -16,7 +16,14 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            minifyEnabled false
+            buildConfigField("boolean", "UM_DEBUG", "false")
+        }
+
         release {
+            buildConfigField("boolean", "UM_DEBUG", "true")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -28,6 +35,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation rootProject.ext.dependencies['umeng']
     implementation rootProject.ext.dependencies['umeng_analytics']
-    implementation rootProject.ext.dependencies['umeng']
+    implementation rootProject.ext.dependencies['umeng_share_core']
+    implementation rootProject.ext.dependencies['umeng_share_wechat']
     implementation rootProject.ext.androidXLibs
 }
