@@ -1,7 +1,7 @@
 package com.hsy.study.loginlibrary.type.callback;
 
 import com.hsy.study.loginlibrary.LoginType;
-import com.hsy.study.loginlibrary.data.UserEntity;
+import com.hsy.study.loginlibrary.entity.UserEntity;
 import com.hsy.study.loginlibrary.type.interfaces.IThreeAuthListener;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;

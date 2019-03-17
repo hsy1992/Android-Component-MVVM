@@ -42,6 +42,8 @@ public abstract class SingleTimer extends CountDownTimer {
      */
     protected abstract void onTickLeft(int leftNum);
 
-
+    /**
+     * 倒计时结束
+     */
     protected abstract void onTimerFinish();
 }

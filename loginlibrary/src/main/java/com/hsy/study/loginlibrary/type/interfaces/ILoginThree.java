@@ -16,6 +16,7 @@ public interface ILoginThree extends ILogin {
      * 登录
      * @param config
      * @param callBack
+     * @param activity
      */
     void login(LoginConfig config, Activity activity, ThreeAuthCallBack callBack);
 

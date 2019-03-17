@@ -63,7 +63,7 @@ public class LoginManager {
      * @param phone
      * @param password
      */
-    public void loginNormal(String phone, String password) {
+    public boolean loginNormal(String phone, String password) {
 
         ILoginNormal login = getNormalLogin();
 
@@ -71,14 +71,36 @@ public class LoginManager {
             login.login(phone, password);
         } catch (LoginException e) {
             config.getExceptionCallBack().onCallBack(e.getTag(), e.getMessage());
+            return false;
         }
+
+        return true;
+    }
+
+    /**
+     * 用户密码登录
+     * @param phone
+     * @param verificationCode
+     */
+    public boolean loginCode(String phone, String verificationCode) {
+
+        ILoginNormal login = getNormalLogin();
+
+        try {
+            login.loginCode(phone, verificationCode);
+        } catch (LoginException e) {
+            config.getExceptionCallBack().onCallBack(e.getTag(), e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * 获取验证码
      * @param phone
      */
-    public void getVerificationCode(String phone) {
+    public boolean getVerificationCode(String phone) {
 
         ILoginNormal login = getNormalLogin();
 
@@ -86,7 +108,47 @@ public class LoginManager {
             login.getVerificationCode(phone);
         } catch (LoginException e) {
             config.getExceptionCallBack().onCallBack(e.getTag(), e.getMessage());
+            return false;
         }
+        return true;
+    }
+
+    /**
+     * 用户密码注册
+     * @param phone
+     * @param password
+     */
+    public boolean registerNormal(String phone, String password) {
+
+        ILoginNormal login = getNormalLogin();
+
+        try {
+            login.register(phone, password);
+        } catch (LoginException e) {
+            config.getExceptionCallBack().onCallBack(e.getTag(), e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 用户密码验证码祖册
+     * @param phone
+     * @param verificationCode
+     */
+    public boolean registerCode(String phone, String password, String verificationCode) {
+
+        ILoginNormal login = getNormalLogin();
+
+        try {
+            login.register(phone, password, verificationCode);
+        } catch (LoginException e) {
+            config.getExceptionCallBack().onCallBack(e.getTag(), e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 
     /**

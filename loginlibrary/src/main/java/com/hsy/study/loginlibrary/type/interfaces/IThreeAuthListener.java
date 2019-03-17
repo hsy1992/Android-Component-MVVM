@@ -1,7 +1,7 @@
 package com.hsy.study.loginlibrary.type.interfaces;
 
 import com.hsy.study.loginlibrary.LoginType;
-import com.hsy.study.loginlibrary.data.UserEntity;
+import com.hsy.study.loginlibrary.entity.UserEntity;
 
 /**
  * @author haosiyuan

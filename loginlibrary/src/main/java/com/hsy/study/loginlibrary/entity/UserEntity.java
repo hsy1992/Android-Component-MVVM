@@ -1,4 +1,4 @@
-package com.hsy.study.loginlibrary.data;
+package com.hsy.study.loginlibrary.entity;
 
 /**
  * 用户信息
