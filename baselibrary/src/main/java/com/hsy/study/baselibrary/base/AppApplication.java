@@ -6,7 +6,7 @@ import android.content.Context;
 import com.hsy.study.baselibrary.base.delegate.AppDelegate;
 import com.hsy.study.baselibrary.base.delegate.IAppLifecycle;
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
-import com.hsy.study.baselibrary.utils.Preconditions;
+import com.hsy.study.baselibrary.utils.PreconditionsUtil;
 
 import androidx.annotation.NonNull;
 
@@ -55,8 +55,8 @@ public class AppApplication extends Application implements IApp {
     @NonNull
     @Override
     public AppComponent getAppComponent() {
-        Preconditions.checkNotNull(mAppDelegate, "%s can not be null", AppDelegate.class.getName());
-        Preconditions.checkState(mAppDelegate instanceof IApp, "%s must be implements %s", mAppDelegate.getClass().getName(), IApp.class.getName());
+        PreconditionsUtil.checkNotNull(mAppDelegate, "%s can not be null", AppDelegate.class.getName());
+        PreconditionsUtil.checkState(mAppDelegate instanceof IApp, "%s must be implements %s", mAppDelegate.getClass().getName(), IApp.class.getName());
         return ((IApp)mAppDelegate).getAppComponent();
     }
 }

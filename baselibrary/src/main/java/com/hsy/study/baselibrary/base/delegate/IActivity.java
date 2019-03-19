@@ -1,7 +1,7 @@
 package com.hsy.study.baselibrary.base.delegate;
 
 
-import com.hsy.study.baselibrary.cache.ICache;
+import com.hsy.study.baselibrary.cache.local.ICache;
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
 
 import androidx.annotation.NonNull;

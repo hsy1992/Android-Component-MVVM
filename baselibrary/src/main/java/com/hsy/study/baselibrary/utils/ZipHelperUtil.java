@@ -33,9 +33,9 @@ import java.util.zip.Inflater;
  * @author haosiyuan
  * @date 2019/1/28 10:31 AM
  */
-public class ZipHelper {
+public class ZipHelperUtil {
 
-    private ZipHelper() {
+    private ZipHelperUtil() {
         throw new IllegalStateException("you can't instantiate me!");
     }
 

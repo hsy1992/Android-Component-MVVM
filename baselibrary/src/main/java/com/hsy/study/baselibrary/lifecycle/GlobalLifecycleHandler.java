@@ -1,6 +1,6 @@
 package com.hsy.study.baselibrary.lifecycle;
 
-import com.hsy.study.baselibrary.utils.logger.Logger;
+import com.hsy.study.baselibrary.common.logger.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

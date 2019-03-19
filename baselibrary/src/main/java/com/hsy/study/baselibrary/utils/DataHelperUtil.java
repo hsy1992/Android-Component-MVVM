@@ -37,11 +37,11 @@ import java.io.ObjectOutputStream;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public class DataHelper {
+public class DataHelperUtil {
     private static SharedPreferences mSharedPreferences;
     public static final String SP_NAME = "config";
 
-    private DataHelper() {
+    private DataHelperUtil() {
         throw new IllegalStateException("you can't instantiate me!");
     }
 

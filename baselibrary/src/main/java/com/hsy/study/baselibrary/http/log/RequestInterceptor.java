@@ -1,11 +1,11 @@
 package com.hsy.study.baselibrary.http.log;
 
 import com.hsy.study.baselibrary.http.IGlobalHttpHandler;
-import com.hsy.study.baselibrary.utils.CharacterHandler;
+import com.hsy.study.baselibrary.utils.CharacterHandlerUtil;
 import com.hsy.study.baselibrary.utils.MediaTypeUtils;
-import com.hsy.study.baselibrary.utils.UrlEncoderUtils;
-import com.hsy.study.baselibrary.utils.ZipHelper;
-import com.hsy.study.baselibrary.utils.logger.Logger;
+import com.hsy.study.baselibrary.utils.UrlEncoderUtil;
+import com.hsy.study.baselibrary.utils.ZipHelperUtil;
+import com.hsy.study.baselibrary.common.logger.Logger;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -164,12 +164,12 @@ public class RequestInterceptor implements Interceptor {
         if (contentType != null) {
             charset = contentType.charset(charset);
         }
-        if (encoding != null && encoding.equalsIgnoreCase(ZipHelper.GZIP)) {
+        if (encoding != null && encoding.equalsIgnoreCase(ZipHelperUtil.GZIP)) {
             //content 使用 gzip 压缩
-            return ZipHelper.decompressForGzip(clone.readByteArray(), convertCharset(charset));
-        } else if (encoding != null && encoding.equalsIgnoreCase(ZipHelper.ZLIB)) {
+            return ZipHelperUtil.decompressForGzip(clone.readByteArray(), convertCharset(charset));
+        } else if (encoding != null && encoding.equalsIgnoreCase(ZipHelperUtil.ZLIB)) {
             //content 使用 zlib 压缩
-            return ZipHelper.decompressToStringForZlib(clone.readByteArray(), convertCharset(charset));
+            return ZipHelperUtil.decompressToStringForZlib(clone.readByteArray(), convertCharset(charset));
         } else {
             //content 没有被压缩, 或者使用其他未知压缩方式
             return clone.readString(charset);
@@ -198,11 +198,11 @@ public class RequestInterceptor implements Interceptor {
             }
 
             String json = requestBuffer.readString(charset);
-            if (UrlEncoderUtils.hasUrlEncoded(json)){
+            if (UrlEncoderUtil.hasUrlEncoded(json)){
                 json = URLDecoder.decode(json, convertCharset(charset));
             }
 
-            return CharacterHandler.jsonFormat(json);
+            return CharacterHandlerUtil.jsonFormat(json);
 
         } catch (IOException e) {
             e.printStackTrace();

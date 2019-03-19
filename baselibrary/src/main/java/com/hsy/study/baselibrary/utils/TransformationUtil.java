@@ -22,7 +22,7 @@ public class TransformationUtil {
          * @return
          */
         public static <E> List<E> arrayToList(E[] es) {
-            Preconditions.checkNotNull(es, "array can not be null");
+            PreconditionsUtil.checkNotNull(es, "array can not be null");
             return Arrays.asList(es);
         }
     }

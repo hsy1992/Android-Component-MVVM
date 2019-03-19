@@ -43,7 +43,7 @@ public abstract class UserModule {
 //
 //    @AppScope
 //    abstract ViewModel provideUserViewModel(UserViewModel viewModel);
-//
-//    @Binds
-//    abstract UserContract.Model provideUserModel(UserModel model);
+
+    @Binds
+    abstract UserContract.Model provideUserModel(UserModel model);
 }

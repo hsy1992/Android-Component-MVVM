@@ -1,7 +1,6 @@
 package com.hsy.study.baselibrary.base.delegate;
 
-import com.hsy.study.baselibrary.cache.ICache;
-import com.hsy.study.baselibrary.ui.IView;
+import com.hsy.study.baselibrary.cache.local.ICache;
 
 
 /**

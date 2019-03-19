@@ -4,20 +4,19 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.hsy.study.baselibrary.base.delegate.AppDelegate;
-import com.hsy.study.baselibrary.cache.ICache;
+import com.hsy.study.baselibrary.cache.local.ICache;
+import com.hsy.study.baselibrary.common.toast.IToastConfiguration;
 import com.hsy.study.baselibrary.dagger.module.AppModule;
 import com.hsy.study.baselibrary.dagger.module.ClientModule;
 import com.hsy.study.baselibrary.dagger.module.GlobalConfigModule;
 import com.hsy.study.baselibrary.database.AppDatabase;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
-import com.hsy.study.baselibrary.utils.toast.IToastConfiguration;
 import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
 
 import java.util.concurrent.ExecutorService;
 
 import javax.inject.Singleton;
 
-import androidx.lifecycle.ViewModelProvider;
 import dagger.BindsInstance;
 import dagger.Component;
 

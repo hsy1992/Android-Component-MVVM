@@ -1,11 +1,10 @@
-package com.hsy.study.baselibrary.utils.toast;
+package com.hsy.study.baselibrary.common.toast;
 
 import android.content.Context;
 
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 
 /**

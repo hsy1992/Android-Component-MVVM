@@ -3,17 +3,16 @@ package com.hsy.study.baselibrary.viewmodel;
 import android.app.Application;
 
 import com.hsy.study.baselibrary.base.delegate.IViewModel;
-import com.hsy.study.baselibrary.cache.ICache;
-import com.hsy.study.baselibrary.cache.DefaultCacheType;
+import com.hsy.study.baselibrary.cache.local.ICache;
+import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
 import com.hsy.study.baselibrary.model.IModel;
 import com.hsy.study.baselibrary.ui.IView;
 import com.hsy.study.baselibrary.utils.CommonUtil;
-import com.hsy.study.baselibrary.utils.Preconditions;
+import com.hsy.study.baselibrary.utils.PreconditionsUtil;
 
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -51,8 +50,8 @@ public abstract class BaseViewModel<V extends IView, M extends IModel> extends V
     }
 
     public BaseViewModel(V rootView, M model) {
-        Preconditions.checkNotNull(model, "%s cannot be null", IModel.class.getName());
-        Preconditions.checkNotNull(rootView, "%s cannot be null", IView.class.getName());
+        PreconditionsUtil.checkNotNull(model, "%s cannot be null", IModel.class.getName());
+        PreconditionsUtil.checkNotNull(rootView, "%s cannot be null", IView.class.getName());
         this.rootView = rootView;
         this.model = model;
     }

@@ -4,9 +4,9 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.hsy.study.baselibrary.cache.ICache;
-import com.hsy.study.baselibrary.cache.ICacheType;
-import com.hsy.study.baselibrary.cache.DefaultCacheType;
+import com.hsy.study.baselibrary.cache.local.ICache;
+import com.hsy.study.baselibrary.cache.local.ICacheType;
+import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
 import com.hsy.study.baselibrary.config.AppConfig;
 import com.hsy.study.baselibrary.dagger.interfaces.IGsonConfiguration;
 import com.hsy.study.baselibrary.database.AppDatabase;

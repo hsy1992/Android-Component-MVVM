@@ -5,7 +5,7 @@ import android.app.Application;
 import com.hsy.study.baselibrary.dagger.scope.AppScope;
 import com.hsy.study.baselibrary.database.entity.User;
 import com.hsy.study.baselibrary.model.BaseModel;
-import com.hsy.study.baselibrary.utils.logger.Logger;
+import com.hsy.study.baselibrary.common.logger.Logger;
 import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
 import com.hsy.study.myproject.UserContract;
 
@@ -13,10 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import androidx.lifecycle.LiveData;
 
 /**
  * @author haosiyuan
@@ -31,7 +28,7 @@ public class UserModel extends BaseModel implements UserContract.Model {
     }
 
     @Override
-    public List<User> getUsers() {
+    public LiveData<List<User>> getUsers() {
 //        return Observable
 //                .just(mAppDatabase.userDao().loadAllUsersByRxJava())
 //                .flatMap(new Function<Flowable<List<User>>, ObservableSource<?>>() {
@@ -41,24 +38,24 @@ public class UserModel extends BaseModel implements UserContract.Model {
 //                    }
 //                });
 
-        mAppDatabase.userDao().loadAllUsersByRxJava()
-                .doOnSubscribe(subscription -> Logger.errorInfo(Thread.currentThread().getName()))
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe(subscription -> Logger.errorInfo(Thread.currentThread().getName()))
-                .map(new Function<List<User>, List<User>>() {
-                    @Override
-                    public List<User> apply(List<User> users) throws Exception {
-                        Logger.errorInfo(Thread.currentThread().getName());
-                        return users;
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<User>>() {
-                    @Override
-                    public void accept(List<User> users) throws Exception {
-                        Logger.errorInfo(Thread.currentThread().getName());
-                    }
-                });
+//        mAppDatabase.userDao().loadAllUsersByRxJava()
+//                .doOnSubscribe(subscription -> Logger.errorInfo(Thread.currentThread().getName()))
+//                .subscribeOn(Schedulers.io())
+//                .doOnSubscribe(subscription -> Logger.errorInfo(Thread.currentThread().getName()))
+//                .map(new Function<List<User>, List<User>>() {
+//                    @Override
+//                    public List<User> apply(List<User> users) throws Exception {
+//                        Logger.errorInfo(Thread.currentThread().getName());
+//                        return users;
+//                    }
+//                }).observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<List<User>>() {
+//                    @Override
+//                    public void accept(List<User> users) throws Exception {
+//                        Logger.errorInfo(Thread.currentThread().getName());
+//                    }
+//                });
 
-        return null;
+        return getData("");
     }
 }

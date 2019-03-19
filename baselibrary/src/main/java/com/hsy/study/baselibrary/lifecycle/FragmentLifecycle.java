@@ -7,9 +7,9 @@ import android.view.View;
 import com.hsy.study.baselibrary.base.delegate.IFragmentDelegate;
 import com.hsy.study.baselibrary.base.delegate.FragmentDelegateImpl;
 import com.hsy.study.baselibrary.base.delegate.IFragment;
-import com.hsy.study.baselibrary.cache.ICache;
-import com.hsy.study.baselibrary.cache.IntelligentCache;
-import com.hsy.study.baselibrary.utils.Preconditions;
+import com.hsy.study.baselibrary.cache.local.ICache;
+import com.hsy.study.baselibrary.cache.local.IntelligentCache;
+import com.hsy.study.baselibrary.utils.PreconditionsUtil;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -146,7 +146,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
     @NonNull
     private ICache<String, Object> getCacheFromFragment(IFragment fragment) {
         ICache<String, Object> cache = fragment.getCacheData();
-        Preconditions.checkNotNull(cache, "%s cannot be null on Fragment", ICache.class.getName());
+        PreconditionsUtil.checkNotNull(cache, "%s cannot be null on Fragment", ICache.class.getName());
         return cache;
     }
 }

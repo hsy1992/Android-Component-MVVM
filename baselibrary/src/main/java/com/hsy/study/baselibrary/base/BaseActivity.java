@@ -1,11 +1,10 @@
 package com.hsy.study.baselibrary.base;
 
 import android.content.Context;
-import android.os.Bundle;
 
 import com.hsy.study.baselibrary.base.delegate.IActivity;
-import com.hsy.study.baselibrary.cache.ICache;
-import com.hsy.study.baselibrary.cache.DefaultCacheType;
+import com.hsy.study.baselibrary.cache.local.ICache;
+import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
 import com.hsy.study.baselibrary.ui.IView;
 import com.hsy.study.baselibrary.utils.CommonUtil;
 import com.hsy.study.baselibrary.viewmodel.BaseViewModel;
@@ -16,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 /**
  * {@link AppCompatActivity } 基类

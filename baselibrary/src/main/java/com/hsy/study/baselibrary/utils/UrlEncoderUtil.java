@@ -5,9 +5,9 @@ package com.hsy.study.baselibrary.utils;
  * @author haosiyuan
  * @date 2019/1/28 9:51 AM
  */
-public class UrlEncoderUtils {
+public class UrlEncoderUtil {
 
-    private UrlEncoderUtils() {
+    private UrlEncoderUtil() {
         throw new IllegalStateException("you can't instantiate me!");
     }
 

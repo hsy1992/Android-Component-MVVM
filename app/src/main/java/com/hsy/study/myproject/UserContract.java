@@ -6,6 +6,7 @@ import com.hsy.study.baselibrary.ui.IView;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import io.reactivex.Observable;
 
 /**
@@ -19,6 +20,6 @@ public interface UserContract extends IView {
     }
 
     interface Model extends IModel {
-        List<User> getUsers();
+        LiveData<List<User>> getUsers();
     }
 }

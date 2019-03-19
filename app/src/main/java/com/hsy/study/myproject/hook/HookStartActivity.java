@@ -7,10 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 
-import com.hsy.study.baselibrary.utils.logger.Logger;
+import com.hsy.study.baselibrary.common.logger.Logger;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**

@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.LiveData;
+
 
 /**
  * @author haosiyuan
@@ -22,8 +24,8 @@ public class UserViewModel extends BaseViewModel<UserContract.View, UserContract
     List<com.hsy.study.myproject.User> users;
 
     @Inject
-    public UserViewModel(UserContract.View rootView) {
-        super(rootView);
+    public UserViewModel(UserContract.View rootView, UserContract.Model model) {
+        super(rootView, model);
     }
 
     public void test() {
@@ -31,11 +33,11 @@ public class UserViewModel extends BaseViewModel<UserContract.View, UserContract
         rootView.showUser();
     }
 
-    public void insertUser() {
+    public void insertUser(int id) {
         CommonUtil.getAppComponent(mApplication)
                 .getAppDatabase()
                 .userDao()
-                .insertUsers(new User(1,"15561541897","haosiyuan","1.0","0"));
+                .insertUsers(new User(id,"15561541897","haosiyuan","1.0","0"));
 
     }
 
@@ -46,7 +48,8 @@ public class UserViewModel extends BaseViewModel<UserContract.View, UserContract
                 .loadAllUsers();
     }
 
-    public void queryrx() {
+    public LiveData<List<User>> queryrx() {
+        return model.getUsers();
 //        model.getUsers();
     }
 

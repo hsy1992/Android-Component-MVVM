@@ -1,6 +1,6 @@
 package com.hsy.study.baselibrary.lifecycle;
 
-import com.hsy.study.baselibrary.utils.Preconditions;
+import com.hsy.study.baselibrary.utils.PreconditionsUtil;
 
 import org.reactivestreams.Publisher;
 
@@ -32,7 +32,7 @@ public class LifecycleTransformer<T> implements ObservableTransformer<T, T>,Flow
     final Observable<?> observable;
 
     LifecycleTransformer(Observable<?> observable) {
-        Preconditions.checkNotNull(observable, "observable == null");
+        PreconditionsUtil.checkNotNull(observable, "observable == null");
         this.observable = observable;
     }
 

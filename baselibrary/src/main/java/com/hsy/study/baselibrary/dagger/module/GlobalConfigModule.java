@@ -2,9 +2,9 @@ package com.hsy.study.baselibrary.dagger.module;
 
 import android.app.Application;
 
-import com.hsy.study.baselibrary.cache.ICache;
-import com.hsy.study.baselibrary.cache.DefaultCacheType;
-import com.hsy.study.baselibrary.cache.IntelligentCache;
+import com.hsy.study.baselibrary.cache.local.ICache;
+import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
+import com.hsy.study.baselibrary.cache.local.IntelligentCache;
 import com.hsy.study.baselibrary.dagger.interfaces.IGsonConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.IOkHttpConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.IRetrofitConfiguration;
@@ -15,9 +15,9 @@ import com.hsy.study.baselibrary.http.log.DefaultFormatPrinter;
 import com.hsy.study.baselibrary.http.log.IFormatPrinter;
 import com.hsy.study.baselibrary.http.log.RequestInterceptor;
 import com.hsy.study.baselibrary.utils.FileUtils;
-import com.hsy.study.baselibrary.utils.Preconditions;
-import com.hsy.study.baselibrary.utils.toast.IToastConfiguration;
-import com.hsy.study.baselibrary.utils.toast.SystemToast;
+import com.hsy.study.baselibrary.utils.PreconditionsUtil;
+import com.hsy.study.baselibrary.common.toast.IToastConfiguration;
+import com.hsy.study.baselibrary.common.toast.SystemToast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class GlobalConfigModule {
                 return httpUrl;
             }
         }
-        Preconditions.checkNotNull(apiUrl,"HttpUrl can not be null");
+        PreconditionsUtil.checkNotNull(apiUrl,"HttpUrl can not be null");
         return apiUrl;
     }
 
@@ -285,13 +285,13 @@ public class GlobalConfigModule {
          * @return
          */
         public Builder baseUrl(String baseUrl) {
-            Preconditions.checkNotNull(baseUrl,"baseUrl can not be null");
+            PreconditionsUtil.checkNotNull(baseUrl,"baseUrl can not be null");
             this.apiUrl = HttpUrl.parse(baseUrl);
             return this;
         }
 
         public Builder baseUrl(IBaseUrl baseUrl) {
-            Preconditions.checkNotNull(baseUrl,"baseUrl can not be null");
+            PreconditionsUtil.checkNotNull(baseUrl,"baseUrl can not be null");
             this.baseUrl = baseUrl;
             return this;
         }

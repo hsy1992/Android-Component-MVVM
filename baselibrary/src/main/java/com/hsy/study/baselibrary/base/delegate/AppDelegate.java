@@ -6,13 +6,13 @@ import android.content.Context;
 import android.content.res.Configuration;
 
 import com.hsy.study.baselibrary.base.IApp;
-import com.hsy.study.baselibrary.cache.IntelligentCache;
+import com.hsy.study.baselibrary.cache.local.IntelligentCache;
 import com.hsy.study.baselibrary.config.IConfigModule;
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
 import com.hsy.study.baselibrary.dagger.component.DaggerAppComponent;
 import com.hsy.study.baselibrary.dagger.module.GlobalConfigModule;
-import com.hsy.study.baselibrary.utils.ManifestParser;
-import com.hsy.study.baselibrary.utils.Preconditions;
+import com.hsy.study.baselibrary.utils.ManifestParserUtil;
+import com.hsy.study.baselibrary.utils.PreconditionsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class AppDelegate implements IAppLifecycle, IApp {
     public AppDelegate(@NonNull Context mContext) {
 
         //反射获取 AndroidManifest 中带有 ConfigModule 标签的 class
-        this.mModules = new ManifestParser(mContext).parse();
+        this.mModules = new ManifestParserUtil(mContext).parse();
 
         for (IConfigModule configModule : mModules) {
 
@@ -164,7 +164,7 @@ public class AppDelegate implements IAppLifecycle, IApp {
     @NonNull
     @Override
     public AppComponent getAppComponent() {
-        Preconditions.checkNotNull(mAppComponent,"AppComponent is null");
+        PreconditionsUtil.checkNotNull(mAppComponent,"AppComponent is null");
         return mAppComponent;
     }
 

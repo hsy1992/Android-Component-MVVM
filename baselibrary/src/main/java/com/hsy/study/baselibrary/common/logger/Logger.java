@@ -1,4 +1,4 @@
-package com.hsy.study.baselibrary.utils.logger;
+package com.hsy.study.baselibrary.common.logger;
 
 import android.text.TextUtils;
 import android.util.Log;

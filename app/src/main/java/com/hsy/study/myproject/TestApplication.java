@@ -1,6 +1,9 @@
 package com.hsy.study.myproject;
 
+import android.content.Context;
+
 import com.hsy.study.baselibrary.base.AppApplication;
+import com.hsy.study.myproject.chajian.HookHelper;
 import com.hsy.study.networkclientstate.NetWorkManager;
 
 /**
@@ -10,9 +13,21 @@ import com.hsy.study.networkclientstate.NetWorkManager;
 public class TestApplication extends AppApplication {
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        try {
+            HookHelper.hookAMS();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
 
         NetWorkManager.getInstance().startReceiver(this);
+
+
     }
 }

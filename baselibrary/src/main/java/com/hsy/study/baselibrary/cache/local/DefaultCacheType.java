@@ -1,4 +1,4 @@
-package com.hsy.study.baselibrary.cache;
+package com.hsy.study.baselibrary.cache.local;
 
 import android.app.ActivityManager;
 import android.content.Context;

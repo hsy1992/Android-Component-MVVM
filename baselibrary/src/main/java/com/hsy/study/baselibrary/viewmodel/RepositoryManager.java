@@ -3,11 +3,10 @@ package com.hsy.study.baselibrary.viewmodel;
 import android.app.Application;
 import android.content.Context;
 
-import com.hsy.study.baselibrary.cache.DefaultCacheType;
-import com.hsy.study.baselibrary.cache.ICache;
-import com.hsy.study.baselibrary.utils.Preconditions;
+import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
+import com.hsy.study.baselibrary.cache.local.ICache;
+import com.hsy.study.baselibrary.utils.PreconditionsUtil;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.concurrent.Callable;
@@ -64,7 +63,7 @@ public class RepositoryManager implements IRepositoryManager {
      * @return
      */
     private <T> T createWrapperService(Class<T> serviceClass) {
-        Preconditions.checkNotNull(serviceClass,"serviceClass is null");
+        PreconditionsUtil.checkNotNull(serviceClass,"serviceClass is null");
         // 通过二次代理，对 Retrofit 代理方法的调用包进新的 Observable 里在 io 线程执行。
         return (T) Proxy.newProxyInstance(serviceClass.getClassLoader(),
                 new Class<?>[]{serviceClass}, (proxy, method, args) -> {
@@ -96,7 +95,7 @@ public class RepositoryManager implements IRepositoryManager {
             mRetrofitServiceCache = mCacheFactory.build(new DefaultCacheType());
         }
 
-        Preconditions.checkNotNull(mRetrofitServiceCache,
+        PreconditionsUtil.checkNotNull(mRetrofitServiceCache,
                 "Cannot return null from a Cache.Factory#build(int) method");
 
         T retrofitService = (T) mRetrofitServiceCache.get(serviceClass.getCanonicalName());
@@ -130,11 +129,11 @@ public class RepositoryManager implements IRepositoryManager {
     @NonNull
     @Override
     public <T> T obtainRxCacheService(@NonNull Class<T> cacheClass) {
-        Preconditions.checkNotNull(cacheClass, "cacheClass == null");
+        PreconditionsUtil.checkNotNull(cacheClass, "cacheClass == null");
         if (mRxCacheServiceCache == null) {
             mRxCacheServiceCache = mCacheFactory.build(new DefaultCacheType());
         }
-        Preconditions.checkNotNull(mRxCacheServiceCache,
+        PreconditionsUtil.checkNotNull(mRxCacheServiceCache,
                 "Cannot return null from a Cache.Factory#build(int) method");
         T cacheService = (T) mRxCacheServiceCache.get(cacheClass.getCanonicalName());
         if (cacheService == null) {

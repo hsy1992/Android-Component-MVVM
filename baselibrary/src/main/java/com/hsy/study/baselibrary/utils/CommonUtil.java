@@ -19,8 +19,8 @@ public class CommonUtil {
      */
     public static AppComponent getAppComponent(Context context) {
 
-        Preconditions.checkNotNull(context, "Context can not be null");
-        Preconditions.checkState(context.getApplicationContext() instanceof IApp, "context is not instanceof App");
+        PreconditionsUtil.checkNotNull(context, "Context can not be null");
+        PreconditionsUtil.checkState(context.getApplicationContext() instanceof IApp, "context is not instanceof App");
         return ((IApp) context.getApplicationContext()).getAppComponent();
     }
 

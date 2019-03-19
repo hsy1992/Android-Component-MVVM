@@ -8,11 +8,10 @@ import com.hsy.study.baselibrary.base.AppManager;
 import com.hsy.study.baselibrary.base.delegate.IActivityDelegate;
 import com.hsy.study.baselibrary.base.delegate.ActivityDelegateImpl;
 import com.hsy.study.baselibrary.base.delegate.IActivity;
-import com.hsy.study.baselibrary.cache.ICache;
-import com.hsy.study.baselibrary.cache.IntelligentCache;
+import com.hsy.study.baselibrary.cache.local.ICache;
+import com.hsy.study.baselibrary.cache.local.IntelligentCache;
 import com.hsy.study.baselibrary.config.IConfigModule;
-import com.hsy.study.baselibrary.utils.Preconditions;
-import com.hsy.study.baselibrary.utils.logger.Logger;
+import com.hsy.study.baselibrary.utils.PreconditionsUtil;
 
 import java.util.List;
 
@@ -142,7 +141,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
      */
     private ICache<String, Object> getActivityCache(IActivity activity){
         ICache<String, Object> cache = activity.getCacheData();
-        Preconditions.checkNotNull(cache, "%s cannot be null on Activity", ICache.class.getName());
+        PreconditionsUtil.checkNotNull(cache, "%s cannot be null on Activity", ICache.class.getName());
         return cache;
     }
 
@@ -161,7 +160,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
             if (mCache.containsKey(configKey)) {
                 //获取所有缓存配置 只执行一次 之后移除缓存
                 List<IConfigModule> modules = (List<IConfigModule>) mCache.get(configKey);
-                Preconditions.checkNotNull(modules, "modules is null");
+                PreconditionsUtil.checkNotNull(modules, "modules is null");
                 for (IConfigModule module : modules) {
                     module.injectFragmentLifecycle(mApplication, mFragmentLifecycleList.get());
                 }

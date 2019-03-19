@@ -1,10 +1,10 @@
-package com.hsy.study.baselibrary.utils.toast;
+package com.hsy.study.baselibrary.common.toast;
 
 import android.content.Context;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.hsy.study.baselibrary.utils.Preconditions;
+import com.hsy.study.baselibrary.utils.PreconditionsUtil;
 
 import java.util.List;
 
@@ -66,6 +66,6 @@ public class SystemToast implements IToastConfiguration {
         if (mToast == null) {
             mToast = Toast.makeText(context, message, isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
         }
-        Preconditions.checkNotNull(mToast, "Toast can not be null");
+        PreconditionsUtil.checkNotNull(mToast, "Toast can not be null");
     }
 }
