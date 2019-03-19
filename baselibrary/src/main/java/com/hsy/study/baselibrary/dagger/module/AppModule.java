@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.hsy.study.baselibrary.cache.local.ICache;
 import com.hsy.study.baselibrary.cache.local.ICacheType;
 import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
+import com.hsy.study.baselibrary.common.executor.AppExecutors;
 import com.hsy.study.baselibrary.config.AppConfig;
 import com.hsy.study.baselibrary.dagger.interfaces.IGsonConfiguration;
 import com.hsy.study.baselibrary.database.AppDatabase;
@@ -119,6 +120,12 @@ public abstract class AppModule {
                    .allowMainThreadQueries()
                    .addMigrations(migrationList.toArray(migrations))
                    .build();
+    }
+
+    @Singleton
+    @Provides
+    static AppExecutors provideAppExecutors() {
+        return new AppExecutors();
     }
 
 }

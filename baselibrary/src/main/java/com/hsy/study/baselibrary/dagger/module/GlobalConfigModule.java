@@ -5,6 +5,7 @@ import android.app.Application;
 import com.hsy.study.baselibrary.cache.local.ICache;
 import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
 import com.hsy.study.baselibrary.cache.local.IntelligentCache;
+import com.hsy.study.baselibrary.common.executor.AppExecutors;
 import com.hsy.study.baselibrary.dagger.interfaces.IGsonConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.IOkHttpConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.IRetrofitConfiguration;
@@ -185,9 +186,8 @@ public class GlobalConfigModule {
      */
     @Singleton
     @Provides
-    ExecutorService provideExecutorService() {
-        return executorService == null ? new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS,
-                new SynchronousQueue<>(), Util.threadFactory("Executor", false)) : executorService;
+    ExecutorService provideExecutorService(AppExecutors appExecutors) {
+        return executorService == null ? (ExecutorService) appExecutors.getNetWorkIO() : executorService;
     }
 
     /**
