@@ -15,8 +15,8 @@ import com.hsy.study.baselibrary.lifecycle.ActivityLifecycle;
 import com.hsy.study.baselibrary.lifecycle.FragmentLifecycle;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleHandler;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
-import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
-import com.hsy.study.baselibrary.viewmodel.RepositoryManager;
+import com.hsy.study.baselibrary.repository.IRepositoryManager;
+import com.hsy.study.baselibrary.repository.RepositoryManager;
 
 import java.util.ArrayList;
 import java.util.List;

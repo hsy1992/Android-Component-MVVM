@@ -17,6 +17,7 @@ public class TestApplication extends AppApplication {
         super.attachBaseContext(base);
         try {
             HookHelper.hookAMS();
+            HookHelper.hookHandler();
         } catch (Exception e) {
             e.printStackTrace();
         }

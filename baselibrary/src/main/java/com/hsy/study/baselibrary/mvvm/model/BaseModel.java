@@ -1,28 +1,18 @@
-package com.hsy.study.baselibrary.model;
+package com.hsy.study.baselibrary.mvvm.model;
 
 import android.app.Application;
 
 import com.hsy.study.baselibrary.config.AppConfig;
 import com.hsy.study.baselibrary.database.AppDatabase;
-import com.hsy.study.baselibrary.database.dao.UserDao;
-import com.hsy.study.baselibrary.database.entity.User;
 import com.hsy.study.baselibrary.utils.CommonUtil;
-import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
-
-import java.util.List;
+import com.hsy.study.baselibrary.repository.IRepositoryManager;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.OnLifecycleEvent;
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author haosiyuan

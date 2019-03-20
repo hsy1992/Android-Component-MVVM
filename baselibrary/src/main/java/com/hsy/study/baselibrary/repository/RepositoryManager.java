@@ -1,4 +1,4 @@
-package com.hsy.study.baselibrary.viewmodel;
+package com.hsy.study.baselibrary.repository;
 
 import android.app.Application;
 import android.content.Context;

@@ -3,7 +3,7 @@ package com.hsy.study.myproject.viewmodel;
 import com.hsy.study.baselibrary.dagger.scope.AppScope;
 import com.hsy.study.baselibrary.database.entity.User;
 import com.hsy.study.baselibrary.utils.CommonUtil;
-import com.hsy.study.baselibrary.viewmodel.BaseViewModel;
+import com.hsy.study.baselibrary.mvvm.viewmodel.BaseViewModel;
 import com.hsy.study.myproject.UserContract;
 
 import java.util.List;

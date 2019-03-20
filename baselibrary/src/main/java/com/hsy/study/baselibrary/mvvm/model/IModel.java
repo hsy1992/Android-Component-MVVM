@@ -1,4 +1,4 @@
-package com.hsy.study.baselibrary.model;
+package com.hsy.study.baselibrary.mvvm.model;
 
 /**
  * Model层 提供数据

@@ -1,12 +1,12 @@
-package com.hsy.study.baselibrary.viewmodel;
+package com.hsy.study.baselibrary.mvvm.viewmodel;
 
 import android.app.Application;
 
 import com.hsy.study.baselibrary.base.delegate.IViewModel;
 import com.hsy.study.baselibrary.cache.local.ICache;
 import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
-import com.hsy.study.baselibrary.model.IModel;
-import com.hsy.study.baselibrary.ui.IView;
+import com.hsy.study.baselibrary.mvvm.model.IModel;
+import com.hsy.study.baselibrary.mvvm.view.IView;
 import com.hsy.study.baselibrary.utils.CommonUtil;
 import com.hsy.study.baselibrary.utils.PreconditionsUtil;
 

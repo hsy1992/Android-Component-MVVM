@@ -48,10 +48,10 @@ public class FieldUtil {
         return null;
     }
 
-    public static void setField(Class<?> clazz,Object object, String field, Object value) {
+    public static void setField(Class<?> clazz,Object object, String name, Object value) {
 
         try {
-            Field field1 = clazz.getDeclaredField(field);
+            Field field1 = clazz.getDeclaredField(name);
             field1.setAccessible(true);
             field1.set(object, value);
         } catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.hsy.study.myproject.chajian;
 
+import android.os.Handler;
+
 import com.hsy.study.baselibrary.common.logger.Logger;
 
 import java.lang.reflect.Field;
@@ -30,6 +32,20 @@ public class HookHelper {
         , new Class[]{iActivityManagerClazz}, new IActivityManagerProxy(iActivityManager));
 
         mInstanceField.set(defaultSingleton, proxy);
+    }
+
+
+    public static void hookHandler() throws Exception {
+
+        Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
+
+        Object sCurrentActivityThread = FieldUtil.getField(activityThreadClass, null, "sCurrentActivityThread");
+
+        Field mHField = FieldUtil.getField(activityThreadClass, "mH");
+
+        Handler handler = (Handler) mHField.get(sCurrentActivityThread);
+
+        FieldUtil.setField(Handler.class, handler, "mCallback", new HandlerCallBackProxy(handler));
 
     }
 

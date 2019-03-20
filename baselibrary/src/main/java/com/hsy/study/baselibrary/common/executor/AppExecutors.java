@@ -6,6 +6,10 @@ import android.os.Looper;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,18 +24,13 @@ public class AppExecutors {
 
     /**
      * io线程池
-     * 创建个单线程的线程池，相当于单线 程串行执行所有任务 ， 保证接任务的提交顺序依次执行。
      */
-    private Executor diskIO;
+    private ExecutorService diskIO;
 
     /**
      * 网络请求线程
-     * 输入的参数即是固定线程数，既是核心线程
-     * 数也是最大线程数
-     * new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS,
-     *                 new SynchronousQueue<>(), Util.threadFactory("Executor", false))
      */
-    private Executor netWorkIO;
+    private ExecutorService netWorkIO;
 
     /**
      * 主线程
@@ -40,22 +39,59 @@ public class AppExecutors {
 
     @Inject
     public AppExecutors() {
-        diskIO = Executors.newSingleThreadExecutor();
-        netWorkIO = Executors.newFixedThreadPool(5);
-        mainExecutor = new MainThreadExecutor();
     }
 
-    public Executor getDiskIO() {
-        return diskIO;
+    public ExecutorService getDiskIO() {
+        return getDiskIOExecutor();
     }
 
-    public Executor getNetWorkIO() {
-        return netWorkIO;
+    public ExecutorService getNetWorkIO() {
+        return getNetWorkExecutor();
     }
 
     public Executor getMainExecutor() {
         return mainExecutor;
     }
+
+    /**
+     * 自定义线程池
+     * @param threadName
+     * @param corePoolSize
+     * @param maxPoolSize
+     * @param keepAliveTime
+     * @return
+     */
+    public ExecutorService getCustomExecutor(String threadName, int corePoolSize, int maxPoolSize, long keepAliveTime) {
+        return new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS,
+                    new LinkedBlockingDeque<>(), new AppThreadFactory(threadName, false));
+    }
+
+    /**
+     * 获取IO线程池
+     * @return
+     */
+    private ExecutorService getDiskIOExecutor() {
+
+        if (diskIO == null) {
+            diskIO = new ThreadPoolExecutor(2, 10, 0L, TimeUnit.SECONDS,
+                    new LinkedBlockingDeque<>(), new AppThreadFactory("DISK IO", false));
+        }
+        return diskIO;
+    }
+
+    /**
+     * 获取NetWork线程池
+     * @return
+     */
+    private ExecutorService getNetWorkExecutor() {
+
+        if (netWorkIO == null) {
+            netWorkIO = new ThreadPoolExecutor(5, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS,
+                    new LinkedBlockingDeque<>(), new AppThreadFactory("NETWORK IO", false));
+        }
+        return netWorkIO;
+    }
+
 
     /**
      * 主线程

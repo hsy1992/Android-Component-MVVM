@@ -1,4 +1,4 @@
-package com.hsy.study.baselibrary.ui;
+package com.hsy.study.baselibrary.mvvm.view;
 
 import android.content.Context;
 

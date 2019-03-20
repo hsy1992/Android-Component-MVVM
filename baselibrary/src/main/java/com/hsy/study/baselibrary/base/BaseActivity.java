@@ -5,9 +5,9 @@ import android.content.Context;
 import com.hsy.study.baselibrary.base.delegate.IActivity;
 import com.hsy.study.baselibrary.cache.local.ICache;
 import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
-import com.hsy.study.baselibrary.ui.IView;
+import com.hsy.study.baselibrary.mvvm.view.IView;
 import com.hsy.study.baselibrary.utils.CommonUtil;
-import com.hsy.study.baselibrary.viewmodel.BaseViewModel;
+import com.hsy.study.baselibrary.mvvm.viewmodel.BaseViewModel;
 
 import javax.inject.Inject;
 

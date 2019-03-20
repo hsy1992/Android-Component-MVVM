@@ -5,13 +5,14 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.hsy.study.baselibrary.base.delegate.AppDelegate;
 import com.hsy.study.baselibrary.cache.local.ICache;
+import com.hsy.study.baselibrary.common.executor.AppExecutors;
 import com.hsy.study.baselibrary.common.toast.IToastConfiguration;
 import com.hsy.study.baselibrary.dagger.module.AppModule;
 import com.hsy.study.baselibrary.dagger.module.ClientModule;
 import com.hsy.study.baselibrary.dagger.module.GlobalConfigModule;
 import com.hsy.study.baselibrary.database.AppDatabase;
 import com.hsy.study.baselibrary.lifecycle.GlobalLifecycleObserver;
-import com.hsy.study.baselibrary.viewmodel.IRepositoryManager;
+import com.hsy.study.baselibrary.repository.IRepositoryManager;
 
 import java.util.concurrent.ExecutorService;
 
@@ -82,6 +83,12 @@ public interface AppComponent {
      * @return
      */
     AppDatabase getAppDatabase();
+
+    /**
+     * 获取 {@link AppExecutors}
+     * @return
+     */
+    AppExecutors getAppExecutors();
 
     /**
      * 注入

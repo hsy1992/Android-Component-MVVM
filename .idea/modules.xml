@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/loginlibrary/loginlibrary.iml" filepath="$PROJECT_DIR$/loginlibrary/loginlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/networkclientstate/networkclientstate.iml" filepath="$PROJECT_DIR$/networkclientstate/networkclientstate.iml" />
       <module fileurl="file://$PROJECT_DIR$/permissionlib/permissionlib.iml" filepath="$PROJECT_DIR$/permissionlib/permissionlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rxbus/rxbus.iml" filepath="$PROJECT_DIR$/rxbus/rxbus.iml" />
     </modules>
   </component>
 </project>
