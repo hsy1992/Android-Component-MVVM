@@ -3,6 +3,7 @@ package com.hsy.study.myproject;
 import com.hsy.study.baselibrary.database.entity.User;
 import com.hsy.study.baselibrary.mvvm.model.IModel;
 import com.hsy.study.baselibrary.mvvm.view.IView;
+import com.hsy.study.baselibrary.repository.DataResource;
 
 import java.util.List;
 
@@ -19,6 +20,6 @@ public interface UserContract extends IView {
     }
 
     interface Model extends IModel {
-        LiveData<List<User>> getUsers();
+        LiveData<DataResource<User>> getUsers();
     }
 }

@@ -23,13 +23,13 @@ import io.reactivex.SingleTransformer;
  * @author haosiyuan
  * @date 2019/3/20 10:38 AM
  */
-public class BaseScheduler<T> implements ObservableTransformer<T, T>, SingleTransformer<T, T>,
+class BaseScheduler<T> implements ObservableTransformer<T, T>, SingleTransformer<T, T>,
         MaybeTransformer<T, T>, CompletableTransformer, FlowableTransformer<T, T> {
 
     private Scheduler subscribeOnScheduler;
     private Scheduler observeOnScheduler;
 
-    public BaseScheduler(Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+    BaseScheduler(Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
         this.subscribeOnScheduler = subscribeOnScheduler;
         this.observeOnScheduler = observeOnScheduler;
     }

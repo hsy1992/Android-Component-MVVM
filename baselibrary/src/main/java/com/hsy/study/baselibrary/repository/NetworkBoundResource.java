@@ -57,7 +57,6 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
         });
     }
 
-
     /**
      * 获取网络数据
      * @param dbSource

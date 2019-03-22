@@ -2,6 +2,7 @@ package com.hsy.study.baselibrary.mvvm.model;
 
 import android.app.Application;
 
+import com.hsy.study.baselibrary.common.executor.AppExecutors;
 import com.hsy.study.baselibrary.config.AppConfig;
 import com.hsy.study.baselibrary.database.AppDatabase;
 import com.hsy.study.baselibrary.utils.CommonUtil;
@@ -32,10 +33,15 @@ public abstract class BaseModel implements IModel, LifecycleObserver {
      * 数据库
      */
     protected AppDatabase mAppDatabase;
+    /**
+     * 线程池
+     */
+    protected AppExecutors appExecutors;
 
     public BaseModel(IRepositoryManager mRepositoryManager, Application mApplication) {
         this.mRepositoryManager = mRepositoryManager;
         this.mAppDatabase = CommonUtil.getAppComponent(mApplication).getAppDatabase();
+        this.appExecutors = CommonUtil.getAppComponent(mApplication).getAppExecutors();
     }
 
     protected LiveData getData(String url) {

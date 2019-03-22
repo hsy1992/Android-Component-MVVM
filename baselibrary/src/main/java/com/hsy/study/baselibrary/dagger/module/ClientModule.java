@@ -9,6 +9,7 @@ import com.hsy.study.baselibrary.dagger.interfaces.IRxCacheConfiguration;
 import com.hsy.study.baselibrary.http.IGlobalHttpHandler;
 import com.hsy.study.baselibrary.http.log.MultipleBaseUrlInterceptor;
 import com.hsy.study.baselibrary.http.log.RequestInterceptor;
+import com.hsy.study.baselibrary.repository.calladapter.LiveDataCallAdapterFatory;
 import com.hsy.study.baselibrary.utils.FileUtils;
 
 import java.io.File;
@@ -72,7 +73,7 @@ public abstract class ClientModule {
         }
 
         //使用RxJava
-        builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+        builder.addCallAdapterFactory(new LiveDataCallAdapterFatory());
         //使用 Gson
         builder.addConverterFactory(GsonConverterFactory.create(gson));
 

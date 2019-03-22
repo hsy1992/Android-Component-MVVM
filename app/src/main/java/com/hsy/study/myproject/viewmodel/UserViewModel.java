@@ -49,7 +49,7 @@ public class UserViewModel extends BaseViewModel<UserContract.View, UserContract
     }
 
     public LiveData<List<User>> queryrx() {
-        return model.getUsers();
+        return null;
 //        model.getUsers();
     }
 

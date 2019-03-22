@@ -4,9 +4,13 @@ import android.app.Application;
 
 import com.hsy.study.baselibrary.dagger.scope.AppScope;
 import com.hsy.study.baselibrary.database.entity.User;
+import com.hsy.study.baselibrary.http.response.ApiResponse;
+import com.hsy.study.baselibrary.http.response.ApiSuccessResponse;
 import com.hsy.study.baselibrary.mvvm.model.BaseModel;
 import com.hsy.study.baselibrary.common.logger.Logger;
+import com.hsy.study.baselibrary.repository.DataResource;
 import com.hsy.study.baselibrary.repository.IRepositoryManager;
+import com.hsy.study.baselibrary.repository.NetworkBoundResource;
 import com.hsy.study.myproject.UserContract;
 
 import java.util.List;
@@ -14,6 +18,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -32,34 +38,29 @@ public class UserModel extends BaseModel implements UserContract.Model {
     }
 
     @Override
-    public LiveData<List<User>> getUsers() {
-//        return Observable
-//                .just(mAppDatabase.userDao().loadAllUsersByRxJava())
-//                .flatMap(new Function<Flowable<List<User>>, ObservableSource<?>>() {
-//                    @Override
-//                    public ObservableSource<?> apply(Flowable<List<User>> listFlowable) throws Exception {
-//                        return listFlowable.;
-//                    }
-//                });
+    public LiveData<DataResource<User>> getUsers() {
+        return new NetworkBoundResource<User, User>(appExecutors) {
+            @Override
+            protected LiveData<User> loadFromDb() {
+                return null;
+            }
 
-        mAppDatabase.userDao().loadAllUsersByRxJava()
-                .doOnSubscribe(subscription -> Logger.errorInfo(Thread.currentThread().getName()))
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe(subscription -> Logger.errorInfo(Thread.currentThread().getName()))
-                .map(new Function<List<User>, List<User>>() {
-                    @Override
-                    public List<User> apply(List<User> users) throws Exception {
-                        Logger.errorInfo(Thread.currentThread().getName());
-                        return users;
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<User>>() {
-                    @Override
-                    public void accept(List<User> users) throws Exception {
-                        Logger.errorInfo(Thread.currentThread().getName());
-                    }
-                });
+            @Override
+            protected boolean shouldFetchData(User user) {
+                return false;
+            }
 
-        return getData("");
+            @Override
+            protected LiveData<ApiResponse<User>> createCall() {
+                return null;
+            }
+
+            @Override
+            protected void saveCallResult(User item) {
+
+
+            }
+        }.asLiveData();
     }
+
 }

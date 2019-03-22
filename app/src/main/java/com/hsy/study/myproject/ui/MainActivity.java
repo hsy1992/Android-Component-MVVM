@@ -11,12 +11,16 @@ import com.hsy.study.baselibrary.common.logger.Logger;
 import com.hsy.study.myproject.R;
 import com.hsy.study.myproject.Test1;
 import com.hsy.study.myproject.UserContract;
+import com.hsy.study.myproject.chajian.Test2;
 import com.hsy.study.myproject.di.DaggerUserComponent;
 import com.hsy.study.myproject.viewmodel.UserViewModel;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
@@ -27,17 +31,18 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
     @BindView(R.id.et_id)
     EditText etId;
 
+    LiveData<String> liveData;
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
     }
 
+    MutableLiveData mediatorLiveData;
     @Override
     public void initView() {
 
 //        HookStartActivity.replaceActivityInstrumentation(this);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel.class);
-
     }
 
     @Override
@@ -61,13 +66,12 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
     }
 
     public void login(View view) {
-
 //        LoginManager.getInstance()
 //                .init(LoginConfig.Builder.loginConfig(getApplication()).build())
 //                .getVerificationCode("13333333333");
 
 //        HookToast.toast(this, "1234");
-        startActivity(new Intent(this, Test1.class));
+        startActivity(new Intent(this, Test2.class));
     }
 
     public void query(View view) {
