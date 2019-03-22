@@ -7,8 +7,8 @@ import com.hsy.study.baselibrary.cache.local.ICache;
 import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
 import com.hsy.study.baselibrary.mvvm.model.IModel;
 import com.hsy.study.baselibrary.mvvm.view.IView;
-import com.hsy.study.baselibrary.utils.CommonUtil;
-import com.hsy.study.baselibrary.utils.PreconditionsUtil;
+import com.hsy.study.baselibrary.utils.UtilCommon;
+import com.hsy.study.baselibrary.utils.UtilPreconditions;
 
 
 import javax.inject.Inject;
@@ -50,8 +50,8 @@ public abstract class BaseViewModel<V extends IView, M extends IModel> extends V
     }
 
     public BaseViewModel(V rootView, M model) {
-        PreconditionsUtil.checkNotNull(model, "%s cannot be null", IModel.class.getName());
-        PreconditionsUtil.checkNotNull(rootView, "%s cannot be null", IView.class.getName());
+        UtilPreconditions.checkNotNull(model, "%s cannot be null", IModel.class.getName());
+        UtilPreconditions.checkNotNull(rootView, "%s cannot be null", IView.class.getName());
         this.rootView = rootView;
         this.model = model;
     }
@@ -70,7 +70,7 @@ public abstract class BaseViewModel<V extends IView, M extends IModel> extends V
     @Override
     public ICache<String, Object> provideCache() {
         if (cache == null) {
-            cache = CommonUtil.getAppComponent(mApplication).cacheFactory().build(new DefaultCacheType());
+            cache = UtilCommon.getAppComponent(mApplication).cacheFactory().build(new DefaultCacheType());
         }
         return cache;
     }
@@ -80,7 +80,7 @@ public abstract class BaseViewModel<V extends IView, M extends IModel> extends V
      */
     @Override
     public void bindLifecycle() {
-        CommonUtil.getAppComponent(mApplication).observer().bindLifecycle();
+        UtilCommon.getAppComponent(mApplication).observer().bindLifecycle();
     }
 
     /**

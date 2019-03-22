@@ -1,6 +1,6 @@
 package com.hsy.study.baselibrary.lifecycle;
 
-import com.hsy.study.baselibrary.utils.PreconditionsUtil;
+import com.hsy.study.baselibrary.utils.UtilPreconditions;
 import androidx.annotation.NonNull;
 import io.reactivex.Observable;
 import io.reactivex.annotations.CheckReturnValue;
@@ -27,8 +27,8 @@ public class RxLifecycle {
     @CheckReturnValue
     public static <T, R> LifecycleTransformer<T> bind(@NonNull Observable<R> lifecycle,
                                                       @NonNull final Function<R, R> correspondingEvents){
-        PreconditionsUtil.checkNotNull(lifecycle, "lifecycle is null");
-        PreconditionsUtil.checkNotNull(correspondingEvents, "correspondingEvents is null");
+        UtilPreconditions.checkNotNull(lifecycle, "lifecycle is null");
+        UtilPreconditions.checkNotNull(correspondingEvents, "correspondingEvents is null");
         return bind(takeUntilCorrespondingEvent(lifecycle.share(), correspondingEvents));
     }
 
@@ -54,8 +54,8 @@ public class RxLifecycle {
     @CheckReturnValue
     public static <T, R> LifecycleTransformer<T> bindUntilEvent(@NonNull final Observable<R> lifecycle,
                                                                 @NonNull final R event) {
-        PreconditionsUtil.checkNotNull(lifecycle, "lifecycle == null");
-        PreconditionsUtil.checkNotNull(event, "event == null");
+        UtilPreconditions.checkNotNull(lifecycle, "lifecycle == null");
+        UtilPreconditions.checkNotNull(event, "event == null");
         return bind(takeUntilEvent(lifecycle, event));
     }
 

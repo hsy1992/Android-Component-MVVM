@@ -5,7 +5,7 @@ import android.app.Application;
 import com.hsy.study.baselibrary.common.executor.AppExecutors;
 import com.hsy.study.baselibrary.config.AppConfig;
 import com.hsy.study.baselibrary.database.AppDatabase;
-import com.hsy.study.baselibrary.utils.CommonUtil;
+import com.hsy.study.baselibrary.utils.UtilCommon;
 import com.hsy.study.baselibrary.repository.IRepositoryManager;
 
 import androidx.lifecycle.Lifecycle;
@@ -40,8 +40,8 @@ public abstract class BaseModel implements IModel, LifecycleObserver {
 
     public BaseModel(IRepositoryManager mRepositoryManager, Application mApplication) {
         this.mRepositoryManager = mRepositoryManager;
-        this.mAppDatabase = CommonUtil.getAppComponent(mApplication).getAppDatabase();
-        this.appExecutors = CommonUtil.getAppComponent(mApplication).getAppExecutors();
+        this.mAppDatabase = UtilCommon.getAppComponent(mApplication).getAppDatabase();
+        this.appExecutors = UtilCommon.getAppComponent(mApplication).getAppExecutors();
     }
 
     protected LiveData getData(String url) {

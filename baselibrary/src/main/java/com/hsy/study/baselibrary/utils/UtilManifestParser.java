@@ -14,12 +14,12 @@ import java.util.List;
  * @author haosiyuan
  * @date 2019/2/16 8:08 PM
  */
-public class ManifestParserUtil {
+public class UtilManifestParser {
 
     private static final String MODULE_NAME = "ConfigModule";
     private final Context mContext;
 
-    public ManifestParserUtil(Context context) {
+    public UtilManifestParser(Context context) {
         this.mContext = context;
     }
 

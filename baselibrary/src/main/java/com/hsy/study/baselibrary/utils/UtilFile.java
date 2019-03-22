@@ -10,7 +10,7 @@ import java.io.File;
  * @author haosiyuan
  * @date 2019/1/28 1:45 PM
  */
-public class FileUtils {
+public class UtilFile {
 
 
     /**

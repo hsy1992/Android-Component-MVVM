@@ -10,7 +10,7 @@ import com.hsy.study.baselibrary.http.IGlobalHttpHandler;
 import com.hsy.study.baselibrary.http.log.MultipleBaseUrlInterceptor;
 import com.hsy.study.baselibrary.http.log.RequestInterceptor;
 import com.hsy.study.baselibrary.repository.calladapter.LiveDataCallAdapterFatory;
-import com.hsy.study.baselibrary.utils.FileUtils;
+import com.hsy.study.baselibrary.utils.UtilFile;
 
 import java.io.File;
 import java.util.List;
@@ -32,7 +32,6 @@ import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -185,6 +184,6 @@ public abstract class ClientModule {
     @Named("RxCacheDirectory")
     static File provideRxCacheDirectory(File cacheDir){
         File cacheDirectory = new File(cacheDir,"RxCache");
-        return FileUtils.makeDirs(cacheDirectory);
+        return UtilFile.makeDirs(cacheDirectory);
     }
 }

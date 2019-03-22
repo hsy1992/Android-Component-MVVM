@@ -1,13 +1,11 @@
-package com.hsy.study.myproject.di.component;
+package com.hsy.study.myproject.dagger.component;
 
 import android.app.Application;
 
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
 import com.hsy.study.baselibrary.dagger.scope.AppScope;
-import com.hsy.study.myproject.di.UserModule;
-import com.hsy.study.myproject.di.ViewModelModule;
+import com.hsy.study.myproject.dagger.ViewModelModule;
 
-import dagger.BindsInstance;
 import dagger.Component;
 
 /**

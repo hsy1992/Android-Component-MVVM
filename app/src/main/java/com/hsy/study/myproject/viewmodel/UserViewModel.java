@@ -2,7 +2,7 @@ package com.hsy.study.myproject.viewmodel;
 
 import com.hsy.study.baselibrary.dagger.scope.AppScope;
 import com.hsy.study.baselibrary.database.entity.User;
-import com.hsy.study.baselibrary.utils.CommonUtil;
+import com.hsy.study.baselibrary.utils.UtilCommon;
 import com.hsy.study.baselibrary.mvvm.viewmodel.BaseViewModel;
 import com.hsy.study.myproject.UserContract;
 
@@ -34,7 +34,7 @@ public class UserViewModel extends BaseViewModel<UserContract.View, UserContract
     }
 
     public void insertUser(int id) {
-        CommonUtil.getAppComponent(mApplication)
+        UtilCommon.getAppComponent(mApplication)
                 .getAppDatabase()
                 .userDao()
                 .insertUsers(new User(id,"15561541897","haosiyuan","1.0","0"));
@@ -42,7 +42,7 @@ public class UserViewModel extends BaseViewModel<UserContract.View, UserContract
     }
 
     public List<User> query() {
-        return CommonUtil.getAppComponent(mApplication)
+        return UtilCommon.getAppComponent(mApplication)
                 .getAppDatabase()
                 .userDao()
                 .loadAllUsers();

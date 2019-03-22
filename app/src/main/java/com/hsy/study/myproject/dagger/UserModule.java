@@ -1,25 +1,19 @@
-package com.hsy.study.myproject.di;
+package com.hsy.study.myproject.dagger;
 
 
 import com.hsy.study.baselibrary.dagger.scope.AppScope;
 import com.hsy.study.myproject.User;
 import com.hsy.study.myproject.UserContract;
-import com.hsy.study.myproject.viewmodel.UserViewModel;
 import com.hsy.study.myproject.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
-import dagger.multibindings.IntoMap;
 
 /**
  * @author haosiyuan

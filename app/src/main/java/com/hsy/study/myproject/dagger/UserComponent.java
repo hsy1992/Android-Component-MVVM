@@ -1,4 +1,4 @@
-package com.hsy.study.myproject.di;
+package com.hsy.study.myproject.dagger;
 
 
 import com.hsy.study.baselibrary.dagger.component.AppComponent;

@@ -1,6 +1,6 @@
 package com.hsy.study.baselibrary.cache.local;
 
-import com.hsy.study.baselibrary.utils.PreconditionsUtil;
+import com.hsy.study.baselibrary.utils.UtilPreconditions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,7 +102,7 @@ public class IntelligentCache<V> implements ICache<String, V> {
      */
     @NonNull
     public static String getKeyOfKeep(@NonNull String key){
-        PreconditionsUtil.checkNotNull(key, "key == null");
+        UtilPreconditions.checkNotNull(key, "key == null");
         return KEY_KEEP + key;
     }
 }

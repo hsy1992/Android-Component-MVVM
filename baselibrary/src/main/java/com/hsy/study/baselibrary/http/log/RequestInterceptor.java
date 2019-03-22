@@ -1,8 +1,8 @@
 package com.hsy.study.baselibrary.http.log;
 
 import com.hsy.study.baselibrary.http.IGlobalHttpHandler;
-import com.hsy.study.baselibrary.utils.CharacterHandlerUtil;
-import com.hsy.study.baselibrary.utils.MediaTypeUtils;
+import com.hsy.study.baselibrary.utils.UtilCharacterHandler;
+import com.hsy.study.baselibrary.utils.UtilMediaType;
 import com.hsy.study.baselibrary.utils.UrlEncoderUtil;
 import com.hsy.study.baselibrary.utils.ZipHelperUtil;
 import com.hsy.study.baselibrary.common.logger.Logger;
@@ -64,7 +64,7 @@ public class RequestInterceptor implements Interceptor {
 
         if (logRequest){
             //打印请求信息
-            if (request.body() != null && MediaTypeUtils.isParseable(request.body().contentType())){
+            if (request.body() != null && UtilMediaType.isParseable(request.body().contentType())){
                 formatPrinter.printJsonRequest(request, parseParams(request));
             } else {
                 formatPrinter.printFileRequest(request);
@@ -92,7 +92,7 @@ public class RequestInterceptor implements Interceptor {
 
         //打印响应结果
         String bodyString = null;
-        if (responseBody != null && MediaTypeUtils.isParseable(responseBody.contentType())){
+        if (responseBody != null && UtilMediaType.isParseable(responseBody.contentType())){
             bodyString = printResult(originalResponse);
         }
 
@@ -104,7 +104,7 @@ public class RequestInterceptor implements Interceptor {
             final String message = originalResponse.message();
             final String url = originalResponse.request().url().toString();
 
-            if (bodyString != null && MediaTypeUtils.isParseable(responseBody.contentType())){
+            if (bodyString != null && UtilMediaType.isParseable(responseBody.contentType())){
                 formatPrinter.printJsonResponse(TimeUnit.MILLISECONDS.toMillis(endTime - startTime), isSuccessful,
                         code, header, responseBody.contentType(), bodyString, sefmentList, message, url);
             }else{
@@ -202,7 +202,7 @@ public class RequestInterceptor implements Interceptor {
                 json = URLDecoder.decode(json, convertCharset(charset));
             }
 
-            return CharacterHandlerUtil.jsonFormat(json);
+            return UtilCharacterHandler.jsonFormat(json);
 
         } catch (IOException e) {
             e.printStackTrace();

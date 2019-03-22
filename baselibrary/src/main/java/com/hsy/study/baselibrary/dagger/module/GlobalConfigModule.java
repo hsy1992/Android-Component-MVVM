@@ -15,8 +15,8 @@ import com.hsy.study.baselibrary.http.IGlobalHttpHandler;
 import com.hsy.study.baselibrary.http.log.DefaultFormatPrinter;
 import com.hsy.study.baselibrary.http.log.IFormatPrinter;
 import com.hsy.study.baselibrary.http.log.RequestInterceptor;
-import com.hsy.study.baselibrary.utils.FileUtils;
-import com.hsy.study.baselibrary.utils.PreconditionsUtil;
+import com.hsy.study.baselibrary.utils.UtilFile;
+import com.hsy.study.baselibrary.utils.UtilPreconditions;
 import com.hsy.study.baselibrary.common.toast.IToastConfiguration;
 import com.hsy.study.baselibrary.common.toast.SystemToast;
 
@@ -24,9 +24,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -37,7 +34,6 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
-import okhttp3.internal.Util;
 
 /**
  * 全局配置
@@ -95,7 +91,7 @@ public class GlobalConfigModule {
                 return httpUrl;
             }
         }
-        PreconditionsUtil.checkNotNull(apiUrl,"HttpUrl can not be null");
+        UtilPreconditions.checkNotNull(apiUrl,"HttpUrl can not be null");
         return apiUrl;
     }
 
@@ -148,7 +144,7 @@ public class GlobalConfigModule {
     @Singleton
     @Provides
     File provideCacheFile(Application application) {
-        return cacheFile == null ? FileUtils.getCacheFile(application) : cacheFile;
+        return cacheFile == null ? UtilFile.getCacheFile(application) : cacheFile;
     }
 
     @Singleton
@@ -187,11 +183,11 @@ public class GlobalConfigModule {
     @Singleton
     @Provides
     ExecutorService provideExecutorService(AppExecutors appExecutors) {
-        return executorService == null ? (ExecutorService) appExecutors.getNetWorkIO() : executorService;
+        return executorService == null ? appExecutors.getNetWorkIO() : executorService;
     }
 
     /**
-     * 数据库生气情况
+     * 数据库升级情况
      * @return
      */
     @Singleton
@@ -285,13 +281,13 @@ public class GlobalConfigModule {
          * @return
          */
         public Builder baseUrl(String baseUrl) {
-            PreconditionsUtil.checkNotNull(baseUrl,"baseUrl can not be null");
+            UtilPreconditions.checkNotNull(baseUrl,"baseUrl can not be null");
             this.apiUrl = HttpUrl.parse(baseUrl);
             return this;
         }
 
         public Builder baseUrl(IBaseUrl baseUrl) {
-            PreconditionsUtil.checkNotNull(baseUrl,"baseUrl can not be null");
+            UtilPreconditions.checkNotNull(baseUrl,"baseUrl can not be null");
             this.baseUrl = baseUrl;
             return this;
         }

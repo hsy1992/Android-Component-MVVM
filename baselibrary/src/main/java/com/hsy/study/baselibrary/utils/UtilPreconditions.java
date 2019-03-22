@@ -7,9 +7,9 @@ import androidx.annotation.Nullable;
  * @author haosiyuan
  * @date 2019/2/2 5:02 PM
  */
-public class PreconditionsUtil {
+public class UtilPreconditions {
 
-    private PreconditionsUtil() {
+    private UtilPreconditions() {
         throw new AssertionError("No instances.");
     }
 

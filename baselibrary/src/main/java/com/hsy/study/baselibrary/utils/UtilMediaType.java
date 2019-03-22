@@ -7,7 +7,7 @@ import okhttp3.MediaType;
  * @author haosiyuan
  * @date 2019/1/27 7:52 PM
  */
-public class MediaTypeUtils {
+public class UtilMediaType {
 
     /**
      * 是否可以解析

@@ -23,7 +23,7 @@ import javax.xml.transform.stream.StreamSource;
  * @author haosiyuan
  * @date 2019/1/27 7:56 PM
  */
-public class CharacterHandlerUtil {
+public class UtilCharacterHandler {
 
     private static final String LEFT_BRACE = "{";
     private static final String LEFT_BRACKET = "[";

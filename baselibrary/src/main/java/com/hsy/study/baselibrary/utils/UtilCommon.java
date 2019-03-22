@@ -10,7 +10,7 @@ import com.hsy.study.baselibrary.dagger.component.AppComponent;
  * @author haosiyuan
  * @date 2019/2/19 2:30 PM
  */
-public class CommonUtil {
+public class UtilCommon {
 
     /**
      * 获取 AppComponent
@@ -19,8 +19,8 @@ public class CommonUtil {
      */
     public static AppComponent getAppComponent(Context context) {
 
-        PreconditionsUtil.checkNotNull(context, "Context can not be null");
-        PreconditionsUtil.checkState(context.getApplicationContext() instanceof IApp, "context is not instanceof App");
+        UtilPreconditions.checkNotNull(context, "Context can not be null");
+        UtilPreconditions.checkState(context.getApplicationContext() instanceof IApp, "context is not instanceof App");
         return ((IApp) context.getApplicationContext()).getAppComponent();
     }
 

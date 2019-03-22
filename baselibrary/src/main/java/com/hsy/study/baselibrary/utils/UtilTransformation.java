@@ -8,7 +8,7 @@ import java.util.List;
  * @author haosiyuan
  * @date 2019/3/5 11:40 AM
  */
-public class TransformationUtil {
+public class UtilTransformation {
 
     /**
      * 基础类型转换
@@ -22,7 +22,7 @@ public class TransformationUtil {
          * @return
          */
         public static <E> List<E> arrayToList(E[] es) {
-            PreconditionsUtil.checkNotNull(es, "array can not be null");
+            UtilPreconditions.checkNotNull(es, "array can not be null");
             return Arrays.asList(es);
         }
     }

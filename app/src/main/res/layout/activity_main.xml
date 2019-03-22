@@ -9,33 +9,5 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <Button
-        android:onClick="login"
-        android:text="登录"
-        android:layout_width="200dp"
-        android:layout_height="50dp"/>
-
-    <Button
-        android:onClick="query"
-        android:text="查用户"
-        android:layout_width="200dp"
-        android:layout_height="50dp"/>
-
-    <Button
-        android:onClick="queryrx"
-        android:text="查用户rx"
-        android:layout_width="200dp"
-        android:layout_height="50dp"/>
-
-    <EditText
-        android:id="@+id/et_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:onClick="insertUser"
-        android:text="插入用户"
-        android:layout_width="200dp"
-        android:layout_height="50dp"/>
 
 </LinearLayout>

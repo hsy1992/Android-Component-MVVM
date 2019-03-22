@@ -6,7 +6,7 @@ import com.hsy.study.baselibrary.base.delegate.IActivity;
 import com.hsy.study.baselibrary.cache.local.ICache;
 import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
 import com.hsy.study.baselibrary.mvvm.view.IView;
-import com.hsy.study.baselibrary.utils.CommonUtil;
+import com.hsy.study.baselibrary.utils.UtilCommon;
 import com.hsy.study.baselibrary.mvvm.viewmodel.BaseViewModel;
 
 import javax.inject.Inject;
@@ -37,14 +37,14 @@ public abstract class BaseActivity<M extends BaseViewModel> extends AppCompatAct
     @Override
     public ICache<String, Object> getCacheData() {
         if (mCache == null) {
-            mCache = CommonUtil.getAppComponent(this).cacheFactory().build(new DefaultCacheType());
+            mCache = UtilCommon.getAppComponent(this).cacheFactory().build(new DefaultCacheType());
         }
         return mCache;
     }
 
     @Override
     public void showToast(String message) {
-        CommonUtil.getAppComponent(this).toast().toast(this, message,false);
+        UtilCommon.getAppComponent(this).toast().toast(this, message,false);
     }
 
     @Override
