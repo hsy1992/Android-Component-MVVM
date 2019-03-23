@@ -44,15 +44,6 @@ public abstract class BaseModel implements IModel, LifecycleObserver {
         this.appExecutors = UtilCommon.getAppComponent(mApplication).getAppExecutors();
     }
 
-    protected LiveData getData(String url) {
-        //TODO 获取数据库 数据库 -》 HTTP请求 -》数据库 -》用epoxy 更新UI    缓存-》HTTP -》数据库 -》更新UI
-        MediatorLiveData mediatorLiveData = new MediatorLiveData();
-        mediatorLiveData.addSource(mAppDatabase.userDao().loadAllUsersByLiveData(),
-                o -> mediatorLiveData.postValue(o));
-        return mediatorLiveData;
-    }
-
-
     @Override
     public void onDestroy() {
         mRepositoryManager = null;
