@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 
 /**
- * 原实体对象
+ * 源 实体对象
  * @author haosiyuan
  * @date 2019/3/27 1:37 PM
  */

@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * 查找 注解{@link Subscriber}
@@ -17,6 +19,11 @@ import java.util.Set;
  */
 class SubscriberHelper extends AbstractAnnotationHelper {
 
+    /**
+     * 缓存每个类的 Class 与Map<EventTypeEntity, Set<SubscriberEvent>> 之间的关系因为他们是不变的
+     */
+    private static final ConcurrentMap<Class<?>, Map<EventTypeEntity, Set<SubscriberEvent>>> MAPPING_CACHE =
+            new ConcurrentHashMap<>();
 
     @Override
     public Map<EventTypeEntity, Set<SubscriberEvent>> findAllAnnotation(Object listener) {
@@ -33,19 +40,23 @@ class SubscriberHelper extends AbstractAnnotationHelper {
         }
 
         //封装成Event 返回
-        if (!methods.isEmpty()) {
+        if (MAPPING_CACHE.get(listenerClass) == null) {
+            if (!methods.isEmpty()) {
 
-            for (Map.Entry<EventTypeEntity, Set<SourceMethodEntity>> entry : methods.entrySet()) {
+                for (Map.Entry<EventTypeEntity, Set<SourceMethodEntity>> entry : methods.entrySet()) {
 
-                Set<SubscriberEvent> subscribers = new HashSet<>();
+                    Set<SubscriberEvent> subscribers = new HashSet<>();
 
-                for (SourceMethodEntity methodEntity : entry.getValue()) {
+                    for (SourceMethodEntity methodEntity : entry.getValue()) {
 
-                    subscribers.add(new SubscriberEvent(listener, methodEntity.getMethod(), methodEntity.getThread()));
+                        subscribers.add(new SubscriberEvent(listener, methodEntity.getMethod(), methodEntity.getThread()));
+                    }
+
+                    subscribersInMethod.put(entry.getKey(), subscribers);
                 }
-
-                subscribersInMethod.put(entry.getKey(), subscribers);
             }
+        } else {
+            subscribersInMethod = MAPPING_CACHE.get(listenerClass);
         }
 
         return subscribersInMethod;

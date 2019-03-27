@@ -1,5 +1,7 @@
 package com.endless.rxbus.helper;
 
+import android.util.Log;
+
 import com.endless.rxbus.entity.EventTypeEntity;
 import com.endless.rxbus.entity.SourceMethodEntity;
 
@@ -7,6 +9,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import com.endless.rxbus.annotation.Producer;
 import com.endless.rxbus.event.ProducerEvent;
@@ -17,6 +21,12 @@ import com.endless.rxbus.event.ProducerEvent;
  * @date 2019/3/27 2:10 PM
  */
 class ProducerHelper extends AbstractAnnotationHelper{
+
+    /**
+     * 缓存每个类的 Class 与Map<EventTypeEntity, Set<ProducerEvent>> 之间的关系因为他们是不变的
+     */
+    private static final ConcurrentMap<Class<?>, Map<EventTypeEntity, Set<ProducerEvent>>> MAPPING_CACHE =
+            new ConcurrentHashMap<>();
 
     @Override
     public Map<EventTypeEntity, Set<ProducerEvent>> findAllAnnotation(Object listener) {
@@ -34,23 +44,27 @@ class ProducerHelper extends AbstractAnnotationHelper{
         }
 
         //封装成Event 返回
-        if (!methods.isEmpty()) {
+        if (MAPPING_CACHE.get(whichClass) == null) {
+            if (!methods.isEmpty()) {
 
-            for (Map.Entry<EventTypeEntity, Set<SourceMethodEntity>> entry : methods.entrySet()) {
+                for (Map.Entry<EventTypeEntity, Set<SourceMethodEntity>> entry : methods.entrySet()) {
 
-                Set<ProducerEvent> subscribers = new HashSet<>();
+                    Set<ProducerEvent> subscribers = new HashSet<>();
 
-                if (entry.getValue().size() > 1) {
-                    throw new RuntimeException("Can only contain one SourceMethodEntity");
+                    if (entry.getValue().size() > 1) {
+                        throw new RuntimeException("Can only contain one SourceMethodEntity");
+                    }
+
+                    for (SourceMethodEntity methodEntity : entry.getValue()) {
+
+                        subscribers.add(new ProducerEvent(listener, methodEntity.getMethod(), methodEntity.getThread()));
+                    }
+                    producersInMethod.put(entry.getKey(), subscribers);
                 }
-
-                for (SourceMethodEntity methodEntity : entry.getValue()) {
-
-                    subscribers.add(new ProducerEvent(listener, methodEntity.getMethod(), methodEntity.getThread()));
-                }
-
-                producersInMethod.put(entry.getKey(), subscribers);
             }
+        } else {
+            producersInMethod = MAPPING_CACHE.get(whichClass);
+            Log.e("ProducerHelper", "缓存>>>>>>");
         }
 
         return producersInMethod;
