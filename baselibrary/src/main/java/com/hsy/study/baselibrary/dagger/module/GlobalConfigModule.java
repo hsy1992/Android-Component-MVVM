@@ -6,6 +6,8 @@ import com.hsy.study.baselibrary.cache.local.ICache;
 import com.hsy.study.baselibrary.cache.local.DefaultCacheType;
 import com.hsy.study.baselibrary.cache.local.IntelligentCache;
 import com.hsy.study.baselibrary.common.executor.AppExecutors;
+import com.hsy.study.baselibrary.common.rxjava.errorhandler.RxErrorHandler;
+import com.hsy.study.baselibrary.common.rxjava.errorhandler.RxResponseErrorListener;
 import com.hsy.study.baselibrary.dagger.interfaces.IGsonConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.IOkHttpConfiguration;
 import com.hsy.study.baselibrary.dagger.interfaces.IRetrofitConfiguration;
@@ -59,6 +61,7 @@ public class GlobalConfigModule {
     private List<Interceptor> mInterceptors;
     private IToastConfiguration iToastConfiguration;
     private List<Migration> migrations;
+    private RxResponseErrorListener listener;
 
     public GlobalConfigModule(Builder builder) {
         this.retrofitConfiguration = builder.retrofitConfiguration;
@@ -76,6 +79,7 @@ public class GlobalConfigModule {
         this.mInterceptors = builder.mInterceptors;
         this.iToastConfiguration = builder.iToastConfiguration;
         this.migrations = builder.migrations;
+        this.listener = builder.listener;
     }
 
     /**
@@ -192,8 +196,21 @@ public class GlobalConfigModule {
      */
     @Singleton
     @Provides
-    List<Migration> provideMMigrations() {
+    List<Migration> provideMigrations() {
         return migrations == null ? new ArrayList<>() : migrations;
+    }
+
+    /**
+     * 提供RxHandler
+     * @return
+     */
+    @Singleton
+    @Provides
+    RxErrorHandler provideRxErrorHandler(Application application) {
+        return  RxErrorHandler.builder()
+                .with(application)
+                .responseErrorListener(listener == null ? RxResponseErrorListener.EMPTY : listener)
+                .build();
     }
 
     public static final class Builder{
@@ -229,6 +246,10 @@ public class GlobalConfigModule {
          * 数据库版本升级
          */
         private List<Migration> migrations;
+        /**
+         * RxJava 错误回调
+         */
+        private RxResponseErrorListener listener;
 
         public Builder retrofitConfiguration(IRetrofitConfiguration retrofitConfiguration) {
             this.retrofitConfiguration = retrofitConfiguration;
@@ -330,6 +351,14 @@ public class GlobalConfigModule {
             return this;
         }
 
+        /**
+         * RxJava 错误回调
+         * @return
+         */
+        public Builder rxResponseErrorListener(RxResponseErrorListener listener) {
+            this.listener = listener;
+            return this;
+        }
 
         public GlobalConfigModule build() {
             return new GlobalConfigModule(this);

@@ -53,6 +53,6 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies['dagger2AndroidProcessor']
     annotationProcessor rootProject.ext.dagger2['dagger2Processor']
     implementation project(':loginlibrary')
-
     annotationProcessor rootProject.ext.dependencies["butterknife_apt"]
+    implementation project(':rxbus')
 }

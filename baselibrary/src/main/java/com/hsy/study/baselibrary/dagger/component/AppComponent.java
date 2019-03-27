@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.hsy.study.baselibrary.base.delegate.AppDelegate;
 import com.hsy.study.baselibrary.cache.local.ICache;
 import com.hsy.study.baselibrary.common.executor.AppExecutors;
+import com.hsy.study.baselibrary.common.rxjava.errorhandler.RxErrorHandler;
 import com.hsy.study.baselibrary.common.toast.IToastConfiguration;
 import com.hsy.study.baselibrary.dagger.module.AppModule;
 import com.hsy.study.baselibrary.dagger.module.ClientModule;
@@ -89,6 +90,12 @@ public interface AppComponent {
      * @return
      */
     AppExecutors getAppExecutors();
+
+    /**
+     * RxJava错误处理
+     * @return
+     */
+    RxErrorHandler getRxErrorHandler();
 
     /**
      * 注入
