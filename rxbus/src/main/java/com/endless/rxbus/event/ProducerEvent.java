@@ -41,7 +41,7 @@ public class ProducerEvent extends Event {
     }
 
     /**
-     * 执行方法
+     * 执行得到 方法
      * @return
      */
     public Object produceEvent() throws Throwable {

@@ -1,5 +1,7 @@
 package com.endless.rxbus.helper;
 
+import android.util.Log;
+
 import com.endless.rxbus.annotation.Producer;
 import com.endless.rxbus.annotation.Subscriber;
 import com.endless.rxbus.annotation.Tag;
@@ -66,7 +68,9 @@ abstract class AbstractAnnotationHelper implements IAnnotationHelper {
                 Tag[] tags = subscriberAnnotation.tags();
 
                 loadAnnotated(thread, tags, method, parameterTypes.length > 0 ? parameterTypes[0] : null,
-                        producerMethods);
+                        subscriberMethods);
+
+                Log.d("Logger", "Subscriber 注解 >> method " + method.getName());
             }
 
             if (method.isAnnotationPresent(Producer.class)) {
@@ -79,6 +83,8 @@ abstract class AbstractAnnotationHelper implements IAnnotationHelper {
 
                 loadAnnotated(thread, tags, method, method.getReturnType().equals(Void.TYPE) ? null : method.getReturnType(),
                         producerMethods);
+
+                Log.d("Logger", "Producer 注解 >> method " + method.getName());
             }
         }
 
@@ -107,7 +113,7 @@ abstract class AbstractAnnotationHelper implements IAnnotationHelper {
                 tag = tags[tags.length - 1].value();
             }
 
-            EventTypeEntity type = new EventTypeEntity(tag, eventTypeClass, method.getName());
+            EventTypeEntity type = new EventTypeEntity(tag, eventTypeClass);
 
             Set<SourceMethodEntity> sourceMethodEntitySet = methodsMap.get(type);
 

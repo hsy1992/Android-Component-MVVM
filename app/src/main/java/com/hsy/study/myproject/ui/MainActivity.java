@@ -1,12 +1,17 @@
 package com.hsy.study.myproject.ui;
 
 
+import android.content.Intent;
 import android.os.Looper;
+import android.util.Log;
+import android.view.View;
 
+import com.endless.rxbus.annotation.Subscriber;
 import com.hsy.study.baselibrary.base.BaseActivity;
 import com.hsy.study.baselibrary.common.logger.Logger;
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
 import com.hsy.study.myproject.R;
+import com.hsy.study.myproject.Test1;
 import com.hsy.study.myproject.UserContract;
 import com.hsy.study.myproject.dagger.DaggerUserComponent;
 import com.hsy.study.myproject.viewmodel.UserViewModel;
@@ -35,7 +40,6 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
     MutableLiveData mediatorLiveData;
     @Override
     public void initView() {
-
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel.class);
     }
 
@@ -59,4 +63,17 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
         showToast("user");
     }
 
+    public void test1(View view) {
+        startActivity(new Intent(this, Test1.class));
+    }
+
+    @Subscriber
+    public void showww(String message) {
+        Logger.errorInfo(message);
+    }
+
+    @Subscriber
+    public void showww123(String message) {
+        Logger.errorInfo(message +"more");
+    }
 }

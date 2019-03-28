@@ -33,20 +33,20 @@ class ProducerHelper extends AbstractAnnotationHelper{
         //单个事件
         Map<EventTypeEntity, Set<ProducerEvent>> producersInMethod = new HashMap<>(DEFAULT_INITIALIZATION);
 
-        Class<?> whichClass = listener.getClass();
+        Class<?> listenerClass = listener.getClass();
 
-        Map<EventTypeEntity, Set<SourceMethodEntity>> methods = PRODUCERS_CACHE.get(whichClass);
+        Map<EventTypeEntity, Set<SourceMethodEntity>> methods = PRODUCERS_CACHE.get(listenerClass);
 
         if (methods == null) {
             //不含有缓存 去加载class
             methods = new HashMap<>(DEFAULT_INITIALIZATION);
-            loadAnnotatedProducerMethods(whichClass, methods);
+            loadAnnotatedProducerMethods(listenerClass, methods);
         }
 
         //封装成Event 返回
-        if (MAPPING_CACHE.get(whichClass) == null) {
+        if (MAPPING_CACHE.get(listenerClass) == null) {
             if (!methods.isEmpty()) {
-
+                Log.d("Logger", "ProducerHelper 加载 >> methods " + methods.size());
                 for (Map.Entry<EventTypeEntity, Set<SourceMethodEntity>> entry : methods.entrySet()) {
 
                     Set<ProducerEvent> subscribers = new HashSet<>();
@@ -62,9 +62,10 @@ class ProducerHelper extends AbstractAnnotationHelper{
                     producersInMethod.put(entry.getKey(), subscribers);
                 }
             }
+            MAPPING_CACHE.put(listenerClass, producersInMethod);
         } else {
-            producersInMethod = MAPPING_CACHE.get(whichClass);
-            Log.e("ProducerHelper", "缓存>>>>>>");
+            producersInMethod = MAPPING_CACHE.get(listenerClass);
+            Log.d("Logger", "ProducerHelper 缓存 >> class " + listenerClass.getSimpleName());
         }
 
         return producersInMethod;

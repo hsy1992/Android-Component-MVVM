@@ -28,5 +28,5 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation rootProject.ext.androidXLibs
-    api rootProject.ext.rxJavaLibs
+    implementation rootProject.ext.rxJavaLibs
 }

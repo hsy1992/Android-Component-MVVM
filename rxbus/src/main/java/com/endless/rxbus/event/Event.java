@@ -70,12 +70,18 @@ public abstract class Event {
     }
 
     /**
-     * 使失效 之后不会生产事件
+     * 使失效 之后不会执行事件
      */
     public void invalidate() {
         valid = false;
     }
 
+    /**
+     * 使生效
+     */
+    public void validate() {
+        valid = true;
+    }
     /**
      * 哈希值
      * @return

@@ -29,4 +29,12 @@ public class BindEventEntity {
     public Set<SubscriberEvent> getSubscriberEventSet() {
         return subscriberEventSet;
     }
+
+    public void setProducerEvent(ProducerEvent producerEvent) {
+        this.producerEvent = producerEvent;
+    }
+
+    public void setSubscriberEventSet(Set<SubscriberEvent> subscriberEventSet) {
+        this.subscriberEventSet = subscriberEventSet;
+    }
 }

@@ -10,4 +10,11 @@
     tools:context=".ui.MainActivity">
 
 
+    <TextView
+        android:onClick="test1"
+        android:text="去test1"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"/>
 </LinearLayout>

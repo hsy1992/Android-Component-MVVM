@@ -3,6 +3,7 @@ package com.hsy.study.baselibrary.base.delegate;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.endless.rxbus.RxBus;
 import com.hsy.study.baselibrary.utils.UtilCommon;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ public class ActivityDelegateImpl implements IActivityDelegate {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        RxBus.getInstance().register(mActivity);
 
         iActivity.setUpAppComponent(UtilCommon.getAppComponent(mActivity));
 
@@ -58,6 +60,7 @@ public class ActivityDelegateImpl implements IActivityDelegate {
 
     @Override
     public void onDestroy() {
+        RxBus.getInstance().unRegister(mActivity);
         mActivity = null;
         iActivity = null;
         if (unbinder != null && unbinder != Unbinder.EMPTY){

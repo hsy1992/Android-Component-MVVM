@@ -1,5 +1,7 @@
 package com.endless.rxbus.helper;
 
+import android.util.Log;
+
 import com.endless.rxbus.annotation.Subscriber;
 import com.endless.rxbus.entity.EventTypeEntity;
 import com.endless.rxbus.entity.SourceMethodEntity;
@@ -53,10 +55,15 @@ class SubscriberHelper extends AbstractAnnotationHelper {
                     }
 
                     subscribersInMethod.put(entry.getKey(), subscribers);
+
                 }
+                Log.d("Logger", "SubscriberHelper 加载 >> methods " + subscribersInMethod.size());
+
             }
+            MAPPING_CACHE.put(listenerClass, subscribersInMethod);
         } else {
             subscribersInMethod = MAPPING_CACHE.get(listenerClass);
+            Log.d("Logger", "SubscriberHelper 缓存 >> class " + listenerClass.getSimpleName());
         }
 
         return subscribersInMethod;

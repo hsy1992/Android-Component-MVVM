@@ -1,19 +1,30 @@
 package com.endless.rxbus;
 
+import android.util.Log;
+
+import com.endless.rxbus.annotation.Tag;
 import com.endless.rxbus.entity.BindEventEntity;
 import com.endless.rxbus.entity.EventTypeEntity;
+import com.endless.rxbus.event.DeadEvent;
 import com.endless.rxbus.event.ProducerEvent;
 import com.endless.rxbus.event.SubscriberEvent;
 import com.endless.rxbus.handler.ThreadStrategy;
 import com.endless.rxbus.helper.AnnotationHelper;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import io.reactivex.functions.Consumer;
+
 /**
+ * {@link com.endless.rxbus.annotation.Producer} 应和 post在同一个Object
  * @author haosiyuan
  * @date 2019/3/26 3:42 PM
  */
@@ -32,11 +43,6 @@ public class Bus {
      * 所有的提供事件
      */
     private ConcurrentMap<EventTypeEntity, ProducerEvent> produceEventMap = new ConcurrentHashMap<>();
-
-    /**
-     * 一个 {@link EventTypeEntity} 对应 一个 {@link ProducerEvent} 对应多个 {@link SubscriberEvent}
-     */
-    private ConcurrentMap<EventTypeEntity, BindEventEntity> bindEventMap = new ConcurrentHashMap<>();
 
     /**
      * 线程策略
@@ -71,7 +77,7 @@ public class Bus {
         if (object == null) {
             throw new IllegalArgumentException("Object to register must not be null.");
         }
-
+        Log.d("Logger", "register>>" + object.getClass().getSimpleName());
         threadStrategy.handle(this);
 
         registerProducer(object);
@@ -79,13 +85,15 @@ public class Bus {
         registerSubscriber(object);
 
         //事件分发绑定
-        for (Map.Entry<EventTypeEntity, BindEventEntity> entry : bindEventMap.entrySet()) {
-
-            for (SubscriberEvent subscriberEvent : entry.getValue().getSubscriberEventSet()) {
-
-                dispatchProducerResult(subscriberEvent, entry.getValue().getProducerEvent());
-            }
-        }
+//        for (Map.Entry<EventTypeEntity, BindEventEntity> entry : bindEventMap.entrySet()) {
+//
+//            for (SubscriberEvent subscriberEvent : entry.getValue().getSubscriberEventSet()) {
+//                //都为有效的时分发事件
+//                if (subscriberEvent.isValid() && subscriberEvent.isValid()) {
+//                    dispatchProducerResult(subscriberEvent, entry.getValue().getProducerEvent());
+//                }
+//            }
+//        }
     }
 
     /**
@@ -93,6 +101,7 @@ public class Bus {
      * @param object
      */
     private void registerProducer(Object object) {
+
         //查找对象中 所有 Producer
         Map<EventTypeEntity, Set<ProducerEvent>> producersMapFromObject
                 = AnnotationHelper.getProducesEvent(object);
@@ -111,13 +120,6 @@ public class Bus {
                     throw new IllegalArgumentException("Producer method for type " + type
                             + " found on type " + producerEvent.getTarget().getClass()
                             + ", but already registered by type " + previousProducerEvent.getTarget().getClass() + ".");
-                }
-
-                //该eventType下所有订阅的
-                Set<SubscriberEvent> subscriberEvents = subscriberEventMap.get(type);
-                if (subscriberEvents != null && !subscriberEvents.isEmpty()) {
-                    //加入对象到 bindEventMap
-                    bindEventMap.put(type, new BindEventEntity(producerEvent, subscriberEvents));
                 }
             }
         }
@@ -154,22 +156,125 @@ public class Bus {
             if (!subscribers.addAll(foundSubscribers)) {
                 throw new IllegalArgumentException("Object already registered.");
             }
-
-            ProducerEvent producer = produceEventMap.get(type);
-            if (producer != null && producer.isValid()) {
-                //加入对象到 bindEventMap
-                bindEventMap.put(type, new BindEventEntity(producer, subscriberEventMap.get(type)));
-            }
         }
     }
 
     /**
      * 遍历分发事件
-     * @param subscriber
+     * @param subscriberEvent
      * @param producerEvent
      */
-    private void dispatchProducerResult(SubscriberEvent subscriber, ProducerEvent producerEvent) {
-        producerEvent.produce().subscribe();
+    private void dispatchProducerResult(final SubscriberEvent subscriberEvent, ProducerEvent producerEvent) {
+        Log.d("Logger", "dispatchProducerResult");
+        producerEvent.produce().subscribe(new Consumer() {
+            @Override
+            public void accept(Object object) throws Exception {
+                dispatch(object, subscriberEvent);
+            }
+        });
     }
 
+    /**
+     * @param object   生成分发的对象
+     * @param wrapper wrapper that will call the handle.
+     */
+    protected void dispatch(Object object, SubscriberEvent wrapper) {
+        if (wrapper.isValid()) {
+            Log.d("Logger", "dispatch" + object.getClass() +">>");
+            wrapper.handle(object);
+        }
+    }
+
+    /**
+     * 对象销毁时 解除改对象的绑定
+     * @param object
+     */
+    public void unRegister(Object object) {
+        Log.d("Logger", "unRegister >> " + object.getClass().getSimpleName());
+        if (object == null) {
+            throw new IllegalArgumentException("Object to unregister must not be null.");
+        }
+
+        threadStrategy.handle(this);
+
+        //处理 producer 解除绑定 移除缓存
+        Map<EventTypeEntity, Set<ProducerEvent>> producersInListener
+                = AnnotationHelper.getProducesEvent(object);
+
+        for (Map.Entry<EventTypeEntity, Set<ProducerEvent>> entry : producersInListener.entrySet()) {
+            final EventTypeEntity key = entry.getKey();
+
+            ProducerEvent producerEvent= produceEventMap.get(key);
+            Set<ProducerEvent> value = entry.getValue();
+
+            if (value == null || !value.contains(producerEvent)) {
+                throw new IllegalArgumentException(
+                        "Missing event producer for an annotated method. Is " + object.getClass()
+                                + " registered?");
+            }
+            produceEventMap.remove(key);
+        }
+
+        Log.d("Logger", "produceEventMap 剩余>> " + produceEventMap.keySet().size());
+
+        //处理 subscriber 解除绑定 移除缓存
+        Map<EventTypeEntity, Set<SubscriberEvent>> subscribersInListener
+          = AnnotationHelper.getSubscribersEvent(object);
+
+        for (Map.Entry<EventTypeEntity, Set<SubscriberEvent>> entry : subscribersInListener.entrySet()) {
+
+            Set<SubscriberEvent> currentSubscribers = subscriberEventMap.get(entry.getKey());
+
+            Collection<SubscriberEvent> eventMethodsInListener = entry.getValue();
+
+            if (currentSubscribers == null || !currentSubscribers.containsAll(eventMethodsInListener)) {
+                throw new IllegalArgumentException(
+                        "Missing event subscriber for an annotated method. Is " + object.getClass()
+                                + " registered?");
+            }
+
+            currentSubscribers.removeAll(eventMethodsInListener);
+        }
+
+        Log.d("Logger", "subscriberEventMap 剩余>> " + subscriberEventMap.keySet().size());
+    }
+
+    /**
+     * post方法 默认key tag
+     * @param clazz 该对象
+     */
+    public void post(Class clazz) {
+        post(Tag.DEFAULT, clazz);
+    }
+
+    /**
+     * post 执行
+     * @param tag 执行的标签
+     * @param dispatchClasses
+     */
+    public boolean post(String tag, Class dispatchClasses) {
+
+        Log.d("Logger", "tag " + tag + ">> class " + dispatchClasses.getSimpleName());
+
+        if (dispatchClasses == null) {
+            throw new IllegalArgumentException("Event to post must not be null.");
+        }
+        threadStrategy.handle(this);
+
+        boolean dispatched = false;
+        EventTypeEntity dispatchType = new EventTypeEntity(tag, dispatchClasses);
+        Set<SubscriberEvent> subscriberEvents = subscriberEventMap.get(dispatchType);
+
+        ProducerEvent producerEvents = produceEventMap.get(dispatchType);
+
+        if (subscriberEvents != null && !subscriberEvents.isEmpty() && producerEvents != null) {
+            dispatched = true;
+
+            for (SubscriberEvent subscriberEvent : subscriberEvents) {
+                dispatchProducerResult(subscriberEvent, producerEvents);
+            }
+        }
+
+        return dispatched;
+    }
 }

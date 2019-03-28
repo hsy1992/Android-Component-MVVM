@@ -24,21 +24,14 @@ public class EventTypeEntity {
      */
     private final int hashCode;
 
-    private String methodName;
-
-    public EventTypeEntity(String tag, Class<?> clazz, String methodName) {
+    public EventTypeEntity(String tag, Class<?> clazz) {
 
         if (TextUtils.isEmpty(tag)) {
             throw new IllegalArgumentException("Event Tag can not be empty");
         }
 
-        if (TextUtils.isEmpty(methodName)) {
-            throw new IllegalArgumentException("Event methodName can not be empty");
-        }
-
         this.tag = tag;
         this.clazz = getRealClass(clazz);
-        this.methodName = methodName;
 
         //哈希值 尽量避免在Map中 碰撞导致数据丢失
         final int prime = 31;
@@ -47,7 +40,7 @@ public class EventTypeEntity {
 
     @Override
     public String toString() {
-        return "[EventType " + tag + " && " + clazz  + " && " + methodName + "]";
+        return "[EventType " + tag + " && " + clazz + "]";
     }
 
     @Override
@@ -72,7 +65,7 @@ public class EventTypeEntity {
 
         final EventTypeEntity other = (EventTypeEntity) obj;
 
-        return tag.equals(other.tag) && clazz == other.clazz && methodName == other.methodName;
+        return tag.equals(other.tag) && clazz == other.clazz;
     }
 
     /**

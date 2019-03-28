@@ -1,5 +1,7 @@
 package com.endless.rxbus.event;
 
+import android.util.Log;
+
 import com.endless.rxbus.handler.EventThreadFactory;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,13 +36,13 @@ public class SubscriberEvent extends Event {
                .observeOn(EventThreadFactory.getScheduler(eventThread))
                .subscribe(new Consumer() {
                    @Override
-                   public void accept(Object event) throws Exception {
+                   public void accept(Object object) throws Exception {
                        //事件处理
                        if (valid) {
                            try {
-                               handleEvent(event);
+                               handleEvent(object);
                            } catch (Throwable e) {
-                               throwRuntimeException("Could not dispatch event: " + event.getClass() +
+                               throwRuntimeException("Could not dispatch event: " + object.getClass() +
                                        " to subscriber " + SubscriberEvent.this, e);
                            }
                        }
@@ -48,19 +50,27 @@ public class SubscriberEvent extends Event {
                });
     }
 
+    public void handle(Object object) {
+        subject.onNext(object);
+    }
+
     /**
      * 处理事件
      * 执行方法 event为参数
-     * @param event
+     * @param object 生产分发下的对象
      */
-    private void handleEvent(Object event) throws Throwable {
+    private void handleEvent(Object object) throws Throwable {
         if (!valid) {
             //不是有效的
             throw new IllegalStateException(toString() + " has been invalidated and can no produce events.");
         }
-
+        Log.d("Logger", "handleEvent");
         try {
-            method.invoke(target, event);
+            if (object == null) {
+                method.invoke(target);
+            } else {
+                method.invoke(target, object);
+            }
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
