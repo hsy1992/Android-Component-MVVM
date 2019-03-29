@@ -14,18 +14,19 @@ public interface NetworkChangeListener {
 
     /**
      * 网络重载
+     * @param state 重载后状态
      */
-    void onNetReload();
+    void onNetReload(NetworkState state);
 
-    /**
-     * 网络良好
-     */
-    void onNetGood();
-
-    /**
-     * 网络不佳
-     */
-    void onNetBad();
+//    /**
+//     * 网络良好
+//     */
+//    void onNetGood();
+//
+//    /**
+//     * 网络不佳
+//     */
+//    void onNetBad();
 
     /**
      * 网络变化回调

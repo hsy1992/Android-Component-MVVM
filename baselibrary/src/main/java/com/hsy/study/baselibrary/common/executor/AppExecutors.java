@@ -39,6 +39,7 @@ public class AppExecutors {
 
     @Inject
     public AppExecutors() {
+        mainExecutor = new MainThreadExecutor();
     }
 
     public ExecutorService getDiskIO() {

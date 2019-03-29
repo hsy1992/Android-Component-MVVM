@@ -45,7 +45,6 @@ public class NetworkReceiver extends BroadcastReceiver {
             }
 
         } else {
-            Log.e("Logger","无网>>>>>>>");
             networkChangeListeners.onNetChange(NetworkState.NO_NET);
         }
     }
@@ -85,32 +84,27 @@ public class NetworkReceiver extends BroadcastReceiver {
     private void notifyNetWorkChangeAbove21(NetworkCapabilities capabilities) {
         if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
             //蜂窝网络
-            Log.e("Logger","蜂窝网络>>>>>>>>");
             networkChangeListeners.onNetChange(NetworkState.MOBILE);
             return;
         }
         if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
             //wifi
-            Log.e("Logger","wifi>>>>>>>>");
             networkChangeListeners.onNetChange(NetworkState.WIFI);
             return;
         }
         if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH)) {
             //蓝牙
-            Log.e("Logger","蓝牙>>>>>>>>");
             networkChangeListeners.onNetChange(NetworkState.BLUETOOTH);
             return;
         }
         if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
             //以太网
-            Log.e("Logger","以太网>>>>>>>>");
             networkChangeListeners.onNetChange(NetworkState.ETHERNET);
             return;
 
         }
         if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
             //VPN
-            Log.e("Logger","VPN>>>>>>>>");
             networkChangeListeners.onNetChange(NetworkState.VPN);
             return;
         }

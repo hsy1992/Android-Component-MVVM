@@ -1,20 +1,18 @@
 package com.hsy.study.myproject;
 
-import android.os.Bundle;
 import android.view.View;
 
 import com.endless.rxbus.RxBus;
 import com.endless.rxbus.annotation.Producer;
+import com.endless.rxbus.annotation.Tag;
+import com.endless.rxbus.handler.EventThread;
 import com.hsy.study.baselibrary.base.BaseActivity;
-import com.hsy.study.baselibrary.common.logger.Logger;
 import com.hsy.study.baselibrary.dagger.component.AppComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -26,9 +24,8 @@ public class Test1 extends BaseActivity {
     public static List<Disposable> list = new ArrayList<>();
     private Disposable observable;
 
-
     public void send(View view) {
-        RxBus.getInstance().post(String.class);
+        RxBus.getInstance().post("123", String.class);
     }
 
     @Override
@@ -50,7 +47,7 @@ public class Test1 extends BaseActivity {
     public void setUpAppComponent(@NonNull AppComponent appComponent) {
     }
 
-    @Producer
+    @Producer(tags = {@Tag("123")}, thread = EventThread.NEW_THREAD)
     public String sendadf() {
         return "123123";
     }

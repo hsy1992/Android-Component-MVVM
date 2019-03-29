@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'android-aspectjx'
+
 android {
     compileSdkVersion 28
 
@@ -49,10 +51,10 @@ dependencies {
     testImplementation rootProject.ext.test['powermock_api_mockito2']
     testImplementation rootProject.ext.test['powermock_classloading_xstream']
     testImplementation rootProject.ext.test['robolectric']
-    implementation project(':networkclientstate')
     annotationProcessor rootProject.ext.dependencies['dagger2AndroidProcessor']
     annotationProcessor rootProject.ext.dagger2['dagger2Processor']
     implementation project(':loginlibrary')
     annotationProcessor rootProject.ext.dependencies["butterknife_apt"]
-    compile project(path: ':rxbus')
+    implementation project(path: ':rxbus')
+    implementation project(':networkclientstate')
 }

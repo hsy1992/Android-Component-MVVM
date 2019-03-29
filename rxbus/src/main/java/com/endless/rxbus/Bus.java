@@ -84,16 +84,6 @@ public class Bus {
 
         registerSubscriber(object);
 
-        //事件分发绑定
-//        for (Map.Entry<EventTypeEntity, BindEventEntity> entry : bindEventMap.entrySet()) {
-//
-//            for (SubscriberEvent subscriberEvent : entry.getValue().getSubscriberEventSet()) {
-//                //都为有效的时分发事件
-//                if (subscriberEvent.isValid() && subscriberEvent.isValid()) {
-//                    dispatchProducerResult(subscriberEvent, entry.getValue().getProducerEvent());
-//                }
-//            }
-//        }
     }
 
     /**

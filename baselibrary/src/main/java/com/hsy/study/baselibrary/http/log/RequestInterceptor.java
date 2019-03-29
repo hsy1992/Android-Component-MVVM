@@ -4,7 +4,7 @@ import com.hsy.study.baselibrary.http.IGlobalHttpHandler;
 import com.hsy.study.baselibrary.utils.UtilCharacterHandler;
 import com.hsy.study.baselibrary.utils.UtilMediaType;
 import com.hsy.study.baselibrary.utils.UrlEncoderUtil;
-import com.hsy.study.baselibrary.utils.ZipHelperUtil;
+import com.hsy.study.baselibrary.utils.UtilZipHelper;
 import com.hsy.study.baselibrary.common.logger.Logger;
 
 import java.io.IOException;
@@ -164,12 +164,12 @@ public class RequestInterceptor implements Interceptor {
         if (contentType != null) {
             charset = contentType.charset(charset);
         }
-        if (encoding != null && encoding.equalsIgnoreCase(ZipHelperUtil.GZIP)) {
+        if (encoding != null && encoding.equalsIgnoreCase(UtilZipHelper.GZIP)) {
             //content 使用 gzip 压缩
-            return ZipHelperUtil.decompressForGzip(clone.readByteArray(), convertCharset(charset));
-        } else if (encoding != null && encoding.equalsIgnoreCase(ZipHelperUtil.ZLIB)) {
+            return UtilZipHelper.decompressForGzip(clone.readByteArray(), convertCharset(charset));
+        } else if (encoding != null && encoding.equalsIgnoreCase(UtilZipHelper.ZLIB)) {
             //content 使用 zlib 压缩
-            return ZipHelperUtil.decompressToStringForZlib(clone.readByteArray(), convertCharset(charset));
+            return UtilZipHelper.decompressToStringForZlib(clone.readByteArray(), convertCharset(charset));
         } else {
             //content 没有被压缩, 或者使用其他未知压缩方式
             return clone.readString(charset);
