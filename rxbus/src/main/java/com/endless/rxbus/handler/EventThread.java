@@ -1,7 +1,9 @@
 package com.endless.rxbus.handler;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import androidx.annotation.IntDef;
 import io.reactivex.Scheduler;
@@ -14,6 +16,7 @@ import io.reactivex.Scheduler;
 @IntDef({EventThread.MAIN_THREAD, EventThread.NEW_THREAD, EventThread.IO, EventThread.SINGLE
         , EventThread.COMPUTATION, EventThread.TRAMPOLINE})
 @Retention(RetentionPolicy.SOURCE)
+@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
 public @interface EventThread {
 
     /**
