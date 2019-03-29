@@ -89,7 +89,7 @@ public class PermissionUtil {
     }
 
     /**
-     * 检查所给权限List是否需要给提示
+     * 检查所有给权限List是否需要给提示
      *
      * @param activity    Activity
      * @param permissions 权限list

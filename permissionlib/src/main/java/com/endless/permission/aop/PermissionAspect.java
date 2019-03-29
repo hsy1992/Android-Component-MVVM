@@ -3,15 +3,24 @@ package com.endless.permission.aop;
 import android.app.Activity;
 import android.content.Context;
 
+import com.endless.permission.PermissionActivity;
+import com.endless.permission.annotation.PermissionCancel;
 import com.endless.permission.annotation.PermissionContext;
 import com.endless.permission.annotation.PermissionNeed;
+import com.endless.permission.annotation.PermissionRefuse;
+import com.endless.permission.entity.PermissionCancelEntity;
+import com.endless.permission.entity.PermissionRefuseEntity;
+import com.endless.permission.interfaces.IPermissionCallBack;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,10 +39,6 @@ import androidx.fragment.app.Fragment;
 public class PermissionAspect {
 
     /**
-     * 注解Context时的缓存
-     */
-    private ConcurrentMap<Class<?>, Context> CONTEXT_CACHE = new ConcurrentHashMap<>();
-    /**
      * Pointcut 需要的
      */
     private static final String PERMISSION_REQUEST_POINT_CUT =
@@ -47,7 +52,7 @@ public class PermissionAspect {
     @Around("permissionNeed(permissionNeed)")
     public Object aroundPoint(final ProceedingJoinPoint joinPoint, PermissionNeed permissionNeed) {
 
-        Object object = joinPoint.getThis();
+        final Object object = joinPoint.getThis();
         Context context = null;
 
         if (object == null) {
@@ -69,8 +74,84 @@ public class PermissionAspect {
         }
 
 
+        String[] permissions = permissionNeed.permission();
+        if (permissions.length == 0) {
+            throw new RuntimeException("PermissionNeed is not need");
+        }
+
+        PermissionActivity.requestPermission(context, permissions, new IPermissionCallBack() {
+            @Override
+            public void permissionGranted() {
+                //权限同意
+                try {
+                    joinPoint.proceed();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+
+            @Override
+            public void permissionDenied(PermissionRefuseEntity refuseEntity) {
+
+                getAnnotationAndInvoke(object, PermissionRefuse.class, refuseEntity);
+            }
+
+            @Override
+            public void permissionCanceled(PermissionCancelEntity cancelEntity) {
+
+                getAnnotationAndInvoke(object, PermissionCancel.class, cancelEntity);
+            }
+        });
 
         return object;
+    }
+
+    /**
+     * 获取注解并执行
+     * @param object
+     * @param annotationClazz
+     * @param entity
+     * @param <E>
+     */
+    private <E> void getAnnotationAndInvoke(Object object,
+                                        Class<? extends Annotation> annotationClazz, E entity) {
+
+        Class<?> clazz = object.getClass();
+
+        Method[] methods = clazz.getDeclaredMethods();
+
+        if (methods.length == 0) {
+            return;
+        }
+
+        for (Method method : methods) {
+
+            if (method.isAnnotationPresent(annotationClazz)) {
+
+                method.setAccessible(true);
+
+                //获取方法类型
+                Class<?>[] types = method.getParameterTypes();
+                if (types.length != 1) {
+                    return;
+                }
+
+                Annotation annotation = method.getAnnotation(annotationClazz);
+
+                if (annotation == null) {
+                    return;
+                }
+
+                try {
+                    method.invoke(object, entity);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
 
@@ -82,29 +163,18 @@ public class PermissionAspect {
     private Context getContextFromObject(Object object) {
 
         Context context = null;
+        Class<?> clazz = object.getClass();
 
-        Set<Class<?>> classes = getClassesFor(object.getClass());
+        Field[] fields = clazz.getDeclaredFields();
 
-        //注解在父类时 查看父类是否有缓存
-        for (Class<?> clazz : classes) {
+        for (Field field : fields) {
+            if (field.getAnnotation(PermissionContext.class) != null) {
 
-            if (CONTEXT_CACHE.containsKey(clazz)) {
-                context = CONTEXT_CACHE.get(clazz);
-                break;
-            } else {
-                Field[] fields = clazz.getDeclaredFields();
+                try {
+                    context = (Context) field.get(object);
+                    break;
+                } catch (Exception e) {
 
-                for (Field field : fields) {
-                    if (field.getAnnotation(PermissionContext.class) != null) {
-
-                        try {
-                            Object clazzObject = clazz.newInstance();
-                            context = (Context) field.get(clazzObject);
-                            break;
-                        } catch (Exception e) {
-                            continue;
-                        }
-                    }
                 }
             }
         }
@@ -112,28 +182,5 @@ public class PermissionAspect {
         return context;
     }
 
-    /**
-     * 获取所有父类Class
-     * @param concreteClass
-     * @return
-     */
-    private Set<Class<?>> getClassesFor(Class<?> concreteClass) {
-
-        List<Class<?>> parents = new LinkedList<>();
-        Set<Class<?>> classes = new HashSet<>();
-
-        parents.add(concreteClass);
-
-        while (!parents.isEmpty()) {
-            Class<?> clazz = parents.remove(0);
-            classes.add(clazz);
-
-            Class<?> parent = clazz.getSuperclass();
-            if (parent != null) {
-                parents.add(parent);
-            }
-        }
-        return classes;
-    }
 
 }
