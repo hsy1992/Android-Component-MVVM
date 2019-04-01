@@ -1,6 +1,5 @@
 package com.endless.permission.entity;
 
-import java.util.List;
 
 /**
  * 权限取消

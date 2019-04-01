@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.endless.study.myproject">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <application
         android:name="com.endless.study.myproject.TestApplication"
         android:allowBackup="true"

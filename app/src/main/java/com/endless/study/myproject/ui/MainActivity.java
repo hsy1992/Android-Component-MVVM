@@ -5,6 +5,12 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.endless.permission.annotation.Permission;
+import com.endless.permission.annotation.PermissionCancel;
+import com.endless.permission.annotation.PermissionNeed;
+import com.endless.permission.annotation.PermissionRefuse;
+import com.endless.permission.entity.PermissionCancelEntity;
+import com.endless.permission.entity.PermissionRefuseEntity;
 import com.endless.rxbus.annotation.Subscriber;
 import com.endless.rxbus.annotation.Tag;
 import com.endless.rxbus.handler.EventThread;
@@ -40,16 +46,25 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
         return R.layout.activity_main;
     }
 
-    MutableLiveData mediatorLiveData;
-
     @Override
     public void initView() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel.class);
     }
 
+    @PermissionNeed(permission = {Permission.CameraGroup.CAMERA})
     @Override
     public void initData() {
         viewModel.test();
+    }
+
+    @PermissionRefuse
+    public void refuse(PermissionRefuseEntity entity){
+        showToast(entity.getMessage());
+    }
+
+    @PermissionCancel
+    public void cancel(PermissionCancelEntity entity){
+        showToast(entity.getMessage());
     }
 
     @Override

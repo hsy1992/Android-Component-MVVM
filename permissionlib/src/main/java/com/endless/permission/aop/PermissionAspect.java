@@ -10,6 +10,7 @@ import com.endless.permission.annotation.PermissionNeed;
 import com.endless.permission.annotation.PermissionRefuse;
 import com.endless.permission.entity.PermissionCancelEntity;
 import com.endless.permission.entity.PermissionRefuseEntity;
+import com.endless.permission.entity.ResultEntity;
 import com.endless.permission.interfaces.IPermissionCallBack;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -42,9 +43,9 @@ public class PermissionAspect {
      * Pointcut 需要的
      */
     private static final String PERMISSION_REQUEST_POINT_CUT =
-                "execution(@com.endless.permission.annotation.PermissionNeed * *（..)";
+                "execution(@com.endless.permission.annotation.PermissionNeed * *(..))";
 
-    @Pointcut(PERMISSION_REQUEST_POINT_CUT + " &&  @annotation(permissionNeed)")
+    @Pointcut(PERMISSION_REQUEST_POINT_CUT + " && @annotation(permissionNeed)")
     public void permissionNeed(PermissionNeed permissionNeed) {
 
     }
@@ -113,8 +114,8 @@ public class PermissionAspect {
      * @param entity
      * @param <E>
      */
-    private <E> void getAnnotationAndInvoke(Object object,
-                                        Class<? extends Annotation> annotationClazz, E entity) {
+    private void getAnnotationAndInvoke(Object object,
+                                Class<? extends Annotation> annotationClazz, ResultEntity entity) {
 
         Class<?> clazz = object.getClass();
 
@@ -143,10 +144,9 @@ public class PermissionAspect {
                 }
 
                 try {
+
                     method.invoke(object, entity);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

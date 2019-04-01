@@ -7,16 +7,17 @@ import android.provider.Settings;
 
 import com.endless.permission.interfaces.ISet;
 
+
 /**
  * 默认去设置
  * @author haosiyuan
  * @date 2019/3/29 3:42 PM
  */
-class DefaultSet implements ISet {
+public class DefaultSet implements ISet {
 
     private Context context;
 
-    DefaultSet(Context context) {
+    public DefaultSet(Context context) {
         this.context = context;
     }
 

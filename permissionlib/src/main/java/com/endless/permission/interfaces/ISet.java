@@ -5,7 +5,7 @@ package com.endless.permission.interfaces;
  * @author haosiyuan
  * @date 2019/3/29 3:36 PM
  */
-interface ISet {
+public interface ISet {
 
     /**
      * 去设置

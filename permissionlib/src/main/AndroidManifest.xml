@@ -2,6 +2,7 @@
           package="com.endless.xin.permissionlib">
     <application>
         <activity
-            android:name="com.endless.permission.PermissionActivity" />
+            android:name="com.endless.permission.PermissionActivity"
+            android:theme="@style/Theme.Transparent"/>
     </application>
 </manifest>
