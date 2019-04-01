@@ -57,4 +57,57 @@ public class UtilFile {
         return "/mnt/sdcard/" + packageName;
     }
 
+
+    /**
+     * 使用递归获取目录文件大小
+     *
+     * @param dir
+     * @return
+     */
+    public static long getDirSize(File dir) {
+        if (dir == null) {
+            return 0;
+        }
+        if (!dir.isDirectory()) {
+            return 0;
+        }
+        long dirSize = 0;
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                dirSize += file.length();
+            } else if (file.isDirectory()) {
+                dirSize += file.length();
+                //递归调用继续统计
+                dirSize += getDirSize(file);
+            }
+        }
+        return dirSize;
+    }
+
+    /**
+     * 使用递归删除文件夹
+     *
+     * @param dir
+     * @return
+     */
+    public static boolean deleteDir(File dir) {
+        if (dir == null) {
+            return false;
+        }
+        if (!dir.isDirectory()) {
+            return false;
+        }
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                file.delete();
+            } else if (file.isDirectory()) {
+                //递归调用继续删除
+                deleteDir(file);
+            }
+        }
+        return true;
+    }
+
 }

@@ -6,6 +6,8 @@ import com.endless.study.baselibrary.cache.local.ICache;
 import com.endless.study.baselibrary.cache.local.DefaultCacheType;
 import com.endless.study.baselibrary.cache.local.IntelligentCache;
 import com.endless.study.baselibrary.common.executor.AppExecutors;
+import com.endless.study.baselibrary.common.glide.BaseImageLoaderStrategy;
+import com.endless.study.baselibrary.common.glide.GlideConfiguration;
 import com.endless.study.baselibrary.common.rxjava.errorhandler.RxErrorHandler;
 import com.endless.study.baselibrary.common.rxjava.errorhandler.RxResponseErrorListener;
 import com.endless.study.baselibrary.dagger.interfaces.IGsonConfiguration;
@@ -62,6 +64,7 @@ public class GlobalConfigModule {
     private IToastConfiguration iToastConfiguration;
     private List<Migration> migrations;
     private RxResponseErrorListener listener;
+    private BaseImageLoaderStrategy strategy;
 
     public GlobalConfigModule(Builder builder) {
         this.retrofitConfiguration = builder.retrofitConfiguration;
@@ -80,6 +83,7 @@ public class GlobalConfigModule {
         this.iToastConfiguration = builder.iToastConfiguration;
         this.migrations = builder.migrations;
         this.listener = builder.listener;
+        this.strategy = builder.strategy;
     }
 
     /**
@@ -213,6 +217,16 @@ public class GlobalConfigModule {
                 .build();
     }
 
+    /**
+     * 图片加载策略
+     * @return
+     */
+    @Singleton
+    @Provides
+    BaseImageLoaderStrategy imageLoaderStrategy() {
+        return strategy;
+    }
+
     public static final class Builder{
 
         private HttpUrl apiUrl;
@@ -250,6 +264,10 @@ public class GlobalConfigModule {
          * RxJava 错误回调
          */
         private RxResponseErrorListener listener;
+        /**
+         * 图片加载策略
+         */
+        private BaseImageLoaderStrategy strategy;
 
         public Builder retrofitConfiguration(IRetrofitConfiguration retrofitConfiguration) {
             this.retrofitConfiguration = retrofitConfiguration;
@@ -359,6 +377,16 @@ public class GlobalConfigModule {
             this.listener = listener;
             return this;
         }
+
+        /**
+         * 图片加载策略
+         * @return
+         */
+        public Builder imageLoad(BaseImageLoaderStrategy strategy) {
+            this.strategy = strategy;
+            return this;
+        }
+
 
         public GlobalConfigModule build() {
             return new GlobalConfigModule(this);

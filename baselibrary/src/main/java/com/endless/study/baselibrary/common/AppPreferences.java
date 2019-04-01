@@ -34,6 +34,11 @@ public class AppPreferences {
 
     private Gson gson;
 
+    /**
+     * 构造方法
+     * @param context
+     * @param name
+     */
     public AppPreferences(Context context, String name) {
         secret = new SecretAESDESede(UtilMD5.getMD5(UtilApp.getPackageInfo(context).packageName), SecretAESDESede.AES_CBC_PKCS7PADDING);
         sharedPreferences = context.getSharedPreferences(UtilMD5.getMD5(name), 0);
@@ -100,6 +105,9 @@ public class AppPreferences {
         return gson.fromJson(json, type);
     }
 
+    public void clearObject(String key) {
+        this.editor.remove(key);
+    }
     /**
      * 清除
      */

@@ -50,7 +50,7 @@ dependencies {
     api rootProject.ext.glide['glide']
     api rootProject.ext.glide['glideOkhttp']
     api rootProject.ext.okhttp['okhttp']
-    implementation rootProject.ext.dependencies['autosize']
+    api rootProject.ext.dependencies['autosize']
     api(rootProject.ext.dependencies["rxcache2"]) {
         exclude module: 'rxjava'
         exclude module: 'dagger'

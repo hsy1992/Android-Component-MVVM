@@ -2,6 +2,8 @@ package com.endless.study.baselibrary.dagger.component;
 
 import android.app.Application;
 
+import com.endless.study.baselibrary.common.glide.BaseImageLoaderStrategy;
+import com.endless.study.baselibrary.common.glide.ImageLoader;
 import com.google.gson.Gson;
 import com.endless.study.baselibrary.base.delegate.AppDelegate;
 import com.endless.study.baselibrary.cache.local.ICache;
@@ -15,12 +17,14 @@ import com.endless.study.baselibrary.database.AppDatabase;
 import com.endless.study.baselibrary.lifecycle.GlobalLifecycleObserver;
 import com.endless.study.baselibrary.repository.IRepositoryManager;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 
 import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
+import okhttp3.OkHttpClient;
 
 /**
  * @author haosiyuan
@@ -42,6 +46,7 @@ public interface AppComponent {
      * @return {@link Gson}
      */
     Gson gson();
+
     /**
      * 返回一个全局公用的线程池
      * @return {@link ExecutorService}
@@ -96,6 +101,25 @@ public interface AppComponent {
      * @return
      */
     RxErrorHandler getRxErrorHandler();
+
+    /**
+     * 网络请求框架
+     *
+     * @return {@link OkHttpClient}
+     */
+    OkHttpClient okHttpClient();
+
+    /**
+     * 获取缓存文件
+     * @return
+     */
+    File getCacheFile();
+
+    /**
+     * 加载图片
+     * @return
+     */
+    ImageLoader imageLoader();
 
     /**
      * 注入

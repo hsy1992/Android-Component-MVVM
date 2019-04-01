@@ -66,5 +66,24 @@ public class UtilApp {
         return false;
     }
 
+    /**
+     * 当前的包是否存在
+     *
+     * @param context
+     * @param pckName
+     * @return
+     */
+    public static boolean isPackageExist(Context context, String pckName) {
+        try {
+            PackageInfo pckInfo = context.getPackageManager()
+                    .getPackageInfo(pckName, 0);
+            if (pckInfo != null)
+                return true;
+        } catch (PackageManager.NameNotFoundException e) {
+
+        }
+        return false;
+    }
+
 
 }
