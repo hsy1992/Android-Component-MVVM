@@ -48,7 +48,7 @@ public abstract class ClientModule {
     private static final int TIME_OUT = 10;
 
     /**
-     * 提供Retrofit
+     * 提供了Retrofit
      * @param application       {@link Application}
      * @param builder           {@link Retrofit.Builder}
      * @param configuration     {@link IRetrofitConfiguration}
