@@ -3,7 +3,7 @@ package com.endless.study.myproject.model;
 import android.app.Application;
 
 import com.endless.study.baselibrary.dagger.scope.AppScope;
-import com.endless.study.baselibrary.database.entity.User;
+import com.endless.study.baselibrary.database.entity.SystemUser;
 import com.endless.study.baselibrary.http.response.ApiResponse;
 import com.endless.study.baselibrary.mvvm.model.BaseModel;
 import com.endless.study.baselibrary.repository.DataResource;
@@ -28,25 +28,25 @@ public class UserModel extends BaseModel implements UserContract.Model {
     }
 
     @Override
-    public LiveData<DataResource<User>> getUsers() {
-        return new NetworkBoundResource<User, User>(appExecutors) {
+    public LiveData<DataResource<SystemUser>> getUsers() {
+        return new NetworkBoundResource<SystemUser, SystemUser>(appExecutors) {
             @Override
-            protected LiveData<User> loadFromDb() {
+            protected LiveData<SystemUser> loadFromDb() {
                 return null;
             }
 
             @Override
-            protected boolean shouldFetchData(User user) {
+            protected boolean shouldFetchData(SystemUser user) {
                 return false;
             }
 
             @Override
-            protected LiveData<ApiResponse<User>> createCall() {
+            protected LiveData<ApiResponse<SystemUser>> createCall() {
                 return null;
             }
 
             @Override
-            protected void saveCallResult(User item) {
+            protected void saveCallResult(SystemUser item) {
 
 
             }

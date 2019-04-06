@@ -3,6 +3,7 @@ package com.endless.study.myproject.dagger;
 
 import com.endless.study.baselibrary.dagger.component.AppComponent;
 import com.endless.study.baselibrary.dagger.scope.AppScope;
+import com.endless.study.myproject.dagger.global.ViewModelModule;
 import com.endless.study.myproject.ui.MainActivity;
 import com.endless.study.myproject.UserContract;
 

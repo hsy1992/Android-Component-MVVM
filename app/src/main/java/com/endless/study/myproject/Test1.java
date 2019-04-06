@@ -1,11 +1,5 @@
 package com.endless.study.myproject;
 
-import android.view.View;
-
-import com.endless.rxbus.RxBus;
-import com.endless.rxbus.annotation.Producer;
-import com.endless.rxbus.annotation.Tag;
-import com.endless.rxbus.handler.EventThread;
 import com.endless.study.baselibrary.base.BaseActivity;
 import com.endless.study.baselibrary.dagger.component.AppComponent;
 
@@ -24,9 +18,6 @@ public class Test1 extends BaseActivity {
     public static List<Disposable> list = new ArrayList<>();
     private Disposable observable;
 
-    public void send(View view) {
-        RxBus.getInstance().post("123", String.class);
-    }
 
     @Override
     public int getLayoutId() {
@@ -47,8 +38,4 @@ public class Test1 extends BaseActivity {
     public void setUpAppComponent(@NonNull AppComponent appComponent) {
     }
 
-    @Producer(tags = {@Tag("123")}, thread = EventThread.NEW_THREAD)
-    public String sendadf() {
-        return "123123";
-    }
 }

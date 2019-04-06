@@ -6,16 +6,23 @@ import androidx.room.PrimaryKey;
 /**
  * 登录用户
  * @Ignore 标识不会映射到表中
- *
- *
  * @author haosiyuan
  * @date 2019/3/5 9:08 AM
  */
 @Entity(tableName = "tb_user")
-public class User {
+public class SystemUser {
+
+    /**
+     * 已登录
+     */
+    public static final String LOGINED = "0";
+    /**
+     * 未登录
+     */
+    public static final String UN_LOGIN = "1";
 
     @PrimaryKey
-    public int id;
+    public String id;
 
     public String phone;
 
@@ -28,7 +35,7 @@ public class User {
      */
     public String isLogin;
 
-    public User(int id, String phone, String name, String version, String isLogin) {
+    public SystemUser(String id, String phone, String name, String version, String isLogin) {
         this.id = id;
         this.phone = phone;
         this.name = name;

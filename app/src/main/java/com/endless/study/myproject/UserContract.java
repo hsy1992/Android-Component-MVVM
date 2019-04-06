@@ -1,6 +1,6 @@
 package com.endless.study.myproject;
 
-import com.endless.study.baselibrary.database.entity.User;
+import com.endless.study.baselibrary.database.entity.SystemUser;
 import com.endless.study.baselibrary.mvvm.model.IModel;
 import com.endless.study.baselibrary.mvvm.view.IView;
 import com.endless.study.baselibrary.repository.DataResource;
@@ -18,6 +18,6 @@ public interface UserContract extends IView {
     }
 
     interface Model extends IModel {
-        LiveData<DataResource<User>> getUsers();
+        LiveData<DataResource<SystemUser>> getUsers();
     }
 }

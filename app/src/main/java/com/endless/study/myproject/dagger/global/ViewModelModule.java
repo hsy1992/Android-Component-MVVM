@@ -1,4 +1,4 @@
-package com.endless.study.myproject.dagger;
+package com.endless.study.myproject.dagger.global;
 
 import com.endless.study.baselibrary.dagger.annotation.ViewModelKey;
 import com.endless.study.myproject.viewmodel.AppViewModelFactory;

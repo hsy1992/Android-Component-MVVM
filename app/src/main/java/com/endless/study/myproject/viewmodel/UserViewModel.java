@@ -3,16 +3,12 @@ package com.endless.study.myproject.viewmodel;
 import android.app.Application;
 
 import com.endless.study.baselibrary.dagger.scope.AppScope;
-import com.endless.study.baselibrary.database.entity.User;
-import com.endless.study.baselibrary.utils.UtilCommon;
 import com.endless.study.baselibrary.mvvm.viewmodel.BaseViewModel;
 import com.endless.study.myproject.UserContract;
 
 import java.util.List;
 
 import javax.inject.Inject;
-
-import androidx.lifecycle.LiveData;
 
 /**
  * @author haosiyuan

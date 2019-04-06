@@ -51,20 +51,9 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel.class);
     }
 
-    @PermissionNeed(permission = {Permission.CameraGroup.CAMERA})
     @Override
     public void initData() {
-        viewModel.test();
-    }
 
-    @PermissionRefuse
-    public void refuse(PermissionRefuseEntity entity){
-        showToast(entity.getMessage());
-    }
-
-    @PermissionCancel
-    public void cancel(PermissionCancelEntity entity){
-        showToast(entity.getMessage());
     }
 
     @Override
@@ -83,16 +72,6 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
 
     public void test1(View view) {
         startActivity(new Intent(this, Test1.class));
-    }
-
-    @Subscriber
-    public void showww(String message) {
-        Logger.errorInfo(message);
-    }
-
-    @Subscriber(tags = {@Tag("123")}, thread = EventThread.NEW_THREAD)
-    public void showww123(String message) {
-        Logger.errorInfo(message + "more" + Thread.currentThread().getName());
     }
 
     @Override

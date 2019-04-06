@@ -1,10 +1,9 @@
-package com.endless.study.myproject.dagger.component;
+package com.endless.study.myproject.dagger.global;
 
 import android.app.Application;
 
 import com.endless.study.baselibrary.dagger.component.AppComponent;
 import com.endless.study.baselibrary.dagger.scope.AppScope;
-import com.endless.study.myproject.dagger.ViewModelModule;
 
 import dagger.Component;
 
@@ -16,7 +15,7 @@ import dagger.Component;
 @AppScope
 @Component(modules = {ViewModelModule.class}, dependencies = AppComponent.class)
 public interface GlobalComponent {
-    void inject(Application mainActivity);
+    void inject(Application application);
 
     @Component.Builder
     interface Builder {

@@ -43,7 +43,7 @@ android {
 }
 
 dependencies {
-    implementation rootProject.ext.networkLibs
+    api rootProject.ext.networkLibs
     api rootProject.ext.rxJavaLibs
     //glide图片加载库
     annotationProcessor rootProject.ext.glide['glideCompiler']

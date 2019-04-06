@@ -1,6 +1,6 @@
 package com.endless.study.baselibrary.database.dao;
 
-import com.endless.study.baselibrary.database.entity.User;
+import com.endless.study.baselibrary.database.entity.SystemUser;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import io.reactivex.Flowable;
@@ -30,21 +31,21 @@ public interface UserDao {
      *
      * @param users
      */
-    @Insert
-    void insertUsers(User... users);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertUsers(SystemUser... users);
 
     @Update
-    int updateUsers(User... users);
+    int updateUsers(SystemUser... users);
 
     @Delete
-    void deleteUsers(User... users);
+    void deleteUsers(SystemUser... users);
 
     /**
      * 查询全部
      * @return
      */
     @Query("SELECT * FROM tb_user")
-    List<User> loadAllUsers();
+    List<SystemUser> loadAllUsers();
 
     /**
      * 带参查询
@@ -52,19 +53,19 @@ public interface UserDao {
      * @return
      */
     @Query("Select * from tb_user where phone = :phone")
-    User[] loadAllUsersByPhone(String phone);
+    SystemUser loadAllUsersByPhone(String phone);
 
     /**
      * Observable的查询
      * @return
      */
     @Query("SELECT * FROM tb_user")
-    LiveData<List<User>> loadAllUsersByLiveData();
+    LiveData<List<SystemUser>> loadAllUsersByLiveData();
 
     /**
      * rxJava的查询
      * @return
      */
     @Query("SELECT * FROM tb_user")
-    Flowable<List<User>> loadAllUsersByRxJava();
+    Flowable<List<SystemUser>> loadAllUsersByRxJava();
 }

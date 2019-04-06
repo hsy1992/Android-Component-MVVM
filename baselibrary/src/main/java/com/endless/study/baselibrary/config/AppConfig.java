@@ -8,9 +8,9 @@ package com.endless.study.baselibrary.config;
 public interface AppConfig {
 
     /**
-     * 系统登录用户名称
+     * 系统数据库 用于未登录的用户
      */
-    String DATABASE_NAME = "system_user.db";
+    String DATABASE_NAME = "app_system.db";
 
     /**
      * 每页数量
