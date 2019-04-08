@@ -1,10 +1,16 @@
 package com.endless.study.baselibrary.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.provider.Settings;
 
 import java.util.List;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * app 的相关信息
@@ -77,13 +83,13 @@ public class UtilApp {
         try {
             PackageInfo pckInfo = context.getPackageManager()
                     .getPackageInfo(pckName, 0);
-            if (pckInfo != null)
+            if (pckInfo != null) {
                 return true;
+            }
         } catch (PackageManager.NameNotFoundException e) {
 
         }
         return false;
     }
-
 
 }

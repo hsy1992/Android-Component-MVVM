@@ -82,4 +82,5 @@ dependencies {
     api rootProject.ext.room['rxjava2']
     annotationProcessor rootProject.ext.room['compiler']
     implementation project(':rxbus')
+    implementation project(':permissionlib')
 }

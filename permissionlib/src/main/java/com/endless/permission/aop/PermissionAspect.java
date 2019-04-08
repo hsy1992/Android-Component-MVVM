@@ -2,8 +2,10 @@ package com.endless.permission.aop;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 
 import com.endless.permission.PermissionActivity;
+import com.endless.permission.annotation.Permission;
 import com.endless.permission.annotation.PermissionCancel;
 import com.endless.permission.annotation.PermissionContext;
 import com.endless.permission.annotation.PermissionNeed;
@@ -22,6 +24,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +41,8 @@ import androidx.fragment.app.Fragment;
  */
 @Aspect
 public class PermissionAspect {
+
+    private boolean hasInstallPackage = false;
 
     /**
      * Pointcut 需要的
@@ -74,13 +79,24 @@ public class PermissionAspect {
             throw new RuntimeException("Context can not be null");
         }
 
-
         String[] permissions = permissionNeed.permission();
         if (permissions.length == 0) {
             throw new RuntimeException("PermissionNeed is not need");
         }
 
-        PermissionActivity.requestPermission(context, permissions, new IPermissionCallBack() {
+        List<String> permissionList = Arrays.asList(permissions);
+
+        if (permissionList.contains(Permission.PhoneGroup.REQUEST_INSTALL_PACKAGES)
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            permissionList.remove(Permission.PhoneGroup.REQUEST_INSTALL_PACKAGES);
+            hasInstallPackage = true;
+        }
+
+
+        String[] strings = new String[permissionList.size()];
+        permissionList.toArray(strings);
+
+        PermissionActivity.requestPermission(context, strings, hasInstallPackage, new IPermissionCallBack() {
             @Override
             public void permissionGranted() {
                 //权限同意
@@ -181,6 +197,5 @@ public class PermissionAspect {
 
         return context;
     }
-
 
 }

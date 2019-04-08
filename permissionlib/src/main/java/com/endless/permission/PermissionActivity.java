@@ -3,7 +3,9 @@ package com.endless.permission;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 
 import com.endless.permission.annotation.Permission;
 import com.endless.permission.annotation.PermissionNeed;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -39,21 +42,32 @@ public class PermissionActivity extends AppCompatActivity {
      * 传值
      */
     private static final String PERMISSION_KEY = "PERMISSION_KEY";
+    /**
+     * 传值
+     */
+    private static final String PERMISSION_INSTALL = "PERMISSION_INSTALL";
+
+    /**
+     * 是否安装
+     */
+    private boolean hasInstallApp;
 
     /**
      * 跳转到Activity申请权限
      *
      * @param context     Context
      * @param permissions 权限list
+     * @param hasInstallApp 是否安装App权限
      * @param listener  回调
      */
-    public static void requestPermission(Context context, String[] permissions,
+    public static void requestPermission(Context context, String[] permissions, boolean hasInstallApp,
                                          IPermissionCallBack listener) {
         permissionCallBack = listener;
         Intent intent = new Intent(context, PermissionActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
         bundle.putStringArray(PERMISSION_KEY, permissions);
+        bundle.putBoolean(PERMISSION_INSTALL, hasInstallApp);
         intent.putExtras(bundle);
         context.startActivity(intent);
         if (context instanceof Activity) {
@@ -69,6 +83,7 @@ public class PermissionActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             permissions = bundle.getStringArray(PERMISSION_KEY);
+            hasInstallApp = bundle.getBoolean(PERMISSION_INSTALL);
         }
 
         if (permissions == null || permissions.length <= 0) {
@@ -76,7 +91,14 @@ public class PermissionActivity extends AppCompatActivity {
             return;
         }
 
-        requestPermission(permissions);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (hasInstallApp && PermissionUtil.isHasInstallPermissionWithO(this)) {
+
+                startInstallPermissionSettingActivity(this);
+            }
+        } else {
+            requestPermission(permissions);
+        }
     }
 
     /**
@@ -136,5 +158,33 @@ public class PermissionActivity extends AppCompatActivity {
         permissionCallBack = null;
         finish();
         overridePendingTransition(0, 0);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startInstallPermissionSettingActivity(Context context) {
+        if (context == null){
+            return;
+        }
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+        ((Activity)context).startActivityForResult(intent, Permission.RequestCodeAppInstall);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+
+            if (requestCode == Permission.RequestCodeAppInstall) {
+                requestPermission(permissions);
+            } else {
+                List<String> list = new ArrayList<>();
+                list.add(Permission.PhoneGroup.REQUEST_INSTALL_PACKAGES);
+                if (permissionCallBack != null) {
+                    permissionCallBack.permissionDenied(new PermissionRefuseEntity("权限被拒绝", list));
+                }
+            }
+        }
     }
 }

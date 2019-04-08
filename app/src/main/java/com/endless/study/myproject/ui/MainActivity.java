@@ -52,9 +52,18 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
     }
 
     @Override
+    @PermissionNeed(permission = {Permission.CameraGroup.CAMERA,
+            Permission.PhoneGroup.REQUEST_INSTALL_PACKAGES})
     public void initData() {
 
     }
+
+    @PermissionRefuse
+    public void PermissionRefuse(PermissionRefuseEntity refuseEntity) {
+
+    }
+
+
 
     @Override
     public void setUpAppComponent(@NonNull AppComponent appComponent) {

@@ -1,5 +1,6 @@
 package com.endless.study.baselibrary.database.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -22,6 +23,7 @@ public class SystemUser {
     public static final String UN_LOGIN = "1";
 
     @PrimaryKey
+    @NonNull
     public String id;
 
     public String phone;

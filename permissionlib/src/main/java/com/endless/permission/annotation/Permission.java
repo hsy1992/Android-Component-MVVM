@@ -28,6 +28,7 @@ import androidx.annotation.StringDef;
         Permission.PhoneGroup.WRITE_CALL_LOG,
         Permission.PhoneGroup.ADD_VOICEMAIL,
         Permission.PhoneGroup.USE_SIP,
+        Permission.PhoneGroup.REQUEST_INSTALL_PACKAGES,
         Permission.PhoneGroup.PROCESS_OUTGOING_CALLS,
         Permission.SensorsGroup.BODY_SENSORS,
         Permission.SMSGroup.SEND_SMS,
@@ -43,6 +44,8 @@ import androidx.annotation.StringDef;
 public @interface Permission {
 
     int RequestCode = 10001;
+
+    int RequestCodeAppInstall = 10002;
 
     /**
      * 日历权限组
@@ -106,6 +109,8 @@ public @interface Permission {
         String USE_SIP = Manifest.permission.USE_SIP;
 
         String PROCESS_OUTGOING_CALLS = Manifest.permission.PROCESS_OUTGOING_CALLS;
+
+        String REQUEST_INSTALL_PACKAGES = Manifest.permission.REQUEST_INSTALL_PACKAGES;
     }
 
     /**

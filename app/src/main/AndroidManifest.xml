@@ -3,7 +3,9 @@
           package="com.endless.study.myproject">
 
     <uses-permission android:name="android.permission.CAMERA"/>
-
+    <!--未知来源安装-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    
     <application
         android:name="com.endless.study.myproject.TestApplication"
         android:allowBackup="true"

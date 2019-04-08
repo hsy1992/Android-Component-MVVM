@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.collection.SimpleArrayMap;
 import androidx.core.app.ActivityCompat;
 
@@ -102,5 +103,18 @@ public class PermissionUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * 是否有8.0安装权限
+     * @param context
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static boolean isHasInstallPermissionWithO(Context context){
+        if (context == null){
+            return false;
+        }
+        return context.getPackageManager().canRequestPackageInstalls();
     }
 }

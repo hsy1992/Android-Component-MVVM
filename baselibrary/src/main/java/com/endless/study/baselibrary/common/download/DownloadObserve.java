@@ -1,9 +1,10 @@
-package com.endless.study.myproject.download;
+package com.endless.study.baselibrary.common.download;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
+ * 下载观察者
  * @author haosiyuan
  * @date 2019/4/5 2:00 PM
  */

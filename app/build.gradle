@@ -57,5 +57,4 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["butterknife_apt"]
     implementation project(path: ':rxbus')
     implementation project(':networkclientstate')
-    implementation project(':permissionlib')
 }
