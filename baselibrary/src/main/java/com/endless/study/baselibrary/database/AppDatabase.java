@@ -1,8 +1,9 @@
 package com.endless.study.baselibrary.database;
 
+import com.endless.study.baselibrary.database.dao.DownloadDao;
 import com.endless.study.baselibrary.database.dao.UserDao;
-import com.endless.study.baselibrary.database.entity.Download;
-import com.endless.study.baselibrary.database.entity.SystemUser;
+import com.endless.study.baselibrary.database.entity.DownloadEntity;
+import com.endless.study.baselibrary.database.entity.UserEntity;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
@@ -12,7 +13,7 @@ import androidx.room.RoomDatabase;
  * @author haosiyuan
  * @date 2019/3/5 10:46 AM
  */
-@Database(entities = {SystemUser.class, Download.class}, version = 1, exportSchema = false)
+@Database(entities = {UserEntity.class, DownloadEntity.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     /**
@@ -25,5 +26,5 @@ public abstract class AppDatabase extends RoomDatabase {
      * 下载表
      * @return
      */
-    public abstract Download download();
+    public abstract DownloadDao download();
 }

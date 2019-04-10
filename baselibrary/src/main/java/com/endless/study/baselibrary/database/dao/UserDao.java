@@ -1,6 +1,6 @@
 package com.endless.study.baselibrary.database.dao;
 
-import com.endless.study.baselibrary.database.entity.SystemUser;
+import com.endless.study.baselibrary.database.entity.UserEntity;
 
 import java.util.List;
 
@@ -32,20 +32,20 @@ public interface UserDao {
      * @param users
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertUsers(SystemUser... users);
+    void insertUsers(UserEntity... users);
 
     @Update
-    int updateUsers(SystemUser... users);
+    int updateUsers(UserEntity... users);
 
     @Delete
-    void deleteUsers(SystemUser... users);
+    void deleteUsers(UserEntity... users);
 
     /**
      * 查询全部
      * @return
      */
     @Query("SELECT * FROM tb_user")
-    List<SystemUser> loadAllUsers();
+    List<UserEntity> loadAllUsers();
 
     /**
      * 带参查询
@@ -53,19 +53,19 @@ public interface UserDao {
      * @return
      */
     @Query("Select * from tb_user where phone = :phone")
-    SystemUser loadAllUsersByPhone(String phone);
+    UserEntity loadAllUsersByPhone(String phone);
 
     /**
      * Observable的查询
      * @return
      */
     @Query("SELECT * FROM tb_user")
-    LiveData<List<SystemUser>> loadAllUsersByLiveData();
+    LiveData<List<UserEntity>> loadAllUsersByLiveData();
 
     /**
      * rxJava的查询
      * @return
      */
     @Query("SELECT * FROM tb_user")
-    Flowable<List<SystemUser>> loadAllUsersByRxJava();
+    Flowable<List<UserEntity>> loadAllUsersByRxJava();
 }

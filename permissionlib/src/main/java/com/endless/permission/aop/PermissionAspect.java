@@ -3,6 +3,7 @@ package com.endless.permission.aop;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import com.endless.permission.PermissionActivity;
 import com.endless.permission.annotation.Permission;
@@ -22,15 +23,10 @@ import org.aspectj.lang.annotation.Pointcut;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import androidx.fragment.app.Fragment;
 
@@ -84,14 +80,14 @@ public class PermissionAspect {
             throw new RuntimeException("PermissionNeed is not need");
         }
 
-        List<String> permissionList = Arrays.asList(permissions);
+        List<String> permissionList = new ArrayList<>(Arrays.asList(permissions));
 
-        if (permissionList.contains(Permission.PhoneGroup.REQUEST_INSTALL_PACKAGES)
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (permissionList.contains(Permission.PhoneGroup.REQUEST_INSTALL_PACKAGES)) {
             permissionList.remove(Permission.PhoneGroup.REQUEST_INSTALL_PACKAGES);
-            hasInstallPackage = true;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                hasInstallPackage = true;
+            }
         }
-
 
         String[] strings = new String[permissionList.size()];
         permissionList.toArray(strings);

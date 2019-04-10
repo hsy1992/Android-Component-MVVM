@@ -1,13 +1,9 @@
-package com.endless.study.baselibrary.common.download.interfaces;
+// DownloadCallback.aidl
+package com.endless.study.baselibrary.common.download;
 
-import com.endless.study.baselibrary.common.download.enums.DownloadStatus;
+// Declare any non-default types here with import statements
 
-/**
- * 下载回调
- * @author haosiyuan
- * @date 2019/4/5 1:55 PM
- */
-public interface IDownloadListener {
+interface DownloadCallback {
 
     /**
      * 新增下载任务的监听
@@ -34,7 +30,7 @@ public interface IDownloadListener {
      *            下载状态
      */
 
-    void onDownloadStatusChanged(long downloadId, @DownloadStatus int status);
+    void onDownloadStatusChanged(long downloadId, int status);
 
     /**
      * 获取了下载文件总的长度

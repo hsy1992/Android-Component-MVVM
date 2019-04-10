@@ -1,8 +1,7 @@
 package com.endless.study.baselibrary.common.download;
 
 
-
-import com.endless.study.baselibrary.common.download.interfaces.IDownloadListener;
+import com.endless.study.baselibrary.database.entity.DownloadEntity;
 
 import java.io.IOException;
 
@@ -16,17 +15,20 @@ import okhttp3.Response;
  */
 public class DownloadInterceptor implements Interceptor {
 
-    private IDownloadListener downloadListener;
+    private DownloadCallback downloadCallback;
+    private DownloadEntity downloadEntity;
 
-    DownloadInterceptor(IDownloadListener downloadListener) {
-        this.downloadListener = downloadListener;
+    DownloadInterceptor(DownloadCallback downloadCallback, DownloadEntity downloadEntity) {
+        this.downloadCallback = downloadCallback;
+        this.downloadEntity = downloadEntity;
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Response response = chain.proceed(chain.request());
         return response.newBuilder()
-                .body(new DownloadResponseBody(response.body(), downloadListener))
+                .body(new DownloadResponseBody(response.body(),
+                        chain.request().header("RANGE"), downloadCallback, downloadEntity))
                 .build();
     }
 }

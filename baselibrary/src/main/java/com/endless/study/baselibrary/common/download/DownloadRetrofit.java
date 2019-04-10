@@ -2,7 +2,7 @@ package com.endless.study.baselibrary.common.download;
 
 import android.text.TextUtils;
 
-import com.endless.study.baselibrary.common.download.interfaces.IDownloadListener;
+import com.endless.study.baselibrary.database.entity.DownloadEntity;
 import com.endless.study.baselibrary.utils.UtilString;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,7 +30,7 @@ class DownloadRetrofit {
         return DownloadRetrofitInstance.Instance;
     }
 
-    public Retrofit getRetrofit(String url, IDownloadListener downloadListener) {
+    public Retrofit getRetrofit(String url, DownloadCallback downloadCallback, DownloadEntity downloadEntity) {
 
         String host = UtilString.getHost(url);
 
@@ -42,7 +42,7 @@ class DownloadRetrofit {
                 retrofit = retrofitConcurrentMap.get(host);
 
             } else {
-                DownloadInterceptor downloadInterceptor = new DownloadInterceptor(downloadListener);
+                DownloadInterceptor downloadInterceptor = new DownloadInterceptor(downloadCallback, downloadEntity);
 
                 OkHttpClient client = new OkHttpClient.Builder()
                         .addInterceptor(downloadInterceptor)

@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.endless.study.baselibrary.config.AppConfig;
 import com.endless.study.baselibrary.database.AppDatabase;
-import com.endless.study.baselibrary.database.entity.SystemUser;
+import com.endless.study.baselibrary.database.entity.UserEntity;
 import com.endless.study.baselibrary.utils.UtilApp;
 
 import java.util.List;
@@ -52,17 +52,17 @@ public class LocalDataBaseManager {
         }
 
         //登录成功 插入系统数据库登录状态
-        List<SystemUser> users = appDatabase.userDao().loadAllUsers();
+        List<UserEntity> users = appDatabase.userDao().loadAllUsers();
 
         //将之前用户至为未登录
         appDatabase.beginTransaction();
-        for (SystemUser user : users) {
-            user.isLogin = SystemUser.UN_LOGIN;
+        for (UserEntity user : users) {
+            user.isLogin = UserEntity.UN_LOGIN;
             appDatabase.userDao().updateUsers(user);
         }
 
         appDatabase.userDao()
-                .insertUsers(new SystemUser(userId, "","", UtilApp.getVersionName(application), SystemUser.LOGINED));
+                .insertUsers(new UserEntity(userId, "","", UtilApp.getVersionName(application), UserEntity.LOGINED));
 
         appDatabase.endTransaction();
 

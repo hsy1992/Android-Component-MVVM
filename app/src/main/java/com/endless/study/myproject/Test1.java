@@ -1,6 +1,7 @@
 package com.endless.study.myproject;
 
 import com.endless.study.baselibrary.base.BaseActivity;
+import com.endless.study.baselibrary.common.download.DownloadManager;
 import com.endless.study.baselibrary.dagger.component.AppComponent;
 
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ public class Test1 extends BaseActivity {
 
     @Override
     public void initView() {
-
     }
 
     @Override

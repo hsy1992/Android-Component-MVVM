@@ -2,32 +2,50 @@ package com.endless.study.baselibrary.common.download;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
-import android.os.Environment;
+import android.os.Handler;
 import android.os.IBinder;
-import android.text.TextUtils;
+import android.os.Looper;
+import android.os.RemoteException;
 
-import com.endless.study.baselibrary.R;
+import com.endless.study.baselibrary.common.download.constant.DownloadError;
+import com.endless.study.baselibrary.common.download.enums.DownloadStatus;
 import com.endless.study.baselibrary.common.download.interfaces.DownloadApi;
+import com.endless.study.baselibrary.database.entity.DownloadEntity;
 import com.endless.study.baselibrary.utils.UtilFile;
+
+import java.io.File;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import androidx.annotation.Nullable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okio.Okio;
 
 /**
  * 下载服务
  * @author haosiyuan
  * @date 2019/4/5 1:50 PM
  */
-class DownloadService extends Service {
+public class DownloadService extends Service {
 
-    private DownloadBinder downloadBinder = new DownloadBinder();
+    /**
+     * 下载集合
+     */
+    private final ConcurrentMap<DownloadEntity, Disposable> downloadEntityMap = new ConcurrentHashMap<>();
+
+    public DownloadCallback downloadCallback;
+
+    /**
+     * 主线程
+     */
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return downloadBinder;
+        return new DownloadBinder();
     }
 
     @Override
@@ -37,72 +55,160 @@ class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         return super.onStartCommand(intent, flags, startId);
     }
 
+    /**
+     * 销毁
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        for (DownloadEntity entity : downloadEntityMap.keySet()) {
+
+            if (downloadEntityMap.get(entity) != null && !downloadEntityMap.get(entity).isDisposed()) {
+                downloadEntityMap.get(entity).dispose();
+            }
+        }
+
+        if (downloadCallback != null) {
+            try {
+                downloadCallback.onDownloadInfoRemove();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
      * 开始下载
-     * @param config 下载配置
+     * @param downloadEntity 下载配置
      */
-    private void startDownload(DownloadConfig config) {
+    private void startDownload(DownloadEntity downloadEntity) {
 
-        if (TextUtils.isEmpty(config.getUrl())) {
-            throw new IllegalArgumentException("DownloadConfig can not find url");
+        File file = new File(downloadEntity.getFilePath());
+
+        long length = 0L;
+
+        if (file.exists()) {
+            length = file.length();
         }
 
-        if (TextUtils.isEmpty(config.getFileType())) {
-            throw new IllegalArgumentException("DownloadConfig can not find fileType");
-        }
+        String range = "bytes=" + length + "-";
 
+        Disposable disposable = DownloadRetrofit.getInstance()
+                                    .getRetrofit(downloadEntity.getUrl(), downloadCallback, downloadEntity)
+                                    .create(DownloadApi.class)
+                                    .download(range, downloadEntity.getUrl())
+                                    .subscribeOn(Schedulers.io())
+                                    .unsubscribeOn(Schedulers.io())
+                                    .map(responseBody -> responseBody.byteStream())
+                                    .observeOn(Schedulers.computation())
+                                    .doOnNext(inputStream -> {
 
-        DownloadRetrofit.getInstance()
-                .getRetrofit(config.getUrl(), this::update)
-                .create(DownloadApi.class)
-                .download(config.getUrl())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .map(responseBody -> responseBody.byteStream())
-                .observeOn(Schedulers.computation())
-                .doOnNext(inputStream -> {
-                    String filePath;
-                    String fileName;
+                                        downloadStatusChange(downloadEntity, DownloadStatus.downloading);
+                                        try {
+                                            UtilFile.writeInput(downloadEntity.getFilePath(), downloadEntity.getFileName(), inputStream);
+                                        } catch (Exception e) {
+                                            if (downloadCallback != null) {
+                                                downloadCallback.onDownloadError(downloadEntity.getId(), DownloadError.DownloadCreateFileFailed,
+                                                        DownloadError.isDownloadCreateFileFailed);
+                                            }
+                                        }
+                                    }).observeOn(AndroidSchedulers.mainThread())
+                                    .doOnComplete(() -> {
 
-                    filePath = TextUtils.isEmpty(config.getFilePath()) ?
-                            Environment.getExternalStorageState() + "/" + getResources().getString(R.string.app_name) + "/down" : config.getFilePath();
+                                        //下载完成
+                                        downloadEntityMap.remove(downloadEntity);
+                                        if (downloadCallback != null) {
+                                            downloadCallback.onDownloadSuccess(downloadEntity.getId());
+                                        }
+                                    })
+                                    .doOnDispose(() -> {
 
-                    fileName = TextUtils.isEmpty(config.getFileName()) ?
-                            getResources().getString(R.string.app_name) + "." + config.getFileType()
-                            : config.getFileName() + "." + config.getFileType();
+                                        //解绑时
+                                        downloadEntityMap.remove(downloadEntity);
+                                        downloadStatusChange(downloadEntity, DownloadStatus.pause);
 
-                    UtilFile.writeInput(filePath, fileName, inputStream, config.isContinue());
+                                    })
+                                    .subscribe(inputStream -> {
 
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DownloadObserve());
+                                    }, throwable -> {
+                                        //下载出错
+                                        downloadEntityMap.remove(downloadEntity);
+                                        if (downloadCallback != null) {
+                                            downloadCallback.onDownloadError(downloadEntity.getId(), DownloadError.DownloadFailed,
+                                                    DownloadError.isDownloadFailed);
+                                        }
+                                    });
+
+        downloadEntityMap.put(downloadEntity, disposable);
     }
 
     /**
-     * 更新UI,回调
-     * @param bytesRead
-     * @param contentLength
-     * @param done
+     * 更新状态
+     * @param downloadEntity
+     * @param downloadStatus
      */
-    public void update(long bytesRead, long contentLength, boolean done) {
+    private void downloadStatusChange(DownloadEntity downloadEntity, @DownloadStatus int downloadStatus) {
 
+        if (downloadCallback != null){
+
+            synchronized (this.downloadCallback){
+
+                handler.post(() -> {
+                    try {
+                        downloadCallback.onDownloadStatusChanged(downloadEntity.getId(), downloadStatus);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }
     }
 
     /**
-     * 服务连接
+     * 下载binder
      */
-    class DownloadBinder extends Binder {
+    class DownloadBinder extends DownloadAidlService.Stub {
 
-        public void start(DownloadConfig config) {
-            startDownload(config);
+        @Override
+        public void startDownloadTask(DownloadEntity config) throws RemoteException {
+
+            if (!downloadEntityMap.containsKey(config)) {
+
+                startDownload(config);
+            } else {
+//                downloadCallback.onDownloadError(config.getId(), DownloadError.Downloading,
+//                        DownloadError.isDownloading);
+            }
+        }
+
+        @Override
+        public void stopDownloadTask(DownloadEntity config) throws RemoteException {
+
+            synchronized (downloadEntityMap) {
+
+                if (downloadEntityMap.containsKey(config)) {
+
+                    if (!downloadEntityMap.get(config).isDisposed()) {
+
+                        downloadEntityMap.get(config).dispose();
+                    }
+                    downloadEntityMap.remove(config);
+                }
+            }
+        }
+
+        @Override
+        public void registerCallBack(DownloadCallback callback) throws RemoteException {
+            downloadCallback = callback;
+        }
+
+        @Override
+        public void unregisterCallBack(DownloadCallback callback) throws RemoteException {
+            downloadCallback = null;
         }
     }
 }

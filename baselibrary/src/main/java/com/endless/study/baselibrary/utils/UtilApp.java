@@ -1,16 +1,17 @@
 package com.endless.study.baselibrary.utils;
 
-import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
-import android.provider.Settings;
+import android.text.TextUtils;
 
 import java.util.List;
 
-import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
+
 
 /**
  * app 的相关信息
@@ -90,6 +91,21 @@ public class UtilApp {
 
         }
         return false;
+    }
+
+    /**
+     * 查看某个服务是否运行
+     * @param context
+     * @param serviceIntent
+     * @return
+     */
+    public static boolean isServiceRunning(Context context, @NonNull Intent serviceIntent) {
+
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+
+        PendingIntent pendingIntent = activityManager.getRunningServiceControlPanel(serviceIntent.getComponent());
+
+        return pendingIntent != null;
     }
 
 }

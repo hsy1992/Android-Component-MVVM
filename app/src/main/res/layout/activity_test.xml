@@ -6,7 +6,6 @@
               android:layout_height="match_parent">
 
     <TextView
-        android:onClick="send"
         android:gravity="center"
         android:textSize="16dp"
         android:text="test1发送"

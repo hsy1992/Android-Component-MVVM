@@ -7,7 +7,7 @@ import com.endless.study.baselibrary.dagger.interfaces.IOkHttpConfiguration;
 import com.endless.study.baselibrary.dagger.interfaces.IRetrofitConfiguration;
 import com.endless.study.baselibrary.dagger.interfaces.IRxCacheConfiguration;
 import com.endless.study.baselibrary.http.IGlobalHttpHandler;
-import com.endless.study.baselibrary.http.log.MultipleBaseUrlInterceptor;
+import com.endless.study.baselibrary.http.interceptors.MultipleBaseUrlInterceptor;
 import com.endless.study.baselibrary.http.log.RequestInterceptor;
 import com.endless.study.baselibrary.repository.calladapter.LiveDataCallAdapterFatory;
 import com.endless.study.baselibrary.utils.UtilFile;

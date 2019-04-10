@@ -2,6 +2,7 @@ package com.endless.study.baselibrary.dagger.component;
 
 import android.app.Application;
 
+import com.endless.study.baselibrary.common.download.DownloadManager;
 import com.endless.study.baselibrary.common.glide.BaseImageLoaderStrategy;
 import com.endless.study.baselibrary.common.glide.ImageLoader;
 import com.google.gson.Gson;
@@ -120,6 +121,12 @@ public interface AppComponent {
      * @return
      */
     ImageLoader imageLoader();
+
+    /**
+     * 下载
+     * @return
+     */
+    DownloadManager downloadManager();
 
     /**
      * 注入

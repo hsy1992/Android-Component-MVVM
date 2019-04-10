@@ -8,7 +8,7 @@ import io.reactivex.disposables.Disposable;
  * @author haosiyuan
  * @date 2019/4/5 2:00 PM
  */
-public class DownloadObserve implements Observer {
+public class DownloadObserver implements Observer {
 
     @Override
     public void onSubscribe(Disposable disposable) {

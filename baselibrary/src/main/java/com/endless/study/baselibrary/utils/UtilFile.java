@@ -145,23 +145,17 @@ public class UtilFile {
      * @param path
      * @param fileName
      * @param input
-     * @param isDelete 已经有该文件时是否删除
      * @return
      */
-    public static File writeInput(String path, String fileName, InputStream input, boolean isDelete) {
+    public static File writeInput(String path, String fileName, InputStream input) {
         File file = null;
         OutputStream output = null;
-        if (isDelete) {
-            file = new File(path + fileName);
-            if (file.exists()) {
-                file.delete();
-            }
-        }
+
         try {
             createSDDir(path);
             file = createSDFile(path + fileName);
             output = new FileOutputStream(file);
-            byte buffer[] = new byte[1024];
+            byte[] buffer = new byte[1024];
             int length;
             while((length=(input.read(buffer))) >0){
                 output.write(buffer,0,length);

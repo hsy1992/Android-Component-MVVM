@@ -2,6 +2,7 @@ package com.endless.study.baselibrary.dagger.module;
 
 import android.app.Application;
 
+import com.endless.study.baselibrary.common.download.DownloadManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.endless.study.baselibrary.cache.local.ICache;
@@ -128,4 +129,9 @@ public abstract class AppModule {
         return new AppExecutors();
     }
 
+    @Singleton
+    @Provides
+    static DownloadManager provideDownloadManager(Application application, AppDatabase appDatabase) {
+        return new DownloadManager(application, appDatabase);
+    }
 }

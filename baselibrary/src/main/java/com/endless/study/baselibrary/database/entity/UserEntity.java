@@ -2,6 +2,7 @@ package com.endless.study.baselibrary.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
@@ -11,15 +12,17 @@ import androidx.room.PrimaryKey;
  * @date 2019/3/5 9:08 AM
  */
 @Entity(tableName = "tb_user")
-public class SystemUser {
+public class UserEntity {
 
     /**
      * 已登录
      */
+    @Ignore
     public static final String LOGINED = "0";
     /**
      * 未登录
      */
+    @Ignore
     public static final String UN_LOGIN = "1";
 
     @PrimaryKey
@@ -37,7 +40,7 @@ public class SystemUser {
      */
     public String isLogin;
 
-    public SystemUser(String id, String phone, String name, String version, String isLogin) {
+    public UserEntity(String id, String phone, String name, String version, String isLogin) {
         this.id = id;
         this.phone = phone;
         this.name = name;
