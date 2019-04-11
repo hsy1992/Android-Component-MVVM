@@ -23,14 +23,14 @@ import androidx.annotation.IntDef;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 public @interface DownloadStatus {
 
-    int waiting = 0x11;
+    int waiting = 1;
 
-    int downloading = 0x12;
+    int downloading = 2;
 
-    int pause = 0x13;
+    int pause = 3;
 
-    int finish = 0x14;
+    int finish = 4;
 
-    int failed = 0x15;
+    int failed = 5;
 
 }

@@ -33,6 +33,7 @@ import com.endless.study.baselibrary.utils.UtilDate;
 import org.reactivestreams.Publisher;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -41,6 +42,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import androidx.annotation.NonNull;
 
 
 /**
@@ -65,7 +68,7 @@ public class DownloadManager implements DownloadCallback {
     /**
      * 正在下载的集合
      */
-    private final List<DownloadEntity> downloadTaskList = new CopyOnWriteArrayList<>();
+    private final List<DownloadEntity> downloadTaskList = new ArrayList<>();
     /**
      * 下载事件分发
      */
@@ -89,15 +92,17 @@ public class DownloadManager implements DownloadCallback {
      */
     @PermissionNeed(permission = {Permission.StorageGroup.READ_EXTERNAL_STORAGE,
             Permission.StorageGroup.WRITE_EXTERNAL_STORAGE, Permission.PhoneGroup.REQUEST_INSTALL_PACKAGES})
-    public long download(DownloadEntity config) {
+    public void download(DownloadEntity config) {
 
         if (serviceIntent == null) {
             serviceIntent = new Intent(application, DownloadService.class);
-            application.getApplicationContext().bindService(serviceIntent, getServiceConnection(), Context.BIND_AUTO_CREATE);
+            application.getApplicationContext().bindService(serviceIntent, getServiceConnection(config), Context.BIND_AUTO_CREATE);
+        } else {
+            downloadFromDatabase(config);
         }
 
-        return downloadFromDatabase(config);
     }
+
 
     /**
      * 从数据库获取 下载资源
@@ -107,7 +112,7 @@ public class DownloadManager implements DownloadCallback {
     private synchronized long downloadFromDatabase(DownloadEntity config) {
 
         //文件
-        File file = new File(config.getFilePath());
+        File file = new File(config.getFilePath() + config.getFileName());
 
         //查找数据库是否含有此下载链接
         DownloadEntity downloadEntity = loadByFilePath(config.getUrl(), config.getFilePath());
@@ -210,7 +215,7 @@ public class DownloadManager implements DownloadCallback {
         if (downloadEntity.getPriority() < config.getPriority()) {
             downloadEntity.setPriority(config.getPriority());
         }
-
+        Logger.errorInfo(downloadEntity.toString());
         //下载文件
         reallyDown(downloadEntity);
 
@@ -222,24 +227,25 @@ public class DownloadManager implements DownloadCallback {
      * @param downloadEntity
      */
     private void reallyDown(DownloadEntity downloadEntity) {
-
+        Logger.errorInfo("downloadController == null");
         if (downloadController != null) {
 
+            Logger.errorInfo("downloadController != null");
             downloadTaskList.add(downloadEntity);
 
-            pauseByPriority();
+            pauseByPriority(downloadEntity);
         }
     }
 
     /**
      * 根据优先级暂停
      */
-    private void pauseByPriority() {
-
+    private void pauseByPriority(DownloadEntity downloadEntity) {
+        Logger.errorInfo("pauseByPriority");
         //超出同时下载 最大数量
-        if (downloadTaskList.size() > MAX_DOWNLOAD) {
+        Collections.sort(downloadTaskList, new DownloadPriorityComparator());
 
-            Collections.sort(downloadTaskList, new DownloadPriorityComparator());
+        if (downloadTaskList.size() > MAX_DOWNLOAD) {
 
             for (int i = 0; i < downloadTaskList.size(); i++) {
 
@@ -252,6 +258,12 @@ public class DownloadManager implements DownloadCallback {
                 } else {
                     pause(downloadTaskList.get(i).getId(), DownloadStopMode.auto);
                 }
+            }
+        } else {
+            try {
+                downloadController.startDownloadTask(downloadEntity);
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -323,6 +335,27 @@ public class DownloadManager implements DownloadCallback {
         }
     }
 
+    public void pause(@NonNull DownloadEntity downloadEntity, @DownloadStopMode int mode){
+
+        DownloadEntity downloadInfo = loadByFilePath(downloadEntity.getUrl(), downloadEntity.getFilePath());
+        pauseAll(downloadInfo);
+    }
+
+    private void pauseAll(DownloadEntity downloadInfo) {
+        if (downloadInfo != null) {
+
+            for (DownloadEntity downing : downloadTaskList) {
+                if(downloadInfo.getId() == downing.getId()) {
+                    try {
+                        downloadController.stopDownloadTask(downing);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     @PermissionRefuse
     private void downloadRefuse(PermissionRefuseEntity entity) {
         Logger.errorInfo(entity.getMessage());
@@ -338,13 +371,15 @@ public class DownloadManager implements DownloadCallback {
     /**
      * 获取Service 连接
      * @return
+     * @param config
      */
-    private ServiceConnection getServiceConnection() {
+    private ServiceConnection getServiceConnection(DownloadEntity config) {
 
         return new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
 
+                Logger.errorInfo("onServiceConnected");
                 downloadController = DownloadAidlService.Stub.asInterface(service);
 
                 try {
@@ -352,6 +387,8 @@ public class DownloadManager implements DownloadCallback {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
+
+                downloadFromDatabase(config);
             }
 
             @Override
@@ -402,6 +439,7 @@ public class DownloadManager implements DownloadCallback {
 
     @Override
     public void onDownloadStatusChanged(long downloadId, int status) throws RemoteException {
+        Logger.errorInfo( "onDownloadStatusChanged>>>>>" + status);
         //downing 和 pause
         // 修改数据库状态
         appDatabase.download().updateDownloadStatusById(downloadId, status);
@@ -410,18 +448,24 @@ public class DownloadManager implements DownloadCallback {
     @Override
     public void onTotalLengthReceived(long downloadId, long totalLength) throws RemoteException {
 
+        DownloadEntity downloadInfo = appDatabase.download().loadById(downloadId);
+
+        if (downloadInfo != null){
+            downloadInfo.setTotalLength(totalLength);
+            appDatabase.download().updateDownload(downloadInfo);
+        }
     }
 
     @Override
     public void onCurrentSizeChanged(long downloadId, double downloadPercent, long speed) throws RemoteException {
-
+        Logger.errorInfo(downloadId +">>>>>" + downloadPercent);
     }
 
     @Override
     public void onDownloadSuccess(long downloadId) throws RemoteException {
 
         changeStatus(downloadId, DownloadStatus.finish);
-
+        Logger.errorInfo( "onDownloadSuccess>>>>>");
     }
 
 
@@ -431,11 +475,12 @@ public class DownloadManager implements DownloadCallback {
 
         if (downloadInfo != null){
             downloadInfo.setStatus(downloadStatus);
-            downloadInfo.setCurrentLength(new File(downloadInfo.getFilePath()).length());
+            downloadInfo.setCurrentLength(new File(downloadInfo.getFilePath() + downloadInfo.getFileName()).length());
             downloadInfo.setFinishTime(UtilDate.getDateWithYMDHMS());
             downloadInfo.setStopMode(DownloadStopMode.hand);
             appDatabase.download().updateDownload(downloadInfo);
 
+            Logger.errorInfo(downloadInfo.toString() + ">>>>>");
             synchronized (iDownloadListeners){
 
                 for (IDownloadListener downloadCallable : iDownloadListeners){

@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
     }
 
     public void test1(View view) {
-        startActivity(new Intent(this, Test1.class));
+        startActivity(new Intent(this, DownloadActivity.class));
     }
 
     @Override

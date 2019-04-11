@@ -2,6 +2,7 @@ package com.endless.study.baselibrary.common.download;
 
 import android.text.TextUtils;
 
+import com.endless.study.baselibrary.common.logger.Logger;
 import com.endless.study.baselibrary.database.entity.DownloadEntity;
 import com.endless.study.baselibrary.utils.UtilString;
 
@@ -50,8 +51,9 @@ class DownloadRetrofit {
                         .connectTimeout(60, TimeUnit.SECONDS)
                         .build();
 
+                Logger.errorInfo(host);
                 retrofit = new Retrofit.Builder()
-                                .baseUrl(host)
+                                .baseUrl("http://" + host)
                                 .client(client)
                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                 .build();

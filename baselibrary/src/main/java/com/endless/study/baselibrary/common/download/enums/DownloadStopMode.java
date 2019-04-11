@@ -24,10 +24,10 @@ public @interface DownloadStopMode {
     /**
      * 根据优先级自动停止
      */
-    int auto = 0x11;
+    int auto = 1;
 
     /**
      * 手动停止
      */
-    int hand = 0x12;
+    int hand = 2;
 }

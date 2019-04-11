@@ -3,6 +3,8 @@ package com.endless.study.baselibrary.utils;
 import android.content.Context;
 import android.os.Environment;
 
+import com.endless.study.baselibrary.common.logger.Logger;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -148,28 +150,35 @@ public class UtilFile {
      * @return
      */
     public static File writeInput(String path, String fileName, InputStream input) {
-        File file = null;
+        File file = new File(path + fileName);
         OutputStream output = null;
 
         try {
-            createSDDir(path);
-            file = createSDFile(path + fileName);
-            output = new FileOutputStream(file);
+
+            if (!file.exists()) {
+                createSDDir(path);
+                createSDFile(path + fileName);
+            }
+
+            output = new FileOutputStream(file, true);
+
             byte[] buffer = new byte[1024];
             int length;
-            while((length=(input.read(buffer))) >0){
+
+            while((length=(input.read(buffer))) > 0){
                 output.write(buffer,0,length);
             }
             //清缓存，将流中的数据保存到文件中
             output.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
+
         finally{
             try {
                 output.close();
             } catch (Exception e) {
-                e.printStackTrace();
+
             }
         }
         return file;

@@ -285,8 +285,8 @@ public class DownloadEntity implements Parcelable {
 
             String[] preFix = this.url.split("/");
 
-            downloadConfig.fileName = TextUtils.isEmpty(this.mFileName) ?
-                    preFix[preFix.length-1] : this.mFileName;
+            downloadConfig.fileName = "/" + (TextUtils.isEmpty(this.mFileName) ?
+                    preFix[preFix.length-1] : this.mFileName);
 
             downloadConfig.filePath = TextUtils.isEmpty(this.mFilePath) ?
                     Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + preFix[preFix.length - 1]

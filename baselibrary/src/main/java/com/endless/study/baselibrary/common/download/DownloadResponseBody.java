@@ -6,7 +6,10 @@ import android.os.Looper;
 import android.os.RemoteException;
 import android.text.TextUtils;
 
+import com.endless.study.baselibrary.common.download.constant.DownloadError;
+import com.endless.study.baselibrary.common.logger.Logger;
 import com.endless.study.baselibrary.database.entity.DownloadEntity;
+import com.endless.study.baselibrary.utils.UtilFile;
 
 import java.io.IOException;
 
@@ -69,6 +72,7 @@ class DownloadResponseBody extends ResponseBody {
         //更新下载总数
         receiveTotalLength(isDownLength + responseBody.contentLength());
 
+        Logger.errorInfo("responseBody.contentLength()>>>>>>>" + responseBody.contentLength());
         return new ForwardingSource(source) {
 
             //下载总数
@@ -96,8 +100,9 @@ class DownloadResponseBody extends ResponseBody {
                 receiveLen += bytesRead != -1 ? bytesRead : 0;
                 ++ count;
 
+
                 //5000次或者超过百分之10 进行状态回调
-                if (receiveLen * 10 / totalFileLength > 1 || count >= 5000) {
+                if (receiveLen * 20 / totalFileLength > 1 || count >= 500) {
                     currentTime = System.currentTimeMillis();
 
                     if (downloadCallback != null){
@@ -105,7 +110,7 @@ class DownloadResponseBody extends ResponseBody {
                             handler.post(() -> {
                                 try {
                                     downloadCallback.onCurrentSizeChanged(downloadEntity.getId(),
-                                            totalBytesRead / totalFileLength * 100,
+                                            totalBytesRead  * 100 / totalFileLength,
                                             receiveLen / (currentTime - startTime) * 1000);
                                 } catch (RemoteException e) {
                                     e.printStackTrace();

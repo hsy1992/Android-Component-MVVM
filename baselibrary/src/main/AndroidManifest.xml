@@ -3,12 +3,12 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application>
 
         <!--注册下载服务 可远程启动-->
         <service android:name="com.endless.study.baselibrary.common.download.DownloadService"
-                 android:process=":remote"
                  android:enabled="true"
                  android:exported="true">
             <intent-filter>

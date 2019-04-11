@@ -6,20 +6,24 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.endless.study.baselibrary.common.download.constant.DownloadError;
 import com.endless.study.baselibrary.common.download.enums.DownloadStatus;
 import com.endless.study.baselibrary.common.download.interfaces.DownloadApi;
+import com.endless.study.baselibrary.common.logger.Logger;
 import com.endless.study.baselibrary.database.entity.DownloadEntity;
 import com.endless.study.baselibrary.utils.UtilFile;
 
 import java.io.File;
+import java.io.InterruptedIOException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import androidx.annotation.Nullable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okio.Okio;
 
@@ -45,12 +49,14 @@ public class DownloadService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        Log.e(getClass().getSimpleName(), String.format("on bind,intent = %s", intent.toString()));
         return new DownloadBinder();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Logger.errorInfo("DownloadService>>>>>>onCreate");
     }
 
     @Override
@@ -64,7 +70,7 @@ public class DownloadService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        Logger.errorInfo("DownloadService>>>>>>onDestroy");
         for (DownloadEntity entity : downloadEntityMap.keySet()) {
 
             if (downloadEntityMap.get(entity) != null && !downloadEntityMap.get(entity).isDisposed()) {
@@ -86,9 +92,9 @@ public class DownloadService extends Service {
      * @param downloadEntity 下载配置
      */
     private void startDownload(DownloadEntity downloadEntity) {
-
-        File file = new File(downloadEntity.getFilePath());
-
+        Logger.errorInfo("startDownload>>>>>>startDownload");
+        File file = new File(downloadEntity.getFilePath() + downloadEntity.getFileName());
+        Logger.errorInfo(downloadEntity.getFilePath());
         long length = 0L;
 
         if (file.exists()) {
@@ -96,6 +102,8 @@ public class DownloadService extends Service {
         }
 
         String range = "bytes=" + length + "-";
+
+        Logger.errorInfo("range>>>>>>>" + range);
 
         Disposable disposable = DownloadRetrofit.getInstance()
                                     .getRetrofit(downloadEntity.getUrl(), downloadCallback, downloadEntity)
@@ -105,17 +113,11 @@ public class DownloadService extends Service {
                                     .unsubscribeOn(Schedulers.io())
                                     .map(responseBody -> responseBody.byteStream())
                                     .observeOn(Schedulers.computation())
+                                    .doOnSubscribe(disposable1 -> downloadStatusChange(downloadEntity, DownloadStatus.downloading))
                                     .doOnNext(inputStream -> {
 
-                                        downloadStatusChange(downloadEntity, DownloadStatus.downloading);
-                                        try {
                                             UtilFile.writeInput(downloadEntity.getFilePath(), downloadEntity.getFileName(), inputStream);
-                                        } catch (Exception e) {
-                                            if (downloadCallback != null) {
-                                                downloadCallback.onDownloadError(downloadEntity.getId(), DownloadError.DownloadCreateFileFailed,
-                                                        DownloadError.isDownloadCreateFileFailed);
-                                            }
-                                        }
+
                                     }).observeOn(AndroidSchedulers.mainThread())
                                     .doOnComplete(() -> {
 
@@ -177,11 +179,7 @@ public class DownloadService extends Service {
         public void startDownloadTask(DownloadEntity config) throws RemoteException {
 
             if (!downloadEntityMap.containsKey(config)) {
-
                 startDownload(config);
-            } else {
-//                downloadCallback.onDownloadError(config.getId(), DownloadError.Downloading,
-//                        DownloadError.isDownloading);
             }
         }
 
