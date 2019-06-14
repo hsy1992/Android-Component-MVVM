@@ -31,4 +31,6 @@ public class DownloadInterceptor implements Interceptor {
                         chain.request().header("RANGE"), downloadCallback, downloadEntity))
                 .build();
     }
+
+
 }

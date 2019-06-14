@@ -36,6 +36,12 @@ android {
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['jnilibs']
+        }
+    }
 }
 
 dependencies {
@@ -51,10 +57,15 @@ dependencies {
     testImplementation rootProject.ext.test['powermock_api_mockito2']
     testImplementation rootProject.ext.test['powermock_classloading_xstream']
     testImplementation rootProject.ext.test['robolectric']
+    androidTestImplementation rootProject.ext.test['rules']
+    androidTestImplementation rootProject.ext.test['espresso']
+    androidTestImplementation rootProject.ext.test['runner']
     annotationProcessor rootProject.ext.dependencies['dagger2AndroidProcessor']
     annotationProcessor rootProject.ext.dagger2['dagger2Processor']
     implementation project(':loginlibrary')
     annotationProcessor rootProject.ext.dependencies["butterknife_apt"]
     implementation project(path: ':rxbus')
     implementation project(':networkclientstate')
+
+    implementation "com.squareup.okhttp3:logging-interceptor:3.12.0"
 }
