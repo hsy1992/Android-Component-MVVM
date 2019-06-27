@@ -7,5 +7,10 @@ package com.endless.study.loginlibrary.type.interfaces;
  */
 public interface IExceptionCallBack {
 
+    /**
+     * 异常回调
+     * @param tag
+     * @param message
+     */
     void onCallBack(String tag, String message);
 }

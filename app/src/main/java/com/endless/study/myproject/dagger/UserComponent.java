@@ -17,6 +17,11 @@ import dagger.Component;
 @AppScope
 @Component(modules = {UserModule.class, ViewModelModule.class}, dependencies = AppComponent.class)
 public interface UserComponent {
+
+    /**
+     * 注入
+     * @param mainActivity
+     */
     void inject(MainActivity mainActivity);
 
     @Component.Builder

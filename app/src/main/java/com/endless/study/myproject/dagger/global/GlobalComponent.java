@@ -15,11 +15,20 @@ import dagger.Component;
 @AppScope
 @Component(modules = {ViewModelModule.class}, dependencies = AppComponent.class)
 public interface GlobalComponent {
+    /**
+     * 注入
+     * @param application
+     */
     void inject(Application application);
 
     @Component.Builder
     interface Builder {
         GlobalComponent.Builder appComponent(AppComponent appComponent);
+
+        /**
+         * 构造
+         * @return
+         */
         GlobalComponent build();
     }
 }

@@ -89,4 +89,11 @@ public class LocalDataBaseManager {
         return localDataBase;
     }
 
+    /**
+     * 退出登录
+     */
+    public void quitLogin() {
+        localDataBase = null;
+        isInitialization = false;
+    }
 }

@@ -34,9 +34,6 @@ public abstract class UserModule {
         return new LinearLayoutManager(rootView.getContext());
     }
 
-//
-//    @AppScope
-//    abstract ViewModel provideUserViewModel(UserViewModel viewModel);
 
     @Binds
     abstract UserContract.Model provideUserModel(UserModel model);
