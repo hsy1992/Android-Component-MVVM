@@ -21,9 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -46,11 +43,6 @@ public class Bus {
      * 所有的提供事件
      */
     private ConcurrentMap<EventTypeEntity, ProducerEvent> produceEventMap = new ConcurrentHashMap<>();
-
-    /**
-     * 退出时停止 防止内存泄漏
-     */
-    private ConcurrentMap<SubscriberEvent, Disposable> disposableMao = new ConcurrentHashMap<>();
 
     /**
      * 线程策略
@@ -164,14 +156,12 @@ public class Bus {
      */
     private void dispatchProducerResult(final SubscriberEvent subscriberEvent, ProducerEvent producerEvent) {
         Log.d("Logger", "dispatchProducerResult");
-        Disposable disposable = producerEvent.produce().subscribe(new Consumer() {
+        producerEvent.produce().subscribe(new Consumer() {
             @Override
             public void accept(Object object) throws Exception {
                 dispatch(object, subscriberEvent);
             }
         });
-
-        disposableMao.put(subscriberEvent, disposable);
     }
 
     /**
@@ -234,14 +224,6 @@ public class Bus {
             }
 
             currentSubscribers.removeAll(eventMethodsInListener);
-
-            //解除绑定防止内存泄漏
-            for (SubscriberEvent event : eventMethodsInListener) {
-                if (disposableMao.get(event) != null && disposableMao.get(event).isDisposed()) {
-                    disposableMao.get(event).dispose();
-                }
-            }
-
         }
 
         Log.d("Logger", "subscriberEventMap 剩余>> " + subscriberEventMap.keySet().size());
@@ -258,12 +240,15 @@ public class Bus {
     /**
      * post 执行
      * @param tag 执行的标签
-     * @param dispatchClasses 类型
+     * @param dispatchClasses
      */
-    public boolean post(String tag, @NonNull Class dispatchClasses) {
+    public boolean post(String tag, Class dispatchClasses) {
 
         Log.d("Logger", "tag " + tag + ">> class " + dispatchClasses.getSimpleName());
 
+        if (dispatchClasses == null) {
+            throw new IllegalArgumentException("Event to post must not be null.");
+        }
         threadStrategy.handle(this);
 
         boolean dispatched = false;

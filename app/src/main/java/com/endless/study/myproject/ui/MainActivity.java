@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.endless.study.baselibrary.base.BaseActivity;
 import com.endless.study.baselibrary.dagger.component.AppComponent;
+import com.endless.study.baselibrary.database.entity.UserEntity;
+import com.endless.study.baselibrary.repository.DataResource;
 import com.endless.study.baselibrary.utils.UtilCommon;
 import com.endless.study.myproject.R;
 import com.endless.study.myproject.Test1;
@@ -20,6 +22,7 @@ import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 
@@ -43,6 +46,11 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
 
     @Override
     public void initData() {
+
+        assert viewModel != null;
+        viewModel.getUsers().observe(this, userEntityDataResource -> {
+
+        });
     }
 
 

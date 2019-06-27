@@ -3,13 +3,18 @@ package com.endless.study.myproject.viewmodel;
 import android.app.Application;
 
 import com.endless.study.baselibrary.dagger.scope.AppScope;
+import com.endless.study.baselibrary.database.entity.UserEntity;
 import com.endless.study.baselibrary.mvvm.viewmodel.BaseViewModel;
+import com.endless.study.baselibrary.repository.DataResource;
 import com.endless.study.myproject.UserContract;
 import com.endless.study.myproject.model.UserModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 
 /**
  * @author haosiyuan
@@ -26,11 +31,15 @@ public class UserViewModel extends BaseViewModel<UserContract.Model> {
     @Inject
     public UserViewModel(Application application, UserContract.Model model) {
         super(application, model);
-        model.getUsers();
+
     }
 
     public void test() {
         users.size();
     }
 
+    @NonNull
+    public LiveData<DataResource<UserEntity>> getUsers() {
+        return model.getUsers();
+    }
 }
