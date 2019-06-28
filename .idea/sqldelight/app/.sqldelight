@@ -1,1 +1,1 @@
-{"packageName":"com.endless.study.myproject","sourceSets":[["src/main/sqldelight","src/debug/sqldelight"],["src/main/sqldelight","src/release/sqldelight"]],"outputDirectory":"build/generated/source/sqldelight","className":"Database"}
+{"packageName":"com.endless.study.myproject","sourceSets":[["src/main/sqldelight","src/debug/sqldelight"]],"outputDirectory":"build/generated/source/sqldelight","className":"Database"}

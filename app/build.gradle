@@ -67,5 +67,4 @@ dependencies {
     implementation project(path: ':rxbus')
     implementation project(':networkclientstate')
 
-    implementation "com.squareup.okhttp3:logging-interceptor:3.12.0"
 }

@@ -1,19 +1,12 @@
 package com.endless.study.myproject.ui;
 
-
-import android.content.Intent;
-import android.view.View;
 import android.widget.TextView;
 
 import com.endless.study.baselibrary.base.BaseActivity;
 import com.endless.study.baselibrary.dagger.component.AppComponent;
-import com.endless.study.baselibrary.database.entity.UserEntity;
-import com.endless.study.baselibrary.repository.DataResource;
-import com.endless.study.baselibrary.utils.UtilCommon;
 import com.endless.study.myproject.R;
-import com.endless.study.myproject.Test1;
 import com.endless.study.myproject.UserContract;
-import com.endless.study.myproject.dagger.DaggerUserComponent;
+import com.endless.study.myproject.dagger.component.DaggerUserComponent;
 import com.endless.study.myproject.viewmodel.UserViewModel;
 
 import java.util.HashMap;
@@ -22,10 +15,12 @@ import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 
+/**
+ * @author haosiyuan
+ */
 public class MainActivity extends BaseActivity<UserViewModel> implements UserContract.View {
 
     LiveData<String> liveData;
@@ -48,9 +43,6 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
     public void initData() {
 
         assert viewModel != null;
-        viewModel.getUsers().observe(this, userEntityDataResource -> {
-
-        });
     }
 
 
@@ -68,11 +60,9 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
 
     @Override
     public void showUser() {
+
     }
 
-    public void test1(View view) {
-        startActivity(new Intent(this, DownloadActivity.class));
-    }
 
     @Override
     protected void onDestroy() {

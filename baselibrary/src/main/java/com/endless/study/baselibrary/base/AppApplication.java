@@ -11,6 +11,7 @@ import com.endless.study.baselibrary.utils.UtilPreconditions;
 import androidx.annotation.NonNull;
 
 /**
+ * Application
  * @author haosiyuan
  * @date 2019/1/28 3:20 PM
  */

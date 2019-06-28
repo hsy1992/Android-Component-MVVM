@@ -1,8 +1,9 @@
-package com.endless.study.myproject.dagger;
+package com.endless.study.myproject.dagger.component;
 
 
 import com.endless.study.baselibrary.dagger.component.AppComponent;
 import com.endless.study.baselibrary.dagger.scope.AppScope;
+import com.endless.study.myproject.dagger.UserModule;
 import com.endless.study.myproject.dagger.global.ViewModelModule;
 import com.endless.study.myproject.ui.MainActivity;
 import com.endless.study.myproject.UserContract;

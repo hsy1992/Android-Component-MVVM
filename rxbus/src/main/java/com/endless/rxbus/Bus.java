@@ -77,7 +77,7 @@ public class Bus {
         if (object == null) {
             throw new IllegalArgumentException("Object to register must not be null.");
         }
-        Log.d("Logger", "register>>" + object.getClass().getSimpleName());
+        //Log.d("Logger", "register>>" + object.getClass().getSimpleName());
         threadStrategy.handle(this);
 
         registerProducer(object);
