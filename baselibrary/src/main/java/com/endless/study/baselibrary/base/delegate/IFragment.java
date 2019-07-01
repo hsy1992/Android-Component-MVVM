@@ -39,4 +39,9 @@ public interface IFragment {
      * @return
      */
     ICache<String, Object> getCacheData();
+
+    /**
+     * 当View 创建完成
+     */
+    void onViewCreated();
 }

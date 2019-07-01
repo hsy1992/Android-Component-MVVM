@@ -41,12 +41,17 @@ public class FragmentDelegateImpl implements IFragmentDelegate {
         if (view != null){
             unbinder = ButterKnife.bind(fragment, view);
         }
+
+        iFragment.onViewCreated();
+
+        //传递
+        iFragment.setData(savedInstanceState);
+
     }
 
     @Override
     public void onActivityCreate(@Nullable Bundle savedInstanceState) {
-        iFragment.initView();
-        iFragment.setData(savedInstanceState);
+
     }
 
     @Override

@@ -11,7 +11,7 @@ import dagger.Module;
 import dagger.multibindings.IntoMap;
 
 /**
- * {@link ViewModel} 的 Module
+ * {@link ViewModel} 的 Module 注册入 ViewModelProvider.Factory
  * @author haosiyuan
  * @date 2019/3/7 3:10 PM
  */

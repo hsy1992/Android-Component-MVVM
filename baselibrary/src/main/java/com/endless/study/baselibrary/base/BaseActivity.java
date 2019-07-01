@@ -44,7 +44,7 @@ public abstract class BaseActivity<M extends BaseViewModel> extends AppCompatAct
 
     @Override
     public void showToast(String message) {
-        UtilCommon.getAppComponent(this).toast().toast(this, message,false);
+        UtilCommon.getAppComponent(getContext()).toast().toast(getContext(), message,false);
     }
 
     @Override

@@ -23,11 +23,7 @@ import butterknife.BindView;
  */
 public class MainActivity extends BaseActivity<UserViewModel> implements UserContract.View {
 
-    LiveData<String> liveData;
 
-    Map<String, Set<String>> map = new HashMap<>();
-    @BindView(R.id.textView)
-    TextView textView;
 
     @Override
     public int getLayoutId() {
@@ -41,8 +37,8 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
 
     @Override
     public void initData() {
-
         assert viewModel != null;
+
     }
 
 
