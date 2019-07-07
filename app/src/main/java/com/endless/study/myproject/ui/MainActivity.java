@@ -1,6 +1,6 @@
 package com.endless.study.myproject.ui;
 
-import android.widget.TextView;
+import android.os.Bundle;
 
 import com.endless.study.baselibrary.base.BaseActivity;
 import com.endless.study.baselibrary.dagger.component.AppComponent;
@@ -8,15 +8,12 @@ import com.endless.study.myproject.R;
 import com.endless.study.myproject.UserContract;
 import com.endless.study.myproject.dagger.component.DaggerUserComponent;
 import com.endless.study.myproject.viewmodel.UserViewModel;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * @author haosiyuan
@@ -24,6 +21,8 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity<UserViewModel> implements UserContract.View {
 
 
+    @BindView(R.id.navigationBar)
+    BottomNavigationView navigationBar;
 
     @Override
     public int getLayoutId() {
@@ -38,10 +37,7 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
     @Override
     public void initData() {
         assert viewModel != null;
-
     }
-
-
 
 
     @Override
@@ -64,4 +60,5 @@ public class MainActivity extends BaseActivity<UserViewModel> implements UserCon
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

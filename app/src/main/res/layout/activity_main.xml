@@ -13,7 +13,9 @@
         android:id="@+id/navigationBar"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:itemTextColor="@drawable/select_tab_color"
         android:layout_width="match_parent"
+        app:menu="@menu/tab_menu"
         android:layout_height="50dp">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
