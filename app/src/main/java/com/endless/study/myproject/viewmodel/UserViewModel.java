@@ -34,9 +34,6 @@ public class UserViewModel extends BaseViewModel<UserContract.Model> {
 
     }
 
-    public void test() {
-        users.size();
-    }
 
     @NonNull
     public LiveData<DataResource<UserEntity>> getUsers() {

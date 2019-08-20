@@ -9,6 +9,13 @@
     tools:context=".ui.MainActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        app:layout_constraintBottom_toBottomOf="@+id/navigationBar"
+        android:layout_marginBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationBar"
         android:background="@color/white"

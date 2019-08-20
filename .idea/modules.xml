@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Android-Component-MVVM.iml" filepath="$PROJECT_DIR$/Android-Component-MVVM.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/baselibrary/baselibrary.iml" filepath="$PROJECT_DIR$/baselibrary/baselibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/commonutil/commonutil.iml" filepath="$PROJECT_DIR$/commonutil/commonutil.iml" />
       <module fileurl="file://$PROJECT_DIR$/loginlibrary/loginlibrary.iml" filepath="$PROJECT_DIR$/loginlibrary/loginlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/networkclientstate/networkclientstate.iml" filepath="$PROJECT_DIR$/networkclientstate/networkclientstate.iml" />
       <module fileurl="file://$PROJECT_DIR$/permissionlib/permissionlib.iml" filepath="$PROJECT_DIR$/permissionlib/permissionlib.iml" />

@@ -15,9 +15,16 @@ public interface UserContract extends IView {
 
     interface View extends IView {
         void showUser();
+
+        /**
+         * viewPager选择第几个
+         * @param position
+         */
+        void setViewPagerPosition(int position);
     }
 
     interface Model extends IModel {
+
         LiveData<DataResource<UserEntity>> getUsers();
     }
 }

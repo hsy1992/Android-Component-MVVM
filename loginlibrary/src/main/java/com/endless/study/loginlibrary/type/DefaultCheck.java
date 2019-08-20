@@ -8,7 +8,7 @@ import com.endless.study.loginlibrary.LoginException;
 import com.endless.study.loginlibrary.timer.SingleTimer;
 import com.endless.study.loginlibrary.type.interfaces.ICheck;
 import com.endless.study.loginlibrary.type.interfaces.IThrowableTag;
-import com.endless.study.loginlibrary.utils.StringUtil;
+import com.endless.study.loginlibrary.utils.UtilString;
 
 /**
  * 检查
@@ -34,7 +34,7 @@ class DefaultCheck implements ICheck {
                     config.getPhoneEmptyTips());
         }
 
-        if (!StringUtil.isPhoneNum(phone)) {
+        if (! UtilString.isPhoneNum(phone)) {
             throw new LoginException(IThrowableTag.PHONE_ERROR_TIPS,
                     config.getPhoneErrorTips());
         }

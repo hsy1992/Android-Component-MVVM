@@ -1,1 +1,1 @@
-include ':app', ':baselibrary', ':loginlibrary', ':networkclientstate', ':permissionlib', ':rxbus'
+include ':app', ':baselibrary', ':loginlibrary', ':networkclientstate', ':permissionlib', ':rxbus', ':commonutil'
